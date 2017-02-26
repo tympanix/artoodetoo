@@ -1,0 +1,11 @@
+<div *ngFor="let task of tasks" class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{task.taskName}}</h3>
+    <a href=""><i class="material-icons">settings</i></a>
+  </div>
+  <div class="panel-body">
+    <a href="#" class="btn btn-raised">{{task.event}}</a>
+    <a *ngFor="let converter of task.converters" href="#" class="btn btn-raised">{{converter.converterName}}</a>
+    <a href="#" class="btn btn-raised">{{task.action}}</a>
+  </div>
+</div>

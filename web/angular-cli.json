@@ -53,7 +53,7 @@
     "styleExt": "scss",
     "prefixInterfaces": false,
     "inline": {
-      "style": false,
+      "style": true,
       "template": false
     },
     "spec": {
