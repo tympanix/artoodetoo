@@ -1,20 +1,26 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/Tympanix/automato/example"
+	"github.com/Tympanix/automato/hub"
 	"github.com/Tympanix/automato/task"
 )
 
 func main() {
 	task := task.Task{
-		Event:      example.DupEvent{Length: 8, String: "A"},
-		Converters: []task.Converter{example.RotConverter{Rotate: 13}},
-		Action:     example.ConsoleAction{},
+		Event:      &example.PersonEvent{},
+		Converters: []task.Converter{},
+		Action:     &example.EmailAction{},
 	}
 
 	task.Run()
+
+	enc := json.NewEncoder(os.Stdout)
+	enc.Encode(hub.Events)
 
 	fmt.Println("Task completed!")
 }

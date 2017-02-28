@@ -1,26 +1,22 @@
 package task
 
-import "io"
+import "fmt"
 
 // Task is an object that processes data based on events, converters and actions
 type Task struct {
-	Event      Event
+	Event      IEvent
 	Converters []Converter
-	Action     Action
+	Action     IAction
 }
 
 // Run starts the given task by connecting all components by pipes
 // such that they cna comminucate with each other as a single workflow
 func (t *Task) Run() {
-	oldR, oldW := io.Pipe()
-	go t.Event.Trigger(oldW)
+	fmt.Println("Runnings task")
 
-	var newR *io.PipeReader
-	var newW *io.PipeWriter
-	for _, cnv := range t.Converters {
-		newR, newW = io.Pipe()
-		go cnv.Convert(oldR, newW)
-		oldR = newR
-	}
-	t.Action.Execute(newR)
+	// m := reflect.ValueOf(&FacebookPhoto{}).Elem()
+	// typeOfT := m.Type()
+	// for i := 0; i < m.NumField(); i++ {
+	// 	fmt.Println(typeOfT.Field(i))
+	// }
 }
