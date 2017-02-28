@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
   public tasks = [
     {
       taskName: "Facebook Tag to Google Drive Save",
+      taskID: 1,
       event: "Facebook Image Tag",
       converters: [
         {
@@ -37,6 +38,7 @@ export class DashboardComponent implements OnInit {
     },
     {
       taskName: "Facebook Tag to Google Drive Save",
+      taskID: 2,
       event: "Facebook Image Tag",
       converters: [
         {
@@ -50,6 +52,7 @@ export class DashboardComponent implements OnInit {
     },
     {
       taskName: "Facebook Tag to Google Drive Save",
+      taskID: 3,
       event: "Facebook Image Tag",
       converters: [
         {
