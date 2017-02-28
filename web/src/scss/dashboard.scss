@@ -1,0 +1,30 @@
+.panel-heading{
+  min-height: 39px;
+
+  h3{
+    float: left;
+  }
+
+  a{
+    float: right;
+    color: white;
+
+    i{
+      font-size: 21px;
+    }
+  }
+} // .panel-heading
+
+.dashboard{
+  .panel-body{
+    .btn{
+      padding-left: 10px;
+    }
+    .next{
+      vertical-align: middle;
+    }
+    .type{
+      padding: 0 10px;
+    }
+  }
+}

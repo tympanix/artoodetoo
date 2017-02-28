@@ -4,5 +4,7 @@
 @import '../node_modules/bootstrap-sass/assets/stylesheets/bootstrap-sprockets';
 @import '../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 @import 'scss/lib/material/bootstrap-material-design';
-@import 'scss/panel';
+
+@import 'scss/dashboard';
 @import 'scss/header';
+@import 'scss/administration';
