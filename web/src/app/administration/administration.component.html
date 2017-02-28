@@ -68,9 +68,10 @@
 
     <aside class="col-md-3">
       <h1>Existing tasks</h1>
-      <div class="panel panel-primary">
+
+      <div *ngFor="let i of [1,2,3,4,5,6]" class="panel panel-primary">
         <div class="panel-heading">
-          <h3 class="panel-title">Facebook bla bla</h3>
+          <h3 class="panel-title">Facebook bla bla mock task</h3>
           <a href=""><i class="material-icons">settings</i></a>
         </div>
         <div class="panel-body">
@@ -78,25 +79,7 @@
         </div>
       </div>
 
-      <div class="panel panel-primary">
-        <div class="panel-heading">
-          <h3 class="panel-title">Google Bla</h3>
-          <a href=""><i class="material-icons">settings</i></a>
-        </div>
-        <div class="panel-body">
-          <p>Bla bla <i class="next material-icons">arrow_forward</i> bla <i class="next material-icons">arrow_forward</i> bla <i class="next material-icons">arrow_forward</i> Action</p>
-        </div>
-      </div>
 
-      <div class="panel panel-primary">
-        <div class="panel-heading">
-          <h3 class="panel-title">System Bla</h3>
-          <a href=""><i class="material-icons">settings</i></a>
-        </div>
-        <div class="panel-body">
-          <p>Bla bla <i class="next material-icons">arrow_forward</i> bla <i class="next material-icons">arrow_forward</i> bla <i class="next material-icons">arrow_forward</i> Action</p>
-        </div>
-      </div>
     </aside>
   </div>
 
