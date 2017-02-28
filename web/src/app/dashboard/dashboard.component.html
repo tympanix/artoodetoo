@@ -4,8 +4,14 @@
     <a href=""><i class="material-icons">settings</i></a>
   </div>
   <div class="panel-body">
-    <a href="#" class="btn btn-raised">{{task.event}}</a>
-    <a *ngFor="let converter of task.converters" href="#" class="btn btn-raised">{{converter.converterName}}</a>
-    <a href="#" class="btn btn-raised">{{task.action}}</a>
+    <a href="#" class="btn btn-raised"><i class="type material-icons">notifications</i>{{task.event}}</a>
+    <i class="next material-icons">arrow_forward</i>
+
+    <template ngFor let-converter [ngForOf]="task.converters">
+      <a href="#" class="btn btn-raised"><i class="type material-icons">computer</i>{{converter.converterName}}</a>
+      <i class="next material-icons">arrow_forward</i>
+    </template>
+
+    <a href="#" class="btn btn-raised"><i class="type material-icons">cloud_upload</i>{{task.action}}</a>
   </div>
 </div>

@@ -11,7 +11,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
   }
-  
+
   public tasks = [
     {
       taskName: "Facebook Tag to Google Drive Save",
@@ -19,6 +19,15 @@ export class DashboardComponent implements OnInit {
       converters: [
         {
           converterName: "Watermark"
+        },
+        {
+          converterName: "Zip compression"
+        },
+        {
+          converterName: "Zip compression"
+        },
+        {
+          converterName: "Zip compression"
         },
         {
           converterName: "Zip compression"

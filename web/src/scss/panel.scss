@@ -8,9 +8,23 @@
 
     a{
       float: right;
+      color: white;
+
       i{
         font-size: 21px;
       }
+    }
+  } // .panel-heading
+
+  .panel-body{
+    .btn{
+      padding-left: 10px;
+    }
+    .next{
+      vertical-align: middle;
+    }
+    .type{
+      padding: 0 10px;
     }
   }
 }
