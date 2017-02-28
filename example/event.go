@@ -10,7 +10,7 @@ import (
 // PersonEvent event to test the application
 type PersonEvent struct {
 	task.Event
-	Output Person
+	Person Person
 }
 
 // Person event to test the application
@@ -28,9 +28,14 @@ func init() {
 
 // Trigger creates a dummy event which output is a data collection of a person
 func (e *PersonEvent) Trigger() error {
-	e.Output.Name = "John Doe"
-	e.Output.Age = 42
-	e.Output.Heigth = 182
-	e.Output.Married = true
+	e.Person.Name = "John Doe"
+	e.Person.Age = 42
+	e.Person.Heigth = 182
+	e.Person.Married = true
 	return nil
+}
+
+// Output returs a person object
+func (e *PersonEvent) Output() interface{} {
+	return &e.Person
 }

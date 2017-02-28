@@ -19,6 +19,8 @@ func main() {
 
 	task.Run()
 
+	fmt.Println(hub.Events)
+
 	enc := json.NewEncoder(os.Stdout)
 	enc.Encode(hub.Events)
 

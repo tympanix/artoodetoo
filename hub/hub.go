@@ -21,6 +21,7 @@ func Register(component interface{}) {
 	applyID(component)
 	switch t := component.(type) {
 	case task.IEvent:
+		t.SetOutput(t.Output())
 		Events = append(Events, t)
 	case task.Converter:
 		converters = append(converters, t)
