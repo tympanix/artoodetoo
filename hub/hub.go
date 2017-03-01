@@ -3,9 +3,9 @@ package hub
 import (
 	"log"
 
-	"github.com/Tympanix/automato/task"
 	"github.com/Tympanix/automato/task/action"
 	"github.com/Tympanix/automato/task/component"
+	"github.com/Tympanix/automato/task/converter"
 	"github.com/Tympanix/automato/task/event"
 )
 
@@ -16,7 +16,7 @@ var Components []*component.Component
 var Events []event.Event
 
 // Converters contains all available converters in the application
-var Converters []task.Converter
+var Converters []converter.Converter
 
 // Actions contains all available actions in the application
 var Actions []action.Action
@@ -27,7 +27,7 @@ func Register(comp interface{}) {
 	switch t := comp.(type) {
 	case event.Event:
 		Events = append(Events, event.Factory(t))
-	case task.Converter:
+	case converter.Converter:
 		Converters = append(Converters, t)
 	case action.Action:
 		Actions = append(Actions, t)
