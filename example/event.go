@@ -1,10 +1,6 @@
 package example
 
-import (
-	"fmt"
-
-	"github.com/Tympanix/automato/hub"
-)
+import "github.com/Tympanix/automato/hub"
 
 // PersonEvent event to test the application
 type PersonEvent struct {
@@ -20,7 +16,6 @@ type Person struct {
 }
 
 func init() {
-	fmt.Println("Register person!")
 	hub.Register(&PersonEvent{})
 }
 

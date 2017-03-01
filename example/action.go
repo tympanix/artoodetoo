@@ -16,7 +16,6 @@ type EmailAction struct {
 }
 
 func init() {
-	fmt.Println("Register email")
 	hub.Register(&EmailAction{})
 }
 

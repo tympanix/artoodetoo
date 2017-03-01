@@ -13,7 +13,7 @@ const (
 // Task is an object that processes data based on events, converters and actions
 type Task struct {
 	Event   *Component
-	Actions []Component
+	Actions []*Component
 }
 
 // Run starts the given task by connecting all components by pipes

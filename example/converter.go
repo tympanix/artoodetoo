@@ -9,11 +9,11 @@ import (
 // StringConverter formats a string using variables
 type StringConverter struct {
 	input struct {
-		String       string
-		Placeholders []interface{}
+		Format      string
+		Placeholder interface{}
 	}
 	out struct {
-		String string
+		Formatted string
 	}
 }
 
@@ -33,5 +33,5 @@ func (s *StringConverter) Output() interface{} {
 
 // Convert function converts the string using the input and parameters
 func (s *StringConverter) Convert() {
-	s.out.String = fmt.Sprintf(s.input.String, s.input.Placeholders...)
+	s.out.Formatted = fmt.Sprintf(s.input.Format, s.input.Placeholder)
 }

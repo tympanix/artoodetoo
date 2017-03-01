@@ -83,6 +83,39 @@ func (c *Component) AddIngredient(i Ingredient) *Component {
 	return c
 }
 
+// AddVar is a shortcut method for adding an ingredient to the component
+// which is a variable reference from another component
+func (c *Component) AddVar(argument string, source string, variable string) *Component {
+	c.AddIngredient(Ingredient{
+		Type:     IngredientVar,
+		Argument: argument,
+		Source:   source,
+		Value:    variable,
+	})
+	return c
+}
+
+// AddStatic is a shortcut method for adding an ingredient to the component
+// which is a static argument
+func (c *Component) AddStatic(argument string, value interface{}) *Component {
+	c.AddIngredient(Ingredient{
+		Type:     IngredientStatic,
+		Argument: argument,
+		Value:    value,
+	})
+	return c
+}
+
+// AddConstraint is a shortcut method for adding an ingredient to the component
+// which is a constrain property for another component to finish before this one
+func (c *Component) AddConstraint(componentName string) *Component {
+	c.AddIngredient(Ingredient{
+		Type:  IngredientFinish,
+		Value: componentName,
+	})
+	return c
+}
+
 // SetName sets a new name for the component
 func (c *Component) SetName(name string) *Component {
 	c.name = name
@@ -93,7 +126,6 @@ func (c *Component) SetName(name string) *Component {
 // can be used by frontsends to inspect the components type, it's identification and
 // the input/output is can handle.
 func (c *Component) MarshalJSON() ([]byte, error) {
-	fmt.Println("Calling marshal")
 	m := make(map[string]interface{})
 	m[id] = c.ID()
 
