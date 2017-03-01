@@ -4,12 +4,10 @@ import (
 	"fmt"
 
 	"github.com/Tympanix/automato/hub"
-	"github.com/Tympanix/automato/task"
 )
 
 // PersonEvent event to test the application
 type PersonEvent struct {
-	task.Event
 	Person Person
 }
 
