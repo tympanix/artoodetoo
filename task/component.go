@@ -3,7 +3,6 @@ package task
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"reflect"
 )
 
@@ -15,15 +14,6 @@ const (
 
 // NewComponent creates a new component from events, actions and converters
 func NewComponent(c interface{}) *Component {
-	switch t := c.(type) {
-	case Event:
-	case Converter:
-	case Action:
-		break
-	default:
-		log.Fatalf("Cannot create component from type %T", t)
-	}
-
 	return &Component{
 		id:        componentName(c),
 		component: c,
@@ -46,14 +36,6 @@ type Component struct {
 	name        string
 	ingredients []Ingredient
 	component   interface{}
-}
-
-// Ingredient describes a variable or static value. If the source is a variable
-// it will be a string representation of which component the ingredient links to.
-// The frontend will use ingredients to define input for components is json format
-type Ingredient struct {
-	Type  int
-	Value interface{}
 }
 
 // ID returns the id of the component
@@ -93,6 +75,18 @@ func (c *Component) IsAction() bool {
 func (c *Component) IsConverter() bool {
 	_, ok := c.component.(Converter)
 	return ok
+}
+
+// AddIngredient sets the ingredients wanted by this component as input
+func (c *Component) AddIngredient(i Ingredient) *Component {
+	c.ingredients = append(c.ingredients, i)
+	return c
+}
+
+// SetName sets a new name for the component
+func (c *Component) SetName(name string) *Component {
+	c.name = name
+	return c
 }
 
 // MarshalJSON returns a json representation of the component. The json representation

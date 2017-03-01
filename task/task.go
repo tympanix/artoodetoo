@@ -20,10 +20,4 @@ type Task struct {
 // such that they cna comminucate with each other as a single workflow
 func (t *Task) Run() {
 	fmt.Println("Runnings task")
-
-	// m := reflect.ValueOf(&FacebookPhoto{}).Elem()
-	// typeOfT := m.Type()
-	// for i := 0; i < m.NumField(); i++ {
-	// 	fmt.Println(typeOfT.Field(i))
-	// }
 }
