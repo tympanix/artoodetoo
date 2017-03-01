@@ -4,13 +4,14 @@ import (
 	"fmt"
 
 	"github.com/Tympanix/automato/task/action"
+	"github.com/Tympanix/automato/task/converter"
 	"github.com/Tympanix/automato/task/event"
 )
 
 // Task is an object that processes data based on events, converters and actions
 type Task struct {
 	Event      event.Event
-	Converters []Converter
+	Converters []converter.Converter
 	Action     action.Action
 }
 

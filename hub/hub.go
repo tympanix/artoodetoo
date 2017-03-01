@@ -26,7 +26,7 @@ var Actions []action.Action
 func Register(comp interface{}) {
 	switch t := comp.(type) {
 	case event.Event:
-		Events = append(Events, event.Factory(t))
+		Events = append(Events, t)
 	case converter.Converter:
 		Converters = append(Converters, t)
 	case action.Action:
