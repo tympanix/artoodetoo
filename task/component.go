@@ -1,15 +1,10 @@
-package component
+package task
 
 import (
 	"encoding/json"
 	"fmt"
 	"log"
 	"reflect"
-
-	"github.com/Tympanix/automato/task"
-	"github.com/Tympanix/automato/task/action"
-	"github.com/Tympanix/automato/task/converter"
-	"github.com/Tympanix/automato/task/event"
 )
 
 const (
@@ -18,12 +13,12 @@ const (
 	input  = "input"
 )
 
-// New creates a new component from events, actions and converters
-func New(c interface{}) *Component {
+// NewComponent creates a new component from events, actions and converters
+func NewComponent(c interface{}) *Component {
 	switch t := c.(type) {
-	case event.Event:
-	case converter.Converter:
-	case action.Action:
+	case Event:
+	case Converter:
+	case Action:
 		break
 	default:
 		log.Fatalf("Cannot create component from type %T", t)
@@ -49,8 +44,16 @@ func componentName(component interface{}) string {
 type Component struct {
 	id          string
 	name        string
-	ingredients []task.Ingredient
+	ingredients []Ingredient
 	component   interface{}
+}
+
+// Ingredient describes a variable or static value. If the source is a variable
+// it will be a string representation of which component the ingredient links to.
+// The frontend will use ingredients to define input for components is json format
+type Ingredient struct {
+	Type  int
+	Value interface{}
 }
 
 // ID returns the id of the component
@@ -60,7 +63,7 @@ func (c *Component) ID() string {
 
 // Output returns the output from the component or nil if the component has no output
 func (c *Component) Output() interface{} {
-	if out, ok := c.component.(task.Outputter); ok {
+	if out, ok := c.component.(Outputter); ok {
 		return out.Output()
 	}
 	return nil
@@ -68,7 +71,7 @@ func (c *Component) Output() interface{} {
 
 // Input return the input from the component or nil if the component has no input
 func (c *Component) Input() interface{} {
-	if in, ok := c.component.(task.Inputter); ok {
+	if in, ok := c.component.(Inputter); ok {
 		return in.Input()
 	}
 	return nil
@@ -76,19 +79,19 @@ func (c *Component) Input() interface{} {
 
 // IsEvent returns whether the component is an event or not
 func (c *Component) IsEvent() bool {
-	_, ok := c.component.(event.Event)
+	_, ok := c.component.(Event)
 	return ok
 }
 
 // IsAction returns whether the component is an action or not
 func (c *Component) IsAction() bool {
-	_, ok := c.component.(action.Action)
+	_, ok := c.component.(Action)
 	return ok
 }
 
 // IsConverter returns whether the component is a converter or not
 func (c *Component) IsConverter() bool {
-	_, ok := c.component.(converter.Converter)
+	_, ok := c.component.(Converter)
 	return ok
 }
 

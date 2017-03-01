@@ -1,4 +1,4 @@
-package action
+package task
 
 // Action interface
 type Action interface {

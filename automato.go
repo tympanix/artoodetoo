@@ -8,14 +8,12 @@ import (
 	"github.com/Tympanix/automato/example"
 	"github.com/Tympanix/automato/hub"
 	"github.com/Tympanix/automato/task"
-	"github.com/Tympanix/automato/task/converter"
 )
 
 func main() {
 	task := task.Task{
-		Event:      &example.PersonEvent{},
-		Converters: []converter.Converter{},
-		Action:     &example.EmailAction{},
+		Event:   task.NewComponent(&example.PersonEvent{}),
+		Actions: []task.Component{},
 	}
 
 	task.Run()

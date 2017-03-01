@@ -1,4 +1,4 @@
-package event
+package task
 
 // Event interface describes an event
 type Event interface {
