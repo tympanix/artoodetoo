@@ -11,17 +11,9 @@ import (
 // give it unique identifier. The wrapper can afterwards be passed to the hub
 func Factory(e Event) *Wrapper {
 	return &Wrapper{
-		id:    nameOfStruct(e),
+		id:    fmt.Sprintf("event%d", 1),
 		event: e,
 	}
-}
-
-func nameOfStruct(component interface{}) string {
-	t := reflect.TypeOf(component)
-	if t.Kind() == reflect.Ptr {
-		t = t.Elem()
-	}
-	return fmt.Sprintf("%s", t.String())
 }
 
 // Wrapper wraps an event and extends it's functionality

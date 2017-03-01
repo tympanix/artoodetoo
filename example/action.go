@@ -4,13 +4,11 @@ import (
 	"fmt"
 
 	"github.com/Tympanix/automato/hub"
-	"github.com/Tympanix/automato/task"
 )
 
 // EmailAction mimcs sending an email as an action
 type EmailAction struct {
-	task.Action
-	Input Email
+	Email Email
 }
 
 // Email action that mimics sending an email
@@ -27,5 +25,9 @@ func init() {
 
 // Execute sends the email
 func (a *EmailAction) Execute() {
-	fmt.Printf("New Mail:\nTo: <%s>\nSubject: %s\nMessage: %s", a.Input.Receiver, a.Input.Subject, a.Input.Message)
+	fmt.Printf("New Mail:\nTo: <%s>\nSubject: %s\nMessage: %s", a.Email.Receiver, a.Email.Subject, a.Email.Message)
+}
+
+func (a *EmailAction) Input() interface{} {
+	return a.Email
 }

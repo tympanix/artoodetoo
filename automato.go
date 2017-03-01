@@ -22,7 +22,7 @@ func main() {
 	fmt.Println(hub.Events)
 
 	enc := json.NewEncoder(os.Stdout)
-	enc.Encode(hub.Events)
+	enc.Encode(hub.Components)
 
 	fmt.Println("Task completed!")
 }

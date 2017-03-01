@@ -3,6 +3,7 @@ package task
 import (
 	"fmt"
 
+	"github.com/Tympanix/automato/task/action"
 	"github.com/Tympanix/automato/task/event"
 )
 
@@ -10,7 +11,7 @@ import (
 type Task struct {
 	Event      event.Event
 	Converters []Converter
-	Action     IAction
+	Action     action.Action
 }
 
 // Run starts the given task by connecting all components by pipes
