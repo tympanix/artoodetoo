@@ -4,15 +4,12 @@ import "github.com/Tympanix/automato/hub"
 
 // PersonEvent event to test the application
 type PersonEvent struct {
-	Person Person
-}
-
-// Person event to test the application
-type Person struct {
-	Name    string
-	Age     int
-	Heigth  float32
-	Married bool
+	Person struct {
+		Name    string
+		Age     int
+		Heigth  float32
+		Married bool
+	}
 }
 
 func init() {
