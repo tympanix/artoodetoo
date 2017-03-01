@@ -116,10 +116,29 @@ func (c *Component) AddConstraint(componentName string) *Component {
 	return c
 }
 
+// Execute executes the component by evaluating input and assigning output
+func (c *Component) Execute() {
+	if e, ok := c.component.(Event); ok {
+		e.Trigger()
+		return
+	}
+	if a, ok := c.component.(Action); ok {
+		a.Execute()
+		return
+	}
+	if c, ok := c.component.(Converter); ok {
+		c.Convert()
+	}
+}
+
 // SetName sets a new name for the component
 func (c *Component) SetName(name string) *Component {
 	c.name = name
 	return c
+}
+
+func (c *Component) String() string {
+	return c.ID()
 }
 
 // MarshalJSON returns a json representation of the component. The json representation

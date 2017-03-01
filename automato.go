@@ -30,13 +30,14 @@ func main() {
 
 	// Finally create the task consisting of the components above
 	task := task.Task{
+		Name:    "My First Task",
 		Event:   event,
 		Actions: []*task.Component{converter, action},
 	}
 
-	task.Run()
+	task.Describe()
 
-	fmt.Println(hub.Events)
+	task.Run()
 
 	enc := json.NewEncoder(os.Stdout)
 	enc.Encode(hub.Components)
