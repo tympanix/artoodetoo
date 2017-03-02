@@ -1,12 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"os"
 
 	"github.com/Tympanix/automato/example"
-	"github.com/Tympanix/automato/hub"
 	"github.com/Tympanix/automato/task"
 )
 
@@ -35,12 +32,6 @@ func main() {
 		Actions: []*task.Component{converter, action},
 	}
 
-	task.Describe()
-
 	task.Run()
-
-	enc := json.NewEncoder(os.Stdout)
-	enc.Encode(hub.Components)
-
 	fmt.Println("Task completed!")
 }

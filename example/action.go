@@ -23,10 +23,10 @@ func init() {
 
 // Execute sends the email
 func (a *EmailAction) Execute() {
-	fmt.Printf("New Mail:\nTo: <%s>\nSubject: %s\nMessage: %s", a.Email.Receiver, a.Email.Subject, a.Email.Message)
+	fmt.Printf("New Mail:\nTo: <%s>\nSubject: %s\nMessage: %s\n", a.Email.Receiver, a.Email.Subject, a.Email.Message)
 }
 
 // Input defines the input type which is accepted by an email event
 func (a *EmailAction) Input() interface{} {
-	return a.Email
+	return &a.Email
 }

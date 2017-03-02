@@ -1,7 +1,7 @@
 package task
 
 import (
-	"fmt"
+	"log"
 	"reflect"
 )
 
@@ -13,14 +13,12 @@ type State map[string]map[string]reflect.Value
 
 // AddOutput takes a component and adds its output to the state
 func (s State) AddOutput(c *Component) {
-	state, ok := s[c.ID()]
+	state, ok := s[c.Name()]
 
 	if !ok {
 		state = make(map[string]reflect.Value)
-		s[c.ID()] = state
+		s[c.Name()] = state
 	}
-
-	fmt.Println("Adding output to state")
 
 	output := c.Output()
 
@@ -28,7 +26,7 @@ func (s State) AddOutput(c *Component) {
 		return
 	}
 
-	t := reflect.ValueOf(c.Output())
+	t := reflect.ValueOf(output)
 
 	if t.Kind() == reflect.Ptr {
 		t = t.Elem()
@@ -37,7 +35,37 @@ func (s State) AddOutput(c *Component) {
 	typeOfT := t.Type()
 	for i := 0; i < t.NumField(); i++ {
 		f := t.Field(i)
-		fmt.Println(f)
 		state[typeOfT.Field(i).Name] = f.Addr()
+	}
+}
+
+// GetInput reads the recipe from the component and assigns all variables from
+// the state as input to the component
+func (s State) GetInput(c *Component) {
+	input := c.Input()
+	if input == nil {
+		return
+	}
+	for _, ingredient := range c.ingredients {
+		t := reflect.ValueOf(input)
+
+		if t.Kind() == reflect.Ptr {
+			t = t.Elem()
+		}
+
+		f := t.FieldByName(ingredient.Argument)
+
+		if !f.IsValid() || !f.CanSet() {
+			log.Fatalf("Could not set field %v for component %v\n", f, c)
+		}
+
+		value, err := ingredient.GetValue(s)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		log.Printf("Setting <%v> to \"%v\" as type <%v>\n", ingredient.Argument, value, value.Type())
+		f.Set(value)
 	}
 }

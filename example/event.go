@@ -1,8 +1,6 @@
 package example
 
 import (
-	"fmt"
-
 	"github.com/Tympanix/automato/hub"
 	"github.com/Tympanix/automato/task"
 )
@@ -24,7 +22,6 @@ func init() {
 
 // Execute creates a dummy event which output is a data collection of a person
 func (e *PersonEvent) Execute() {
-	fmt.Println("Setting person info")
 	e.Person.Name = "John Doe"
 	e.Person.Age = 42
 	e.Person.Heigth = 182

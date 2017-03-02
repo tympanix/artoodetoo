@@ -42,6 +42,11 @@ func (c *Component) ID() string {
 	return c.id
 }
 
+// Name returns then user chosen name of the components
+func (c *Component) Name() string {
+	return c.name
+}
+
 // Output returns the output from the component or nil if the component has no output
 func (c *Component) Output() interface{} {
 	return c.action.Output()
