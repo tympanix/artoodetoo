@@ -65,6 +65,10 @@ func (s State) GetInput(c *Component) {
 			log.Fatal(err)
 		}
 
+		if !value.Type().AssignableTo(f.Type()) {
+			log.Fatalf("Field <%s> of value <%v> can't be assigned <%v>\n", ingredient.Argument, f.Type(), value.Type())
+		}
+
 		log.Printf("Setting <%v> to \"%v\" as type <%v>\n", ingredient.Argument, value, value.Type())
 		f.Set(value)
 	}
