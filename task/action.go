@@ -4,4 +4,5 @@ package task
 type Action interface {
 	Execute()
 	Input() interface{}
+	Output() interface{}
 }

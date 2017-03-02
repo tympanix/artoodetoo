@@ -4,10 +4,12 @@ import (
 	"fmt"
 
 	"github.com/Tympanix/automato/hub"
+	"github.com/Tympanix/automato/task"
 )
 
 // StringConverter formats a string using variables
 type StringConverter struct {
+	task.Base
 	input struct {
 		Format      string
 		Placeholder interface{}
@@ -31,7 +33,7 @@ func (s *StringConverter) Output() interface{} {
 	return &s.out
 }
 
-// Convert function converts the string using the input and parameters
-func (s *StringConverter) Convert() {
+// Execute function converts the string using the input and parameters
+func (s *StringConverter) Execute() {
 	s.out.Formatted = fmt.Sprintf(s.input.Format, s.input.Placeholder)
 }

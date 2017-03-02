@@ -9,18 +9,18 @@ import (
 // It is used to store the current state of variables when executing an actions
 // by adding new variables to the structure when computed and retrieving variables
 // when they are needed for computing a new component
-type State map[string]map[string]interface{}
+type State map[string]map[string]reflect.Value
 
 // AddOutput takes a component and adds its output to the state
 func (s State) AddOutput(c *Component) {
-	state := s[c.ID()]
+	state, ok := s[c.ID()]
 
-	if state == nil {
-		state = make(map[string]interface{})
+	if !ok {
+		state = make(map[string]reflect.Value)
+		s[c.ID()] = state
 	}
 
 	fmt.Println("Adding output to state")
-	fmt.Println(c.Output())
 
 	output := c.Output()
 
@@ -38,6 +38,6 @@ func (s State) AddOutput(c *Component) {
 	for i := 0; i < t.NumField(); i++ {
 		f := t.Field(i)
 		fmt.Println(f)
-		state[typeOfT.Field(i).Name] = f.Addr().Pointer()
+		state[typeOfT.Field(i).Name] = f.Addr()
 	}
 }

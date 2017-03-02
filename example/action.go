@@ -4,10 +4,12 @@ import (
 	"fmt"
 
 	"github.com/Tympanix/automato/hub"
+	"github.com/Tympanix/automato/task"
 )
 
 // EmailAction mimcs sending an email as an action
 type EmailAction struct {
+	task.Base
 	Email struct {
 		Receiver string
 		Subject  string

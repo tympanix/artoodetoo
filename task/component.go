@@ -2,7 +2,6 @@ package task
 
 import (
 	"encoding/json"
-	"fmt"
 	"reflect"
 )
 
@@ -13,10 +12,10 @@ const (
 )
 
 // NewComponent creates a new component from events, actions and converters
-func NewComponent(c interface{}) *Component {
+func NewComponent(a Action) *Component {
 	return &Component{
-		id:        componentName(c),
-		component: c,
+		id:     componentName(a),
+		action: a,
 	}
 }
 
@@ -27,7 +26,7 @@ func componentName(component interface{}) string {
 	if t.Kind() == reflect.Ptr {
 		t = t.Elem()
 	}
-	return fmt.Sprintf("%s", t.String())
+	return t.String()
 }
 
 // Component wraps the elements of the application and extends it's functionality.
@@ -35,7 +34,7 @@ type Component struct {
 	id          string
 	name        string
 	ingredients []Ingredient
-	component   interface{}
+	action      Action
 }
 
 // ID returns the id of the component
@@ -45,36 +44,12 @@ func (c *Component) ID() string {
 
 // Output returns the output from the component or nil if the component has no output
 func (c *Component) Output() interface{} {
-	if out, ok := c.component.(Outputter); ok {
-		return out.Output()
-	}
-	return nil
+	return c.action.Output()
 }
 
 // Input return the input from the component or nil if the component has no input
 func (c *Component) Input() interface{} {
-	if in, ok := c.component.(Inputter); ok {
-		return in.Input()
-	}
-	return nil
-}
-
-// IsEvent returns whether the component is an event or not
-func (c *Component) IsEvent() bool {
-	_, ok := c.component.(Event)
-	return ok
-}
-
-// IsAction returns whether the component is an action or not
-func (c *Component) IsAction() bool {
-	_, ok := c.component.(Action)
-	return ok
-}
-
-// IsConverter returns whether the component is a converter or not
-func (c *Component) IsConverter() bool {
-	_, ok := c.component.(Converter)
-	return ok
+	return c.action.Input()
 }
 
 // AddIngredient sets the ingredients wanted by this component as input
@@ -118,17 +93,7 @@ func (c *Component) AddConstraint(componentName string) *Component {
 
 // Execute executes the component by evaluating input and assigning output
 func (c *Component) Execute() {
-	if e, ok := c.component.(Event); ok {
-		e.Trigger()
-		return
-	}
-	if a, ok := c.component.(Action); ok {
-		a.Execute()
-		return
-	}
-	if c, ok := c.component.(Converter); ok {
-		c.Convert()
-	}
+	c.action.Execute()
 }
 
 // SetName sets a new name for the component

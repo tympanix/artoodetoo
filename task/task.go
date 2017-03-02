@@ -2,6 +2,7 @@ package task
 
 import (
 	"fmt"
+	"reflect"
 )
 
 // Task is an object that processes data based on events, converters and actions
@@ -20,6 +21,7 @@ func (t *Task) Describe() {
 	for _, a := range t.Actions {
 		fmt.Printf(" %s %v\n", "-", a)
 	}
+
 }
 
 // Run starts the task
@@ -33,4 +35,8 @@ func (t *Task) Run() {
 	state.AddOutput(t.Event)
 	fmt.Println(state)
 
+	test, ok := state["example.PersonEvent"]["Name"]
+	if ok {
+		fmt.Printf("The value name of the event is %v and type %v\n", reflect.Indirect(test), test.Kind())
+	}
 }
