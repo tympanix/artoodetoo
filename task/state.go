@@ -6,7 +6,7 @@ import (
 )
 
 // State is a mapping of component names and variable names to variable values.
-// It is used to store the current state of variables when executing an actions
+// It is used to store the current state of variables when executing a task
 // by adding new variables to the structure when computed and retrieving variables
 // when they are needed for computing a new component
 type State map[string]map[string]reflect.Value
@@ -46,7 +46,7 @@ func (s State) GetInput(c *Component) {
 	if input == nil {
 		return
 	}
-	for _, ingredient := range c.ingredients {
+	for _, ingredient := range c.recipe {
 		t := reflect.ValueOf(input)
 
 		if t.Kind() == reflect.Ptr {

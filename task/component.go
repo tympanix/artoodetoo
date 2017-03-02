@@ -31,10 +31,10 @@ func componentName(component interface{}) string {
 
 // Component wraps the elements of the application and extends it's functionality.
 type Component struct {
-	id          string
-	name        string
-	ingredients []Ingredient
-	action      Action
+	id     string
+	name   string
+	recipe []Ingredient
+	action Action
 }
 
 // ID returns the id of the component
@@ -57,9 +57,9 @@ func (c *Component) Input() interface{} {
 	return c.action.Input()
 }
 
-// AddIngredient sets the ingredients wanted by this component as input
+// AddIngredient sets the recipe wanted by this component as input
 func (c *Component) AddIngredient(i Ingredient) *Component {
-	c.ingredients = append(c.ingredients, i)
+	c.recipe = append(c.recipe, i)
 	return c
 }
 
