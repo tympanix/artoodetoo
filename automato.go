@@ -2,9 +2,16 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
 
+	"github.com/Tympanix/automato/api"
 	"github.com/Tympanix/automato/example"
 	"github.com/Tympanix/automato/task"
+)
+
+const (
+	apiRoot = "/api"
 )
 
 func main() {
@@ -34,4 +41,14 @@ func main() {
 
 	task.Run()
 	fmt.Println("Task completed!")
+
+	// Set up api handler
+	http.Handle(apiRoot+"/", http.StripPrefix(apiRoot, api.API))
+
+	// Set up file server for static files
+	fs := http.FileServer(http.Dir("web/dist"))
+	http.Handle("/", fs)
+
+	// Serve the web server
+	log.Fatal(http.ListenAndServe("0.0.0.0:2800", nil))
 }
