@@ -36,6 +36,7 @@ func init() {
 		err := decoder.Decode(&task)
 		if err != nil {
 			log.Printf("Error %v", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		task.Describe()
