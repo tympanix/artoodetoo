@@ -2,9 +2,10 @@ package api
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
-	"github.com/Tympanix/automato/hub"
+	"github.com/Tympanix/automato/task"
 )
 
 // API is the server mux for handling API calls
@@ -22,6 +23,17 @@ func init() {
 
 	API.HandleFunc("/tasks", func(w http.ResponseWriter, r *http.Request) {
 		SetJSON(w)
-		json.NewEncoder(w).Encode(hub.Components)
+		json.NewEncoder(w).Encode(task.Components)
+	})
+
+	API.HandleFunc("/newtask", func(w http.ResponseWriter, r *http.Request) {
+		var task task.Task
+		decoder := json.NewDecoder(r.Body)
+		err := decoder.Decode(&task)
+		if err != nil {
+			log.Printf("Error %v", err)
+			return
+		}
+		task.Describe()
 	})
 }

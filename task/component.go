@@ -2,6 +2,7 @@ package task
 
 import (
 	"encoding/json"
+	"fmt"
 	"reflect"
 )
 
@@ -14,8 +15,8 @@ const (
 // NewComponent creates a new component from events, actions and converters
 func NewComponent(a Action) *Component {
 	return &Component{
-		id:     componentName(a),
-		action: a,
+		ID:     componentName(a),
+		Action: a,
 	}
 }
 
@@ -31,35 +32,25 @@ func componentName(component interface{}) string {
 
 // Component wraps the elements of the application and extends it's functionality.
 type Component struct {
-	id     string
-	name   string
-	recipe []Ingredient
-	action Action
-}
-
-// ID returns the id of the component
-func (c *Component) ID() string {
-	return c.id
-}
-
-// Name returns then user chosen name of the components
-func (c *Component) Name() string {
-	return c.name
+	ID     string       `json:"id"`
+	Name   string       `json:"name"`
+	Recipe []Ingredient `json:"recipe"`
+	Action Action
 }
 
 // Output returns the output from the component or nil if the component has no output
 func (c *Component) Output() interface{} {
-	return c.action.Output()
+	return c.Action.Output()
 }
 
 // Input return the input from the component or nil if the component has no input
 func (c *Component) Input() interface{} {
-	return c.action.Input()
+	return c.Action.Input()
 }
 
 // AddIngredient sets the recipe wanted by this component as input
 func (c *Component) AddIngredient(i Ingredient) *Component {
-	c.recipe = append(c.recipe, i)
+	c.Recipe = append(c.Recipe, i)
 	return c
 }
 
@@ -98,17 +89,17 @@ func (c *Component) AddConstraint(componentName string) *Component {
 
 // Execute executes the component by evaluating input and assigning output
 func (c *Component) Execute() {
-	c.action.Execute()
+	c.Action.Execute()
 }
 
 // SetName sets a new name for the component
 func (c *Component) SetName(name string) *Component {
-	c.name = name
+	c.Name = name
 	return c
 }
 
 func (c *Component) String() string {
-	return c.ID()
+	return c.ID
 }
 
 // MarshalJSON returns a json representation of the component. The json representation
@@ -116,7 +107,7 @@ func (c *Component) String() string {
 // the input/output is can handle.
 func (c *Component) MarshalJSON() ([]byte, error) {
 	m := make(map[string]interface{})
-	m[id] = c.ID()
+	m[id] = c.ID
 
 	if out := c.Output(); out != nil {
 		m[output] = describeIO(out)
@@ -145,4 +136,22 @@ func describeIO(obj interface{}) *map[string]string {
 	}
 
 	return &desc
+}
+
+// UnmarshalJSON is used to transform json data into a components
+func (c *Component) UnmarshalJSON(b []byte) error {
+	type component Component
+	comp := component{}
+	if err := json.Unmarshal(b, &comp); err != nil {
+		return err
+	}
+
+	action, ok := GetActionByID(comp.ID)
+	if !ok {
+		return fmt.Errorf("Can't find action by id %s", comp.ID)
+	}
+
+	comp.Action = action
+	*c = Component(comp)
+	return nil
 }

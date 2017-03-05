@@ -3,7 +3,6 @@ package example
 import (
 	"fmt"
 
-	"github.com/Tympanix/automato/hub"
 	"github.com/Tympanix/automato/task"
 )
 
@@ -20,7 +19,7 @@ type StringConverter struct {
 }
 
 func init() {
-	hub.Register(&StringConverter{})
+	task.Register(&StringConverter{})
 }
 
 // Input is the input of the converter

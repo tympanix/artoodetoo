@@ -3,7 +3,6 @@ package example
 import (
 	"fmt"
 
-	"github.com/Tympanix/automato/hub"
 	"github.com/Tympanix/automato/task"
 )
 
@@ -18,7 +17,7 @@ type EmailAction struct {
 }
 
 func init() {
-	hub.Register(&EmailAction{})
+	task.Register(&EmailAction{})
 }
 
 // Execute sends the email

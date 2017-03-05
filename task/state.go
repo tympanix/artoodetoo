@@ -13,11 +13,11 @@ type State map[string]map[string]reflect.Value
 
 // AddOutput takes a component and adds its output to the state
 func (s State) AddOutput(c *Component) {
-	state, ok := s[c.Name()]
+	state, ok := s[c.Name]
 
 	if !ok {
 		state = make(map[string]reflect.Value)
-		s[c.Name()] = state
+		s[c.Name] = state
 	}
 
 	output := c.Output()
@@ -46,7 +46,7 @@ func (s State) GetInput(c *Component) {
 	if input == nil {
 		return
 	}
-	for _, ingredient := range c.recipe {
+	for _, ingredient := range c.Recipe {
 		t := reflect.ValueOf(input)
 
 		if t.Kind() == reflect.Ptr {

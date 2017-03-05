@@ -1,9 +1,6 @@
 package example
 
-import (
-	"github.com/Tympanix/automato/hub"
-	"github.com/Tympanix/automato/task"
-)
+import "github.com/Tympanix/automato/task"
 
 // PersonEvent event to test the application
 type PersonEvent struct {
@@ -17,7 +14,7 @@ type PersonEvent struct {
 }
 
 func init() {
-	hub.Register(&PersonEvent{})
+	task.Register(&PersonEvent{})
 }
 
 // Execute creates a dummy event which output is a data collection of a person
