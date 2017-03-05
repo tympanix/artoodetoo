@@ -120,11 +120,15 @@ func (c *Component) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&m)
 }
 
-func describeIO(obj interface{}) *map[string]string {
-	desc := make(map[string]string)
+type iodescription struct {
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
+func describeIO(obj interface{}) *[]iodescription {
+	var desc []iodescription
 
 	s := reflect.ValueOf(obj)
-
 	if s.Kind() == reflect.Ptr {
 		s = s.Elem()
 	}
@@ -132,7 +136,11 @@ func describeIO(obj interface{}) *map[string]string {
 	typeOfT := s.Type()
 	for i := 0; i < s.NumField(); i++ {
 		f := s.Field(i)
-		desc[typeOfT.Field(i).Name] = f.Type().String()
+		iodesc := iodescription{
+			Name: typeOfT.Field(i).Name,
+			Type: f.Type().String(),
+		}
+		desc = append(desc, iodesc)
 	}
 
 	return &desc

@@ -21,9 +21,13 @@ func init() {
 		r.Write([]byte("This is test"))
 	})
 
-	API.HandleFunc("/tasks", func(w http.ResponseWriter, r *http.Request) {
+	API.HandleFunc("/components", func(w http.ResponseWriter, r *http.Request) {
 		SetJSON(w)
-		json.NewEncoder(w).Encode(task.Components)
+		var components []*task.Component
+		for _, v := range task.Components {
+			components = append(components, v)
+		}
+		json.NewEncoder(w).Encode(components)
 	})
 
 	API.HandleFunc("/newtask", func(w http.ResponseWriter, r *http.Request) {
@@ -35,5 +39,6 @@ func init() {
 			return
 		}
 		task.Describe()
+		task.Run()
 	})
 }
