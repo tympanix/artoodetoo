@@ -13,7 +13,7 @@ body {
     .well,
     .jumbotron {
 
-      background-color: #fff;
+      background-color: $brand-primary-light;
       padding: 19px;
       margin-bottom: 20px;
       @include shadow-z-2();
@@ -22,7 +22,7 @@ body {
       p {
         font-weight: 300;
       }
-      @include variations(unquote(""), unquote(""), background-color, $white);
+      @include variations(unquote(""), unquote(""), background-color, $brand-primary-light);
     }
   }
 }
