@@ -4,9 +4,11 @@
 
 // Typography elements
 $mdb-font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !default;
-$mdb-text-color-light:  unquote("rgba(#{$rgb-white}, 0.84)") !default;
+// $mdb-text-color-light:  unquote("rgba(#{$rgb-white}, 0.84)") !default;
+$mdb-text-color-light: #9cb3c9;
 $mdb-text-color-light-hex: $white !default; // for contrast function in inverse
-$mdb-text-color-primary: unquote("rgba(#{$rgb-black}, 0.87)") !default;
+//$mdb-text-color-primary: unquote("rgba(#{$rgb-black}, 0.87)") !default;
+$mdb-text-color-primary: #9cb3c9 !default;
 $mdb-text-color-primary-hex: $black !default; // for contrast function in inverse
 $icon-color: rgba(0,0,0,0.5) !default;
 
@@ -23,7 +25,8 @@ $mdb-label-color-toggle-focus: unquote("rgba(#{$rgb-black}, .54)") !default;
 // Converted bs variables
 
 // Bootstrap brand color customization
-$brand-primary: $indigo !default;
+$brand-primary: #0e2439 !default;
+$brand-primary-light: #1f364d !default;
 $brand-success: $green !default;
 $brand-danger: $red !default;
 $brand-warning: $deep-orange !default;
@@ -36,7 +39,7 @@ $border-radius-small: 1px !default;
 $font-family-sans-serif: 'Roboto', 'Helvetica', 'Arial', sans-serif !default;
 $headings-font-weight: 300 !default;
 
-$body-bg: #FFF !default;
+$body-bg: #0e2439 !default;
 //---
 
 // import bs variables for sass, first declared wins.
@@ -64,8 +67,8 @@ $contrast-factor: 40% !default;
 
 // --------------------
 // inputs
-$mdb-input-placeholder-color: #BDBDBD !default;
-$mdb-input-underline-color: #D2D2D2 !default;
+$mdb-input-placeholder-color: $mdb-text-color-light !default;
+$mdb-input-underline-color: $mdb-text-color-light !default;
 $mdb-label-static-size-ratio: 75 / 100 !default;
 $mdb-help-block-size-ratio: 75 / 100 !default;
 

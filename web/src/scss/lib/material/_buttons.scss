@@ -29,8 +29,13 @@
   background-color 0.2s $mdb-animation-curve-default,
   color 0.2s $mdb-animation-curve-default;
   outline: 0;
+  color: white;
   cursor: pointer;
   text-decoration: none;
+
+  &:hover{
+    color: white;
+  }
 
   &::-moz-focus-inner {
     border: 0;
@@ -38,9 +43,8 @@
 
   //---
   // btn-flat
-  background: transparent;
   &:not(.btn-raised) {
-    @include variations(unquote(".btn"), unquote(""), color, $mdb-text-color-primary);
+    //@include variations(unquote(".btn"), unquote(""), color, $mdb-text-color-primary);
     box-shadow: none;
 
     &:not(.btn-link) {
@@ -62,7 +66,23 @@
   &.btn-raised,
   &.btn-fab,
   .btn-group-raised & {
-    @include background-variations(unquote(".btn"), unquote(""), $mdb-btn-background-color);
+    //@include background-variations(unquote(".btn"), unquote(""), $mdb-btn-background-color);
+  }
+
+  &.btn-success{
+    background-image: linear-gradient(to right,#e052a0,#f15c41);
+
+    &:hover{
+      color: black;
+    }
+  }
+
+  &.btn-blue{
+    background-image: linear-gradient(to right,#3ec7e0,#526bf4);
+
+    &:hover{
+      color: black;
+    }
   }
 
   //---

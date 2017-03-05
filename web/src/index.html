@@ -10,10 +10,29 @@
   <link href="https://fonts.googleapis.com/css?family=Baloo" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
+
+  <style type="text/css">
+    .loading {
+      opacity: 0;
+      transition: opacity .8s ease-in-out;
+      position: fixed;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      background: #000;
+      z-index: -1;
+    }
+
+  </style>
 </head>
-<body>
+<body class="inverse">
 
-    <app-root></app-root>
+    <app-root>
+    </app-root>
 
+    <div class="loading">
+        <h1>Loading...</h1>
+    </div>
 </body>
 </html>

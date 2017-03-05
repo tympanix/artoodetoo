@@ -2,7 +2,8 @@
   <div class="row">
 
     <aside class="col-md-3">
-      <h1>Service Overview</h1>
+      <div class="well">
+      <h1 class="heading">Service Overview</h1>
 
       <div class="panel panel-primary">
         <div class="panel-heading">
@@ -31,11 +32,12 @@
           <p>Feature 2</p>
         </div>
       </div>
-
+    </div>
     </aside>
 
     <main class="col-md-6">
-      <h1>Task Editor</h1>
+      <div class="well">
+      <h1 class="heading">Task Editor</h1>
       <div class="panel panel-primary">
 
         <div class="panel-heading">
@@ -58,16 +60,18 @@
           </div>
 
           <div class="center">
-            <a class="btn btn-raised">Add Action</a>
+            <a class="btn btn-raised btn-blue">Add Action</a>
             <a class="btn btn-success btn-raised">Save</a>
           </div>
 
         </div>
       </div>
+      </div>
     </main>
 
     <aside class="col-md-3">
-      <h1>Existing tasks</h1>
+      <div class="well">
+      <h1 class="heading">Existing tasks</h1>
 
       <div *ngFor="let i of [1,2,3,4,5,6]" class="panel panel-primary">
         <div class="panel-heading">
@@ -79,7 +83,7 @@
         </div>
       </div>
 
-
+    </div>
     </aside>
   </div>
 

@@ -3,7 +3,7 @@
 body {
   background-color: $body-bg;
   &.inverse {
-    background: #333333;
+    background: #0e2439;
     &, .form-control {
       color: $mdb-text-color-light;
     }
@@ -24,6 +24,7 @@ body {
 body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {
   font-family: $font-family-sans-serif;
   font-weight: 300;
+  color: $white;
 }
 
 h5, h6{
