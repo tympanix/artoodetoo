@@ -10,8 +10,6 @@
           <h3 class="panel-title">Facebook</h3>
           <a>Unclock</a>
         </div>
-        <div class="panel-body">
-        </div>
       </div>
 
       <div class="panel panel-primary">
@@ -19,17 +17,16 @@
           <h3 class="panel-title">Google</h3>
           <a>Unclock</a>
         </div>
-        <div class="panel-body">
-        </div>
       </div>
 
       <div class="panel panel-primary">
         <div class="panel-heading">
-          <h3 class="panel-title">System</h3>
+          <h3 class="panel-title">Mock Units</h3>
         </div>
         <div class="panel-body">
-          <p>Feature 1</p>
-          <p>Feature 2</p>
+            <template ngFor let-unit [ngForOf]="units">
+              <p>{{unit.desc}}</p>
+            </template>
         </div>
       </div>
     </div>
