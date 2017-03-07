@@ -14,7 +14,7 @@ export class AdministrationComponent implements OnInit {
   constructor(private unitService: UnitService) { }
 
   getUnits(): void {
-    this.unitService.getMockUnits().then(units => this.units = units);
+    this.unitService.getUnits().then(units => this.units = units);
   }
 
   ngOnInit() {

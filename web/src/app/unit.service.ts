@@ -12,7 +12,7 @@ export class UnitService {
   constructor(private http: Http) {}
 
   getUnits(): Promise<Unit[]>{
-    return this.http.get("/web/components")
+    return this.http.get("http://localhost:2801/api/components")
                 .toPromise()
                 .then(this.extractData)
                 .catch(this.handleError);
@@ -20,8 +20,7 @@ export class UnitService {
 
   private extractData(res: Response) {
     let body = res.json();
-    console.log(body);
-    return body.data || { };
+    return body || { };
   }
 
   private handleError(error: any): Promise<any> {

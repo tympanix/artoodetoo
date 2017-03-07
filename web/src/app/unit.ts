@@ -10,7 +10,6 @@ class Output {
 
 export class Unit {
   id: string;
-  desc: string;
   input: Input[];
   output: Output[];
 }
