@@ -1,6 +1,6 @@
 {
   "/browse": {
-    "target": "http://localhost:1337",
+    "target": "http://localhost:2800",
     "secure": false
   }
 }

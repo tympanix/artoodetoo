@@ -6,8 +6,7 @@ import { UnitService } from '../unit.service';
 @Component({
   selector: 'app-administration',
   templateUrl: './administration.component.html',
-  styles: [],
-  providers: [UnitService]
+  styles: []
 })
 export class AdministrationComponent implements OnInit {
   units: Unit[]
@@ -15,7 +14,7 @@ export class AdministrationComponent implements OnInit {
   constructor(private unitService: UnitService) { }
 
   getUnits(): void {
-    this.unitService.getUnits().then(units => this.units = units);
+    this.unitService.getMockUnits().then(units => this.units = units);
   }
 
   ngOnInit() {
