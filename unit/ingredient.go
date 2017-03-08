@@ -1,9 +1,11 @@
-package task
+package unit
 
 import (
 	"errors"
 	"fmt"
 	"reflect"
+
+	"github.com/Tympanix/automato/state"
 )
 
 const (
@@ -46,7 +48,7 @@ func (i *Ingredient) IsFinish() bool {
 
 // GetValue retrieves the value of the ingredient using the state provided. If the
 // value is a static value, the value will be returned without using the state
-func (i *Ingredient) GetValue(s State) (value reflect.Value, err error) {
+func (i *Ingredient) GetValue(s state.State) (value reflect.Value, err error) {
 	if i.IsStatic() {
 		value = reflect.ValueOf(i.Value)
 		return
@@ -57,7 +59,12 @@ func (i *Ingredient) GetValue(s State) (value reflect.Value, err error) {
 			err = errors.New("Variable name is not a string")
 			return
 		}
-		value = reflect.Indirect(s[i.Source][variable])
+		value, ok = s.GetValue(i.Source, variable)
+		if !ok {
+			err = fmt.Errorf("Value with domain:%s and key:%s was not found in state", i.Source, variable)
+			return
+		}
+		value = reflect.Indirect(value)
 		return
 	}
 	err = fmt.Errorf("Can't resolve ingredient type %d", i.Type)

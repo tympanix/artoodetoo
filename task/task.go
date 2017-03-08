@@ -3,13 +3,16 @@ package task
 import (
 	"fmt"
 	"log"
+
+	"github.com/Tympanix/automato/state"
+	"github.com/Tympanix/automato/unit"
 )
 
 // Task is an object that processes data based on events, converters and actions
 type Task struct {
 	Name    string
-	Event   *Unit
-	Actions []*Unit
+	Event   *unit.Unit
+	Actions []*unit.Unit
 }
 
 // Describe prints our information about the action to the console
@@ -26,16 +29,16 @@ func (t *Task) Describe() {
 
 // Run starts the task
 func (t *Task) Run() {
-	state := make(State)
+	state := state.New()
 
 	t.Event.Execute()
-	state.AddOutput(t.Event)
+	state.StoreStruct(t.Event.Name, t.Event.Output())
 
 	for _, action := range t.Actions {
 		log.Printf("Runnig action %v\n", action)
-		state.GetInput(action)
+		action.AssignInput(state)
 		action.Execute()
-		state.AddOutput(action)
+		action.StoreOutput(state)
 	}
 
 }

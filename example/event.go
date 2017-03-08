@@ -1,10 +1,10 @@
 package example
 
-import "github.com/Tympanix/automato/task"
+import "github.com/Tympanix/automato/unit"
 
 // PersonEvent event to test the application
 type PersonEvent struct {
-	task.Base
+	unit.Base
 	Person struct {
 		Name    string
 		Age     int
@@ -14,7 +14,7 @@ type PersonEvent struct {
 }
 
 func init() {
-	task.Register(&PersonEvent{})
+	unit.Register(&PersonEvent{})
 }
 
 // Execute creates a dummy event which output is a data collection of a person

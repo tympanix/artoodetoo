@@ -1,9 +1,12 @@
-package task
+package unit
 
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"reflect"
+
+	"github.com/Tympanix/automato/state"
 )
 
 const (
@@ -51,6 +54,47 @@ func (c *Unit) Input() interface{} {
 // AddIngredient sets the recipe wanted by this unit as input
 func (c *Unit) AddIngredient(i Ingredient) *Unit {
 	c.Recipe = append(c.Recipe, i)
+	return c
+}
+
+// AssignInput find all ingredients in the state given and assigns it as input
+func (c *Unit) AssignInput(state state.State) *Unit {
+	if c.Input() == nil {
+		return c
+	}
+
+	t := reflect.ValueOf(c.Input())
+	if t.Kind() == reflect.Ptr {
+		t = t.Elem()
+	}
+
+	for _, ingredient := range c.Recipe {
+
+		f := t.FieldByName(ingredient.Argument)
+
+		if !f.IsValid() || !f.CanSet() {
+			log.Fatalf("Could not set field %v for unit %v\n", f, c)
+		}
+
+		value, err := ingredient.GetValue(state)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if !value.Type().AssignableTo(f.Type()) {
+			log.Fatalf("Field <%s> of value <%v> can't be assigned <%v>\n", ingredient.Argument, f.Type(), value.Type())
+		}
+
+		log.Printf("Setting <%v> to \"%v\" as type <%v>\n", ingredient.Argument, value, value.Type())
+		f.Set(value)
+	}
+	return c
+}
+
+// StoreOutput saves the computed output in the state
+func (c *Unit) StoreOutput(state state.State) *Unit {
+	state.StoreStruct(c.Name, c.Output())
 	return c
 }
 

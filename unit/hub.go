@@ -1,4 +1,4 @@
-package task
+package unit
 
 // Units contains all available units in the aplication
 var Units map[string]*Unit

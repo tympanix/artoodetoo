@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/Tympanix/automato/task"
+	"github.com/Tympanix/automato/unit"
 )
 
 // API is the server mux for handling API calls
@@ -23,8 +24,8 @@ func init() {
 
 	API.HandleFunc("/units", func(w http.ResponseWriter, r *http.Request) {
 		SetJSON(w)
-		var units []*task.Unit
-		for _, v := range task.Units {
+		var units []*unit.Unit
+		for _, v := range unit.Units {
 			units = append(units, v)
 		}
 		json.NewEncoder(w).Encode(units)

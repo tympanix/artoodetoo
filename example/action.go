@@ -3,12 +3,12 @@ package example
 import (
 	"fmt"
 
-	"github.com/Tympanix/automato/task"
+	"github.com/Tympanix/automato/unit"
 )
 
 // EmailAction mimcs sending an email as an action
 type EmailAction struct {
-	task.Base
+	unit.Base
 	Email struct {
 		Receiver string
 		Subject  string
@@ -17,7 +17,7 @@ type EmailAction struct {
 }
 
 func init() {
-	task.Register(&EmailAction{})
+	unit.Register(&EmailAction{})
 }
 
 // Execute sends the email

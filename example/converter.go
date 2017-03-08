@@ -3,12 +3,12 @@ package example
 import (
 	"fmt"
 
-	"github.com/Tympanix/automato/task"
+	"github.com/Tympanix/automato/unit"
 )
 
 // StringConverter formats a string using variables
 type StringConverter struct {
-	task.Base
+	unit.Base
 	input struct {
 		Format      string
 		Placeholder interface{}
@@ -19,7 +19,7 @@ type StringConverter struct {
 }
 
 func init() {
-	task.Register(&StringConverter{})
+	unit.Register(&StringConverter{})
 }
 
 // Input is the input of the converter
