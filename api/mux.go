@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/Tympanix/automato/storage"
 	"github.com/Tympanix/automato/task"
 	"github.com/Tympanix/automato/unit"
 )
@@ -24,18 +25,22 @@ func init() {
 
 	API.HandleFunc("/units", func(w http.ResponseWriter, r *http.Request) {
 		SetJSON(w)
-		var units []*unit.Unit
-		for _, v := range unit.Units {
-			units = append(units, v)
+		var metas []*unit.Meta
+		for _, v := range unit.Metas {
+			metas = append(metas, v)
 		}
-		json.NewEncoder(w).Encode(units)
+		json.NewEncoder(w).Encode(metas)
 	})
 
 	API.HandleFunc("/newtask", func(w http.ResponseWriter, r *http.Request) {
 		var task task.Task
 		decoder := json.NewDecoder(r.Body)
-		err := decoder.Decode(&task)
-		if err != nil {
+		if err := decoder.Decode(&task); err != nil {
+			log.Printf("Error %v", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		if err := storage.Driver.SaveTask(&task); err != nil {
 			log.Printf("Error %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

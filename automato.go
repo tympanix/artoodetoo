@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/Tympanix/automato/api"
+	"github.com/Tympanix/automato/storage"
 
 	_ "github.com/Tympanix/automato/example"
 )
@@ -16,6 +17,9 @@ const (
 )
 
 func main() {
+	// Set up storage driver
+	initStorage()
+
 	// Set up api handler
 	http.Handle(apiroot+"/", http.StripPrefix(apiroot, api.API))
 
@@ -30,4 +34,17 @@ func main() {
 
 func addr() string {
 	return ":" + strconv.Itoa(port)
+}
+
+func initStorage() {
+	store, err := storage.NewJSONFile("./store.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+	tasks, err := store.GetAllTasks()
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Loaded %d tasks\n", len(tasks))
+	storage.Register(store)
 }

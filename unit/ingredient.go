@@ -25,10 +25,10 @@ const (
 // it will be a string representation of which unit the ingredient links to.
 // The frontend will use ingredients to define input for units is json format
 type Ingredient struct {
-	Type     int
-	Argument string
-	Source   string
-	Value    interface{}
+	Type     int         `json:"type"`
+	Argument string      `json:"argument"`
+	Source   string      `json:"source"`
+	Value    interface{} `json:"value"`
 }
 
 // IsStatic returns whether or not the ingredient has static content

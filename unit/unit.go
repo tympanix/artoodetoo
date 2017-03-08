@@ -19,7 +19,8 @@ const (
 func NewUnit(a Action) *Unit {
 	return &Unit{
 		ID:     unitName(a),
-		Action: a,
+		Recipe: make([]Ingredient, 0),
+		action: a,
 	}
 }
 
@@ -38,17 +39,17 @@ type Unit struct {
 	ID     string       `json:"id"`
 	Name   string       `json:"name"`
 	Recipe []Ingredient `json:"recipe"`
-	Action Action
+	action Action
 }
 
 // Output returns the output from the unit or nil if the unit has no output
 func (c *Unit) Output() interface{} {
-	return c.Action.Output()
+	return c.action.Output()
 }
 
 // Input return the input from the unit or nil if the unit has no input
 func (c *Unit) Input() interface{} {
-	return c.Action.Input()
+	return c.action.Input()
 }
 
 // AddIngredient sets the recipe wanted by this unit as input
@@ -133,7 +134,7 @@ func (c *Unit) AddConstraint(unitName string) *Unit {
 
 // Execute executes the unit by evaluating input and assigning output
 func (c *Unit) Execute() {
-	c.Action.Execute()
+	c.action.Execute()
 }
 
 // SetName sets a new name for the unit
@@ -146,64 +147,20 @@ func (c *Unit) String() string {
 	return c.ID
 }
 
-// MarshalJSON returns a json representation of the unit. The json representation
-// can be used by frontsends to inspect the units type, it's identification and
-// the input/output is can handle.
-func (c *Unit) MarshalJSON() ([]byte, error) {
-	m := make(map[string]interface{})
-	m[id] = c.ID
-
-	if out := c.Output(); out != nil {
-		m[output] = describeIO(out)
-	}
-
-	if in := c.Input(); in != nil {
-		m[input] = describeIO(in)
-	}
-
-	return json.Marshal(&m)
-}
-
-type iodescription struct {
-	Name string `json:"name"`
-	Type string `json:"type"`
-}
-
-func describeIO(obj interface{}) *[]iodescription {
-	var desc []iodescription
-
-	s := reflect.ValueOf(obj)
-	if s.Kind() == reflect.Ptr {
-		s = s.Elem()
-	}
-
-	typeOfT := s.Type()
-	for i := 0; i < s.NumField(); i++ {
-		f := s.Field(i)
-		iodesc := iodescription{
-			Name: typeOfT.Field(i).Name,
-			Type: f.Type().String(),
-		}
-		desc = append(desc, iodesc)
-	}
-
-	return &desc
-}
-
 // UnmarshalJSON is used to transform json data into a units
 func (c *Unit) UnmarshalJSON(b []byte) error {
 	type unit Unit
-	comp := unit{}
-	if err := json.Unmarshal(b, &comp); err != nil {
+	u := unit{}
+	if err := json.Unmarshal(b, &u); err != nil {
 		return err
 	}
 
-	action, ok := GetActionByID(comp.ID)
+	action, ok := GetActionByID(u.ID)
 	if !ok {
-		return fmt.Errorf("Can't find action by id %s", comp.ID)
+		return fmt.Errorf("Can't find action by id %s", u.ID)
 	}
 
-	comp.Action = action
-	*c = Unit(comp)
+	u.action = action
+	*c = Unit(u)
 	return nil
 }

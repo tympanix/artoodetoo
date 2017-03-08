@@ -10,9 +10,9 @@ import (
 
 // Task is an object that processes data based on events, converters and actions
 type Task struct {
-	Name    string
-	Event   *unit.Unit
-	Actions []*unit.Unit
+	Name    string       `json:"name"`
+	Event   *unit.Unit   `json:"event"`
+	Actions []*unit.Unit `json:"actions"`
 }
 
 // Describe prints our information about the action to the console
