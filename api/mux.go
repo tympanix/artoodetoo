@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Tympanix/automato/storage"
 	"github.com/Tympanix/automato/task"
 	"github.com/Tympanix/automato/unit"
+	"github.com/Tympanix/automato/util"
 )
 
 // API is the server mux for handling API calls
@@ -40,12 +40,26 @@ func init() {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		if err := storage.Driver.SaveTask(&task); err != nil {
+		if err := util.AddTask(&task); err != nil {
 			log.Printf("Error %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		task.Describe()
+	})
+
+	API.HandleFunc("/runtask", func(w http.ResponseWriter, r *http.Request) {
+		values := r.URL.Query()
+		taskname := values.Get("task")
+		if len(taskname) == 0 {
+			http.Error(w, "No task given", http.StatusInternalServerError)
+			return
+		}
+		task, err := task.GetTaskByName(taskname)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		task.Run()
 	})
 }

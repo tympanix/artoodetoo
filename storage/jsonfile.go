@@ -3,10 +3,14 @@ package storage
 import (
 	"encoding/json"
 	"errors"
+	"io"
+	"log"
 	"os"
 
 	"github.com/Tympanix/automato/task"
 )
+
+const fileMode = 0666
 
 // JSONFile is a store implementation that saves tasks consistently to a json file
 type JSONFile struct {
@@ -15,20 +19,33 @@ type JSONFile struct {
 }
 
 // NewJSONFile creates a new json file storage type
-func NewJSONFile(filepath string) (*JSONFile, error) {
-	json := &JSONFile{
+func NewJSONFile(filepath string) (json *JSONFile, err error) {
+	json = &JSONFile{
 		path: filepath,
 	}
-	file, err := json.open()
-	if err != nil {
-		return nil, err
+	if json.missing() {
+		log.Println("Creating new json file")
+		var file *os.File
+		file, err = json.create()
+		if err != nil {
+			return
+		}
+		defer file.Close()
 	}
-	defer file.Close()
-	return json, err
+	return
+}
+
+func (j *JSONFile) create() (*os.File, error) {
+	return os.Create(j.path)
+}
+
+func (j *JSONFile) missing() bool {
+	_, err := os.Stat(j.path)
+	return os.IsNotExist(err)
 }
 
 func (j *JSONFile) open() (*os.File, error) {
-	return os.Create(j.path)
+	return os.OpenFile(j.path, os.O_RDWR, fileMode)
 }
 
 // SaveTask saves the task to the json file
@@ -56,7 +73,11 @@ func (j *JSONFile) GetAllTasks() ([]*task.Task, error) {
 	}
 	defer file.Close()
 	decoder := json.NewDecoder(file)
-	decoder.Decode(j)
+	if err := decoder.Decode(j); err != nil {
+		if err != io.EOF {
+			log.Fatal(err)
+		}
+	}
 	return j.Tasks, nil
 }
 

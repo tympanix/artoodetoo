@@ -37,14 +37,11 @@ func addr() string {
 }
 
 func initStorage() {
-	store, err := storage.NewJSONFile("./store.json")
+	json, err := storage.NewJSONFile("./store.json")
 	if err != nil {
 		log.Fatal(err)
 	}
-	tasks, err := store.GetAllTasks()
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("Loaded %d tasks\n", len(tasks))
-	storage.Register(store)
+	storage.Register(json)
+	loaded := storage.Load()
+	log.Printf("Loaded %d tasks\n", loaded)
 }
