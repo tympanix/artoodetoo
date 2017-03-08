@@ -15,13 +15,13 @@ const (
 	IngredientStatic = iota
 
 	// IngredientFinish defines an ingredient type which is the finish event
-	// of another component
+	// of another unit
 	IngredientFinish = iota
 )
 
 // Ingredient describes a variable or static value. If the source is a variable
-// it will be a string representation of which component the ingredient links to.
-// The frontend will use ingredients to define input for components is json format
+// it will be a string representation of which unit the ingredient links to.
+// The frontend will use ingredients to define input for units is json format
 type Ingredient struct {
 	Type     int
 	Argument string

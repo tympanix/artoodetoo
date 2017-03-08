@@ -12,7 +12,7 @@ const (
 	input  = "input"
 )
 
-// NewUnit creates a new component from events, actions and converters
+// NewUnit creates a new unit from events, actions and converters
 func NewUnit(a Action) *Unit {
 	return &Unit{
 		ID:     unitName(a),
@@ -20,10 +20,10 @@ func NewUnit(a Action) *Unit {
 	}
 }
 
-// UnitName returns a string representation of the component
+// UnitName returns a string representation of the unit
 // specified by the package name, a dot, followed by the name of the struct
-func unitName(component interface{}) string {
-	t := reflect.TypeOf(component)
+func unitName(unit interface{}) string {
+	t := reflect.TypeOf(unit)
 	if t.Kind() == reflect.Ptr {
 		t = t.Elem()
 	}
@@ -38,24 +38,24 @@ type Unit struct {
 	Action Action
 }
 
-// Output returns the output from the component or nil if the component has no output
+// Output returns the output from the unit or nil if the unit has no output
 func (c *Unit) Output() interface{} {
 	return c.Action.Output()
 }
 
-// Input return the input from the component or nil if the component has no input
+// Input return the input from the unit or nil if the unit has no input
 func (c *Unit) Input() interface{} {
 	return c.Action.Input()
 }
 
-// AddIngredient sets the recipe wanted by this component as input
+// AddIngredient sets the recipe wanted by this unit as input
 func (c *Unit) AddIngredient(i Ingredient) *Unit {
 	c.Recipe = append(c.Recipe, i)
 	return c
 }
 
-// AddVar is a shortcut method for adding an ingredient to the component
-// which is a variable reference from another component
+// AddVar is a shortcut method for adding an ingredient to the unit
+// which is a variable reference from another unit
 func (c *Unit) AddVar(argument string, source string, variable string) *Unit {
 	c.AddIngredient(Ingredient{
 		Type:     IngredientVar,
@@ -66,7 +66,7 @@ func (c *Unit) AddVar(argument string, source string, variable string) *Unit {
 	return c
 }
 
-// AddStatic is a shortcut method for adding an ingredient to the component
+// AddStatic is a shortcut method for adding an ingredient to the unit
 // which is a static argument
 func (c *Unit) AddStatic(argument string, value interface{}) *Unit {
 	c.AddIngredient(Ingredient{
@@ -77,22 +77,22 @@ func (c *Unit) AddStatic(argument string, value interface{}) *Unit {
 	return c
 }
 
-// AddConstraint is a shortcut method for adding an ingredient to the component
-// which is a constrain property for another component to finish before this one
-func (c *Unit) AddConstraint(componentName string) *Unit {
+// AddConstraint is a shortcut method for adding an ingredient to the unit
+// which is a constrain property for another unit to finish before this one
+func (c *Unit) AddConstraint(unitName string) *Unit {
 	c.AddIngredient(Ingredient{
 		Type:  IngredientFinish,
-		Value: componentName,
+		Value: unitName,
 	})
 	return c
 }
 
-// Execute executes the component by evaluating input and assigning output
+// Execute executes the unit by evaluating input and assigning output
 func (c *Unit) Execute() {
 	c.Action.Execute()
 }
 
-// SetName sets a new name for the component
+// SetName sets a new name for the unit
 func (c *Unit) SetName(name string) *Unit {
 	c.Name = name
 	return c
@@ -102,8 +102,8 @@ func (c *Unit) String() string {
 	return c.ID
 }
 
-// MarshalJSON returns a json representation of the component. The json representation
-// can be used by frontsends to inspect the components type, it's identification and
+// MarshalJSON returns a json representation of the unit. The json representation
+// can be used by frontsends to inspect the units type, it's identification and
 // the input/output is can handle.
 func (c *Unit) MarshalJSON() ([]byte, error) {
 	m := make(map[string]interface{})
@@ -146,7 +146,7 @@ func describeIO(obj interface{}) *[]iodescription {
 	return &desc
 }
 
-// UnmarshalJSON is used to transform json data into a components
+// UnmarshalJSON is used to transform json data into a units
 func (c *Unit) UnmarshalJSON(b []byte) error {
 	type unit Unit
 	comp := unit{}

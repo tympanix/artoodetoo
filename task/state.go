@@ -5,13 +5,13 @@ import (
 	"reflect"
 )
 
-// State is a mapping of component names and variable names to variable values.
+// State is a mapping of unit names and variable names to variable values.
 // It is used to store the current state of variables when executing a task
 // by adding new variables to the structure when computed and retrieving variables
-// when they are needed for computing a new component
+// when they are needed for computing a new unit
 type State map[string]map[string]reflect.Value
 
-// AddOutput takes a component and adds its output to the state
+// AddOutput takes a unit and adds its output to the state
 func (s State) AddOutput(c *Unit) {
 	state, ok := s[c.Name]
 
@@ -39,8 +39,8 @@ func (s State) AddOutput(c *Unit) {
 	}
 }
 
-// GetInput reads the recipe from the component and assigns all variables from
-// the state as input to the component
+// GetInput reads the recipe from the unit and assigns all variables from
+// the state as input to the unit
 func (s State) GetInput(c *Unit) {
 	input := c.Input()
 	if input == nil {
@@ -56,7 +56,7 @@ func (s State) GetInput(c *Unit) {
 		f := t.FieldByName(ingredient.Argument)
 
 		if !f.IsValid() || !f.CanSet() {
-			log.Fatalf("Could not set field %v for component %v\n", f, c)
+			log.Fatalf("Could not set field %v for unit %v\n", f, c)
 		}
 
 		value, err := ingredient.GetValue(s)

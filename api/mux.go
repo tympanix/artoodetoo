@@ -23,11 +23,11 @@ func init() {
 
 	API.HandleFunc("/units", func(w http.ResponseWriter, r *http.Request) {
 		SetJSON(w)
-		var components []*task.Unit
+		var units []*task.Unit
 		for _, v := range task.Units {
-			components = append(components, v)
+			units = append(units, v)
 		}
-		json.NewEncoder(w).Encode(components)
+		json.NewEncoder(w).Encode(units)
 	})
 
 	API.HandleFunc("/newtask", func(w http.ResponseWriter, r *http.Request) {

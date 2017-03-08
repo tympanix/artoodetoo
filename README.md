@@ -1,8 +1,8 @@
 # Automato
 
 ## API
-### `/api/components`, `GET`
-Returns a list of available components
+### `/api/units`, `GET`
+Returns a list of available units
 
 ### `/api/newtask`, `POST`
 Executes a new task immediately
