@@ -10,7 +10,7 @@ Executes the task with the given `taskname`
 ### `/api/tasks/{taskname}`, `DELETE`
 Deletes the task with `taskname` and removes it from the application
 
-### `/api/tasks}`, `PUT`
+### `/api/tasks`, `PUT`
 Updates task. The html body should contain the complete task in json format, the name of the task can't be changed as it is used to identify the task. 
 
 ### `/api/tasks`, `GET`
