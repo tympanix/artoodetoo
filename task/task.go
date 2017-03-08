@@ -8,8 +8,8 @@ import (
 // Task is an object that processes data based on events, converters and actions
 type Task struct {
 	Name    string
-	Event   *Component
-	Actions []*Component
+	Event   *Unit
+	Actions []*Unit
 }
 
 // Describe prints our information about the action to the console

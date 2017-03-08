@@ -12,7 +12,7 @@ import (
 type State map[string]map[string]reflect.Value
 
 // AddOutput takes a component and adds its output to the state
-func (s State) AddOutput(c *Component) {
+func (s State) AddOutput(c *Unit) {
 	state, ok := s[c.Name]
 
 	if !ok {
@@ -41,7 +41,7 @@ func (s State) AddOutput(c *Component) {
 
 // GetInput reads the recipe from the component and assigns all variables from
 // the state as input to the component
-func (s State) GetInput(c *Component) {
+func (s State) GetInput(c *Unit) {
 	input := c.Input()
 	if input == nil {
 		return

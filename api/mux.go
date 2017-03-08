@@ -21,10 +21,10 @@ func init() {
 		r.Write([]byte("This is test"))
 	})
 
-	API.HandleFunc("/components", func(w http.ResponseWriter, r *http.Request) {
+	API.HandleFunc("/units", func(w http.ResponseWriter, r *http.Request) {
 		SetJSON(w)
-		var components []*task.Component
-		for _, v := range task.Components {
+		var components []*task.Unit
+		for _, v := range task.Units {
 			components = append(components, v)
 		}
 		json.NewEncoder(w).Encode(components)

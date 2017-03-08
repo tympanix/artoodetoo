@@ -24,7 +24,7 @@ func main() {
 	http.Handle("/", fs)
 
 	// Serve the web server
-	log.Printf("Listeing on port %d\n", port)
+	log.Printf("Listening on port %d\n", port)
 	log.Fatal(http.ListenAndServe(addr(), nil))
 }
 

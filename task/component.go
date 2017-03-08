@@ -12,17 +12,17 @@ const (
 	input  = "input"
 )
 
-// NewComponent creates a new component from events, actions and converters
-func NewComponent(a Action) *Component {
-	return &Component{
-		ID:     componentName(a),
+// NewUnit creates a new component from events, actions and converters
+func NewUnit(a Action) *Unit {
+	return &Unit{
+		ID:     unitName(a),
 		Action: a,
 	}
 }
 
-// ComponentName returns a string representation of the component
+// UnitName returns a string representation of the component
 // specified by the package name, a dot, followed by the name of the struct
-func componentName(component interface{}) string {
+func unitName(component interface{}) string {
 	t := reflect.TypeOf(component)
 	if t.Kind() == reflect.Ptr {
 		t = t.Elem()
@@ -30,8 +30,8 @@ func componentName(component interface{}) string {
 	return t.String()
 }
 
-// Component wraps the elements of the application and extends it's functionality.
-type Component struct {
+// Unit wraps the elements of the application and extends it's functionality.
+type Unit struct {
 	ID     string       `json:"id"`
 	Name   string       `json:"name"`
 	Recipe []Ingredient `json:"recipe"`
@@ -39,24 +39,24 @@ type Component struct {
 }
 
 // Output returns the output from the component or nil if the component has no output
-func (c *Component) Output() interface{} {
+func (c *Unit) Output() interface{} {
 	return c.Action.Output()
 }
 
 // Input return the input from the component or nil if the component has no input
-func (c *Component) Input() interface{} {
+func (c *Unit) Input() interface{} {
 	return c.Action.Input()
 }
 
 // AddIngredient sets the recipe wanted by this component as input
-func (c *Component) AddIngredient(i Ingredient) *Component {
+func (c *Unit) AddIngredient(i Ingredient) *Unit {
 	c.Recipe = append(c.Recipe, i)
 	return c
 }
 
 // AddVar is a shortcut method for adding an ingredient to the component
 // which is a variable reference from another component
-func (c *Component) AddVar(argument string, source string, variable string) *Component {
+func (c *Unit) AddVar(argument string, source string, variable string) *Unit {
 	c.AddIngredient(Ingredient{
 		Type:     IngredientVar,
 		Argument: argument,
@@ -68,7 +68,7 @@ func (c *Component) AddVar(argument string, source string, variable string) *Com
 
 // AddStatic is a shortcut method for adding an ingredient to the component
 // which is a static argument
-func (c *Component) AddStatic(argument string, value interface{}) *Component {
+func (c *Unit) AddStatic(argument string, value interface{}) *Unit {
 	c.AddIngredient(Ingredient{
 		Type:     IngredientStatic,
 		Argument: argument,
@@ -79,7 +79,7 @@ func (c *Component) AddStatic(argument string, value interface{}) *Component {
 
 // AddConstraint is a shortcut method for adding an ingredient to the component
 // which is a constrain property for another component to finish before this one
-func (c *Component) AddConstraint(componentName string) *Component {
+func (c *Unit) AddConstraint(componentName string) *Unit {
 	c.AddIngredient(Ingredient{
 		Type:  IngredientFinish,
 		Value: componentName,
@@ -88,24 +88,24 @@ func (c *Component) AddConstraint(componentName string) *Component {
 }
 
 // Execute executes the component by evaluating input and assigning output
-func (c *Component) Execute() {
+func (c *Unit) Execute() {
 	c.Action.Execute()
 }
 
 // SetName sets a new name for the component
-func (c *Component) SetName(name string) *Component {
+func (c *Unit) SetName(name string) *Unit {
 	c.Name = name
 	return c
 }
 
-func (c *Component) String() string {
+func (c *Unit) String() string {
 	return c.ID
 }
 
 // MarshalJSON returns a json representation of the component. The json representation
 // can be used by frontsends to inspect the components type, it's identification and
 // the input/output is can handle.
-func (c *Component) MarshalJSON() ([]byte, error) {
+func (c *Unit) MarshalJSON() ([]byte, error) {
 	m := make(map[string]interface{})
 	m[id] = c.ID
 
@@ -147,9 +147,9 @@ func describeIO(obj interface{}) *[]iodescription {
 }
 
 // UnmarshalJSON is used to transform json data into a components
-func (c *Component) UnmarshalJSON(b []byte) error {
-	type component Component
-	comp := component{}
+func (c *Unit) UnmarshalJSON(b []byte) error {
+	type unit Unit
+	comp := unit{}
 	if err := json.Unmarshal(b, &comp); err != nil {
 		return err
 	}
@@ -160,6 +160,6 @@ func (c *Component) UnmarshalJSON(b []byte) error {
 	}
 
 	comp.Action = action
-	*c = Component(comp)
+	*c = Unit(comp)
 	return nil
 }
