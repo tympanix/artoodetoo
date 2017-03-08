@@ -22,6 +22,11 @@ func init() {
 	unit.Register(&StringConverter{})
 }
 
+// Describe describes what a stringconverter does
+func (s *StringConverter) Describe() string {
+	return "An example converter which formats a string using a placeholder"
+}
+
 // Input is the input of the converter
 func (s *StringConverter) Input() interface{} {
 	return &s.input

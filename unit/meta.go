@@ -6,6 +6,7 @@ import "reflect"
 // the composition of the unit can be exmplained to the frontend
 type Meta struct {
 	ID     string          `json:"id"`
+	Desc   string          `json:"description"`
 	Output []iodescription `json:"output"`
 	Input  []iodescription `json:"input"`
 	action Action
@@ -20,6 +21,7 @@ type iodescription struct {
 func NewMeta(a Action) *Meta {
 	return &Meta{
 		ID:     unitName(a),
+		Desc:   a.Describe(),
 		Output: describeIO(a.Output()),
 		Input:  describeIO(a.Input()),
 		action: a,
