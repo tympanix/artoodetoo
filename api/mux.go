@@ -1,65 +1,31 @@
 package api
 
 import (
-	"encoding/json"
-	"log"
+	"errors"
 	"net/http"
 
-	"github.com/Tympanix/automato/task"
-	"github.com/Tympanix/automato/unit"
-	"github.com/Tympanix/automato/util"
+	"github.com/gorilla/mux"
+)
+
+const (
+	queryTask = "task"
 )
 
 // API is the server mux for handling API calls
-var API = http.NewServeMux()
+var API = mux.NewRouter()
 
 // SetJSON sets the encoding in the http response to json
 func SetJSON(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json")
 }
 
-func init() {
-	API.HandleFunc("/test", func(r http.ResponseWriter, w *http.Request) {
-		r.Write([]byte("This is test"))
-	})
-
-	API.HandleFunc("/units", func(w http.ResponseWriter, r *http.Request) {
-		SetJSON(w)
-		var metas []*unit.Meta
-		for _, v := range unit.Metas {
-			metas = append(metas, v)
-		}
-		json.NewEncoder(w).Encode(metas)
-	})
-
-	API.HandleFunc("/newtask", func(w http.ResponseWriter, r *http.Request) {
-		var task task.Task
-		decoder := json.NewDecoder(r.Body)
-		if err := decoder.Decode(&task); err != nil {
-			log.Printf("Error %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		if err := util.AddTask(&task); err != nil {
-			log.Printf("Error %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		task.Describe()
-	})
-
-	API.HandleFunc("/runtask", func(w http.ResponseWriter, r *http.Request) {
-		values := r.URL.Query()
-		taskname := values.Get("task")
-		if len(taskname) == 0 {
-			http.Error(w, "No task given", http.StatusInternalServerError)
-			return
-		}
-		task, err := task.GetTaskByName(taskname)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		task.Run()
-	})
+// QueryTask returns the task name from the query of error if the query was not given
+func QueryTask(w http.ResponseWriter, r *http.Request) (string, error) {
+	values := r.URL.Query()
+	taskname := values.Get(queryTask)
+	if len(taskname) == 0 {
+		http.Error(w, "No task given", http.StatusInternalServerError)
+		return "", errors.New("No task given")
+	}
+	return taskname, nil
 }

@@ -14,6 +14,8 @@ var Driver Store
 // be a driver for a database, fileserver or any other storage mechanism
 type Store interface {
 	SaveTask(*task.Task) error
+	DeleteTask(*task.Task) error
+	UpdateTask(*task.Task) error
 	GetAllTasks() ([]*task.Task, error)
 }
 
@@ -51,6 +53,28 @@ func GetAllTasks() ([]*task.Task, error) {
 		return nil, err
 	}
 	return Driver.GetAllTasks()
+}
+
+// DeleteTask uses the current storage manager to delete a task
+func DeleteTask(task *task.Task) error {
+	if err := hasDriver(); err != nil {
+		return err
+	}
+	if err := Driver.DeleteTask(task); err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateTask uses the current storage manager to update a task
+func UpdateTask(task *task.Task) error {
+	if err := hasDriver(); err != nil {
+		return err
+	}
+	if err := Driver.UpdateTask(task); err != nil {
+		return err
+	}
+	return nil
 }
 
 func hasDriver() error {

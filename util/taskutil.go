@@ -21,3 +21,25 @@ func AddTask(t *task.Task) error {
 func AllTasks() []*task.Task {
 	return task.All()
 }
+
+// DeleteTask removes the task from the storage manager and unregisters the task
+func DeleteTask(t *task.Task) error {
+	if err := storage.DeleteTask(t); err != nil {
+		return err
+	}
+	if err := task.Unregister(t); err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateTask updates the task in the storage manager and in memory
+func UpdateTask(t *task.Task) error {
+	if err := storage.UpdateTask(t); err != nil {
+		return err
+	}
+	if err := task.Update(t); err != nil {
+		return err
+	}
+	return nil
+}

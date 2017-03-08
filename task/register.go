@@ -27,6 +27,16 @@ func Unregister(task *Task) error {
 	return nil
 }
 
+// Update updates the task
+func Update(task *Task) error {
+	found, _ := GetTaskByName(task.Name)
+	if found == nil {
+		return errors.New("Could not update task because it was not found")
+	}
+	tasks[task.Name] = task
+	return nil
+}
+
 // GetTaskByName returns the task among the registered tasks where the name matches
 func GetTaskByName(name string) (*Task, error) {
 	task, ok := tasks[name]
@@ -39,8 +49,10 @@ func GetTaskByName(name string) (*Task, error) {
 // All return all registered tasks in a list
 func All() []*Task {
 	all := make([]*Task, len(tasks))
+	idx := 0
 	for _, v := range tasks {
-		all = append(all, v)
+		all[idx] = v
+		idx++
 	}
 	return all
 }

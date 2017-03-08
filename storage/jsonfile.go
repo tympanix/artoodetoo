@@ -53,12 +53,19 @@ func (j *JSONFile) SaveTask(task *task.Task) error {
 	if j.taskExists(task) {
 		return errors.New("Task could not be saved, already exists in json file")
 	}
-	file, err := j.open()
+	j.appendTask(task)
+	if err := j.write(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (j *JSONFile) write() error {
+	file, err := j.create()
 	defer file.Close()
 	if err != nil {
 		return err
 	}
-	j.appendTask(task)
 	encoder := json.NewEncoder(file)
 	encoder.SetIndent("", "  ")
 	encoder.Encode(j)
@@ -79,6 +86,48 @@ func (j *JSONFile) GetAllTasks() ([]*task.Task, error) {
 		}
 	}
 	return j.Tasks, nil
+}
+
+// DeleteTask deletes a task from the json file
+func (j *JSONFile) DeleteTask(t *task.Task) error {
+	if err := j.deleteTask(t); err != nil {
+		return err
+	}
+	if err := j.write(); err != nil {
+		return err
+	}
+	return nil
+}
+
+// UpdateTask updates as task and saves it to the json file
+func (j *JSONFile) UpdateTask(t *task.Task) error {
+	i, err := j.indexOfTask(t)
+	if err != nil {
+		return err
+	}
+	j.Tasks[i] = t
+	if err := j.write(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (j *JSONFile) indexOfTask(task *task.Task) (int, error) {
+	for i, t := range j.Tasks {
+		if t.Name == task.Name {
+			return i, nil
+		}
+	}
+	return -1, errors.New("Task not found in json storage")
+}
+
+func (j *JSONFile) deleteTask(task *task.Task) error {
+	i, err := j.indexOfTask(task)
+	if err != nil {
+		return err
+	}
+	j.Tasks = append(j.Tasks[:i], j.Tasks[i+1:]...)
+	return nil
 }
 
 func (j *JSONFile) appendTask(task *task.Task) {
