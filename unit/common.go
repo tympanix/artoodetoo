@@ -14,6 +14,12 @@ func Register(action Action) {
 	Metas[meta.ID] = meta
 }
 
+// Unregister removes an action from the application
+func Unregister(action Action) {
+	meta := NewMeta(action)
+	delete(Metas, meta.ID)
+}
+
 // GetActionByID returns the underlying action for the unit identified by id
 func GetActionByID(id string) (action Action, ok bool) {
 	meta, ok := Metas[id]

@@ -20,7 +20,7 @@ func (s State) GetValue(domain string, key string) (value reflect.Value, ok bool
 }
 
 // PutValue puts a new value into the state specified by the domain and key
-func (s State) PutValue(domain string, key string, value reflect.Value) {
+func (s State) PutValue(domain string, key string, value interface{}) {
 	state, ok := s[domain]
 
 	if !ok {
@@ -28,7 +28,7 @@ func (s State) PutValue(domain string, key string, value reflect.Value) {
 		s[domain] = state
 	}
 
-	state[key] = value
+	state[key] = reflect.ValueOf(value)
 }
 
 // StoreStruct takes a struct and stores key values in the strcut

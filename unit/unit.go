@@ -3,7 +3,6 @@ package unit
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"reflect"
 
 	"github.com/Tympanix/automato/state"
@@ -59,9 +58,9 @@ func (c *Unit) AddIngredient(i Ingredient) *Unit {
 }
 
 // AssignInput find all ingredients in the state given and assigns it as input
-func (c *Unit) AssignInput(state state.State) *Unit {
+func (c *Unit) AssignInput(state state.State) error {
 	if c.Input() == nil {
-		return c
+		return nil
 	}
 
 	t := reflect.ValueOf(c.Input())
@@ -74,23 +73,22 @@ func (c *Unit) AssignInput(state state.State) *Unit {
 		f := t.FieldByName(ingredient.Argument)
 
 		if !f.IsValid() || !f.CanSet() {
-			log.Fatalf("Could not set field %v for unit %v\n", f, c)
+			return fmt.Errorf("Could not set field %v for unit %v", f, c)
 		}
 
 		value, err := ingredient.GetValue(state)
 
 		if err != nil {
-			log.Fatal(err)
+			return err
 		}
 
 		if !value.Type().AssignableTo(f.Type()) {
-			log.Fatalf("Field <%s> of value <%v> can't be assigned <%v>\n", ingredient.Argument, f.Type(), value.Type())
+			return fmt.Errorf("Field <%s> of value <%v> can't be assigned <%v>", ingredient.Argument, f.Type(), value.Type())
 		}
 
-		log.Printf("Setting <%v> to \"%v\" as type <%v>\n", ingredient.Argument, value, value.Type())
 		f.Set(value)
 	}
-	return c
+	return nil
 }
 
 // StoreOutput saves the computed output in the state
@@ -122,16 +120,6 @@ func (c *Unit) AddStatic(argument string, value interface{}) *Unit {
 	return c
 }
 
-// AddConstraint is a shortcut method for adding an ingredient to the unit
-// which is a constrain property for another unit to finish before this one
-func (c *Unit) AddConstraint(unitName string) *Unit {
-	c.AddIngredient(Ingredient{
-		Type:  IngredientFinish,
-		Value: unitName,
-	})
-	return c
-}
-
 // Execute executes the unit by evaluating input and assigning output
 func (c *Unit) Execute() {
 	c.action.Execute()
@@ -145,6 +133,11 @@ func (c *Unit) SetName(name string) *Unit {
 
 func (c *Unit) String() string {
 	return c.ID
+}
+
+// Action returns the underlying action represented by the unit
+func (c *Unit) Action() *Action {
+	return &c.action
 }
 
 // UnmarshalJSON is used to transform json data into a units

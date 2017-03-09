@@ -8,7 +8,7 @@ type PersonEvent struct {
 	Person struct {
 		Name    string
 		Age     int
-		Heigth  float32
+		Height  float32
 		Married bool
 	}
 }
@@ -26,7 +26,7 @@ func (e *PersonEvent) Describe() string {
 func (e *PersonEvent) Execute() {
 	e.Person.Name = "John Doe"
 	e.Person.Age = 42
-	e.Person.Heigth = 182
+	e.Person.Height = 182
 	e.Person.Married = true
 }
 

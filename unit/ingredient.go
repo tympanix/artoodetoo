@@ -15,10 +15,6 @@ const (
 	// IngredientStatic defines an ingredient type which has a static value
 	// such as string, int, bool ect.
 	IngredientStatic = iota
-
-	// IngredientFinish defines an ingredient type which is the finish event
-	// of another unit
-	IngredientFinish = iota
 )
 
 // Ingredient describes a variable or static value. If the source is a variable
@@ -39,11 +35,6 @@ func (i *Ingredient) IsStatic() bool {
 // IsVariable returns whether or not the ingredient is a variable representation
 func (i *Ingredient) IsVariable() bool {
 	return i.Type == IngredientVar
-}
-
-// IsFinish retirns whether or not the ingredient is a finish incident
-func (i *Ingredient) IsFinish() bool {
-	return i.Type == IngredientFinish
 }
 
 // GetValue retrieves the value of the ingredient using the state provided. If the
