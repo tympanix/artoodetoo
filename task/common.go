@@ -29,8 +29,8 @@ func Unregister(task *Task) error {
 
 // Update updates the task
 func Update(task *Task) error {
-	found, _ := GetTaskByName(task.Name)
-	if found == nil {
+	_, err := GetTaskByName(task.Name)
+	if err != nil {
 		return errors.New("Could not update task because it was not found")
 	}
 	tasks[task.Name] = task

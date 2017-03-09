@@ -5,14 +5,15 @@ import "reflect"
 // Meta is a structure which holds metadata about a unit, such that the
 // the composition of the unit can be exmplained to the frontend
 type Meta struct {
-	ID     string          `json:"id"`
-	Desc   string          `json:"description"`
-	Output []iodescription `json:"output"`
-	Input  []iodescription `json:"input"`
+	ID     string `json:"id"`
+	Desc   string `json:"description"`
+	Output []IO   `json:"output"`
+	Input  []IO   `json:"input"`
 	action Action
 }
 
-type iodescription struct {
+// IO describes an input/output for a unit
+type IO struct {
 	Name string `json:"name"`
 	Type string `json:"type"`
 }
@@ -28,11 +29,11 @@ func NewMeta(a Action) *Meta {
 	}
 }
 
-func describeIO(obj interface{}) []iodescription {
-	var desc []iodescription
+func describeIO(obj interface{}) []IO {
+	var desc []IO
 
 	if obj == nil {
-		return make([]iodescription, 0)
+		return make([]IO, 0)
 	}
 
 	s := reflect.ValueOf(obj)
@@ -43,7 +44,7 @@ func describeIO(obj interface{}) []iodescription {
 	typeOfT := s.Type()
 	for i := 0; i < s.NumField(); i++ {
 		f := s.Field(i)
-		iodesc := iodescription{
+		iodesc := IO{
 			Name: typeOfT.Field(i).Name,
 			Type: f.Type().String(),
 		}

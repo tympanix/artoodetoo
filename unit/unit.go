@@ -2,6 +2,7 @@ package unit
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"reflect"
 
@@ -57,7 +58,75 @@ func (c *Unit) AddIngredient(i Ingredient) *Unit {
 	return c
 }
 
-// AssignInput find all ingredients in the state given and assigns it as input
+// GetOutputByName returns the output field as a reflected value
+func (c *Unit) GetOutputByName(name string) (value reflect.Value, err error) {
+	value, err = getIOField(name, c.Output())
+	if err != nil {
+		err = fmt.Errorf("Output with name '%s' could not be resolved", name)
+		return
+	}
+	return
+}
+
+// GetInputByName returns the input field as a reflected value
+func (c *Unit) GetInputByName(name string) (value reflect.Value, err error) {
+	value, err = getIOField(name, c.Input())
+	if err != nil {
+		err = fmt.Errorf("Input with name '%s' could not be resolved", name)
+		return
+	}
+	return
+}
+
+// GetIngredientByArgument returns the ingredient from the recipe which matches
+// the argument. If the ingredient is not found an error is returned as 2nd return value
+func (c *Unit) GetIngredientByArgument(argument string) (ingr Ingredient, err error) {
+	for _, ingredient := range c.Recipe {
+		if ingredient.Argument == argument {
+			ingr = ingredient
+			return
+		}
+	}
+	err = fmt.Errorf("Ingredient for argument '%s' missing", argument)
+	return
+}
+
+// Validate makes sure that the unit is set up correclt for execution
+func (c *Unit) Validate() error {
+	if len(c.Name) == 0 {
+		return errors.New("Unit was not given a name")
+	}
+	meta, ok := GetMetaByID(c.ID)
+	if !ok {
+		return fmt.Errorf("Uknown unit name '%v'", c.ID)
+	}
+	for _, input := range meta.Input {
+		if _, err := c.GetIngredientByArgument(input.Name); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func getIOField(name string, obj interface{}) (value reflect.Value, err error) {
+	if obj == nil {
+		err = errors.New("Resolving field form nil object")
+		return
+	}
+	t := reflect.ValueOf(obj)
+	if t.Kind() == reflect.Ptr {
+		t = t.Elem()
+	}
+	f := t.FieldByName(name)
+	if !f.IsValid() || !f.CanSet() {
+		err = errors.New("Field is not valid")
+		return
+	}
+	value = f
+	return
+}
+
+// AssignInput finds all ingredients in the state given and assigns it as input
 func (c *Unit) AssignInput(state state.State) error {
 	if c.Input() == nil {
 		return nil
@@ -92,9 +161,11 @@ func (c *Unit) AssignInput(state state.State) error {
 }
 
 // StoreOutput saves the computed output in the state
-func (c *Unit) StoreOutput(state state.State) *Unit {
-	state.StoreStruct(c.Name, c.Output())
-	return c
+func (c *Unit) StoreOutput(state state.State) error {
+	if err := state.StoreStruct(c.Name, c.Output()); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AddVar is a shortcut method for adding an ingredient to the unit

@@ -1,7 +1,7 @@
 package example
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/Tympanix/automato/unit"
 )
@@ -27,7 +27,7 @@ func (a *EmailAction) Describe() string {
 
 // Execute sends the email
 func (a *EmailAction) Execute() {
-	fmt.Printf("New Mail:\nTo: <%s>\nSubject: %s\nMessage: %s\n", a.Email.Receiver, a.Email.Subject, a.Email.Message)
+	log.Printf("New Mail:\nTo: <%s>\nSubject: %s\nMessage: %s\n", a.Email.Receiver, a.Email.Subject, a.Email.Message)
 }
 
 // Input defines the input type which is accepted by an email event

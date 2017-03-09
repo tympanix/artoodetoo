@@ -2,6 +2,7 @@ package assert
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -9,6 +10,13 @@ import (
 func Equal(t *testing.T, a interface{}, b interface{}) {
 	if a != b {
 		t.Errorf("Expected %v got %v", a, b)
+	}
+}
+
+// NotEqual tests whether two obect are different using the equality operator
+func NotEqual(t *testing.T, a interface{}, b interface{}) {
+	if a == b {
+		t.Errorf("Expected %v to be different from %v", a, b)
 	}
 }
 
@@ -40,9 +48,16 @@ func Error(t *testing.T, err error) {
 	}
 }
 
-func Value(t *testing.T, a reflect.Value, b interface{}) {
-	bVal := reflect.ValueOf(b)
-	if a != b {
-		t.Errorf("Expected %v got %v", a, bVal)
+// ErrorContains tests whether the error message contins all phrases
+func ErrorContains(t *testing.T, err error, phrases ...string) {
+	if err == nil {
+		t.Errorf("Expected error but got nil")
+		return
+	}
+	for _, str := range phrases {
+		if !strings.Contains(err.Error(), str) {
+			t.Errorf("Expected error to contain '%s' in '%s'", str, err.Error())
+			return
+		}
 	}
 }

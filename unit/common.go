@@ -28,3 +28,9 @@ func GetActionByID(id string) (action Action, ok bool) {
 	}
 	return meta.Action(), ok
 }
+
+// GetMetaByID retrieves the meta object associated with the given name
+func GetMetaByID(id string) (meta *Meta, ok bool) {
+	meta, ok = Metas[id]
+	return
+}

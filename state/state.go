@@ -1,6 +1,9 @@
 package state
 
-import "reflect"
+import (
+	"fmt"
+	"reflect"
+)
 
 // State is a mapping of unit names and variable names to variable values.
 // It is used to store the current state of variables when executing a task
@@ -53,6 +56,10 @@ func (s State) StoreStruct(domain string, output interface{}) error {
 	typeOfT := t.Type()
 	for i := 0; i < t.NumField(); i++ {
 		f := t.Field(i)
+		key := typeOfT.Field(i).Name
+		if _, ok := state[key]; ok {
+			return fmt.Errorf("State key duplicate on domain: %v key: %v", domain, key)
+		}
 		state[typeOfT.Field(i).Name] = f.Addr()
 	}
 	return nil
