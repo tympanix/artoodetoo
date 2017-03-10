@@ -144,6 +144,59 @@ func TestUnitExecute(t *testing.T) {
 	assert.Equal(t, married.Elem().Bool(), true)
 }
 
+func TestUnitInputFields(t *testing.T) {
+	email := &example.EmailAction{}
+	u := unit.NewUnit(email)
+	u.SetName("MyEmail")
+
+	subject, err1 := u.GetInputByName("Subject")
+	assert.NotError(t, err1)
+	subject.SetString("My Test Subject")
+	assert.Equal(t, email.Email.Subject, "My Test Subject")
+
+	receiver, err2 := u.GetInputByName("Receiver")
+	assert.NotError(t, err2)
+	receiver.SetString("My Test Receiver")
+	assert.Equal(t, email.Email.Receiver, "My Test Receiver")
+
+	message, err3 := u.GetInputByName("Message")
+	assert.NotError(t, err3)
+	message.SetString("My Test Message")
+	assert.Equal(t, email.Email.Message, "My Test Message")
+
+	_, err4 := u.GetInputByName("BlahBlah") // Oops!
+	assert.ErrorContains(t, err4, "Input", "not", "resolved")
+}
+
+func TestUnitOutputFields(t *testing.T) {
+	event := &example.PersonEvent{}
+	unit := unit.NewUnit(event)
+	unit.SetName("MyUnit")
+
+	name, err1 := unit.GetOutputByName("Name")
+	assert.NotError(t, err1)
+	name.SetString("My Name")
+	assert.Equal(t, event.Person.Name, "My Name")
+
+	age, err2 := unit.GetOutputByName("Age")
+	assert.NotError(t, err2)
+	age.SetInt(99)
+	assert.Equal(t, event.Person.Age, 99)
+
+	married, err3 := unit.GetOutputByName("Married")
+	assert.NotError(t, err3)
+	married.SetBool(true)
+	assert.Equal(t, event.Person.Married, true)
+
+	height, err4 := unit.GetOutputByName("Height")
+	assert.NotError(t, err4)
+	height.SetFloat(420)
+	assert.Equal(t, event.Person.Height, float32(420))
+
+	_, err5 := unit.GetOutputByName("BlahBlah") // Oops!
+	assert.ErrorContains(t, err5, "Output", "not", "resolved")
+}
+
 func TestUnitInput(t *testing.T) {
 	email := &example.EmailAction{}
 	u := unit.NewUnit(email)
@@ -174,9 +227,12 @@ func TestUnitNoInput(t *testing.T) {
 	assert.Equal(t, event.Input(), nil)
 
 	state := state.New()
-	err := unit.AssignInput(state)
+	noerr := unit.AssignInput(state)
 
-	assert.NotError(t, err)
+	assert.NotError(t, noerr)
+
+	_, err := unit.GetInputByName("BlahBlah")
+	assert.Error(t, err)
 }
 
 func TestUnitInputNotValid(t *testing.T) {
@@ -218,4 +274,76 @@ func TestUnitInputNotAssignable(t *testing.T) {
 	state := state.New()
 	err := u.AssignInput(state)
 	assert.Error(t, err)
+}
+
+func TestUnitStoreOutputError(t *testing.T) {
+	event := &example.PersonEvent{}
+	unit := unit.NewUnit(event)
+	unit.SetName("MyUnit")
+
+	state := state.New()
+	state.PutValue("MyUnit", "Name", "Occupied") // Oops!
+
+	err := unit.StoreOutput(state)
+	assert.ErrorContains(t, err, "duplicate")
+}
+
+func TestUnitGetIngredient(t *testing.T) {
+	email := &example.EmailAction{}
+	u := unit.NewUnit(email)
+	u.SetName("MyEmail")
+
+	u.AddStatic("Message", "This is my message")
+
+	ingr, noerr := u.GetIngredientByArgument("Message")
+	assert.NotError(t, noerr)
+	assert.Equal(t, ingr.Argument, "Message")
+	assert.Equal(t, ingr.Value, "This is my message")
+
+	_, err := u.GetIngredientByArgument("BlahBlah") // Oops!
+	assert.ErrorContains(t, err, "Ingredient", "missing")
+}
+
+func TestUnitValidateNoName(t *testing.T) {
+	email := &example.EmailAction{}
+	u := unit.NewUnit(email)
+	err := u.Validate()
+	assert.ErrorContains(t, err, "not", "given", "name")
+}
+
+func TestUnitValidateNoMeta(t *testing.T) {
+	email := &example.EmailAction{}
+	u := unit.NewUnit(email)
+	u.SetName("MyEmail")
+	u.ID = "BlahBlah" // Oops!
+
+	err := u.Validate()
+	assert.ErrorContains(t, err, "Unknown", "id")
+}
+
+func TestUnitValidateMissingIngredient(t *testing.T) {
+	email := &example.EmailAction{}
+	u := unit.NewUnit(email)
+	unit.Register(email)
+	u.SetName("MyEmail")
+
+	u.AddStatic("Subject", "...")
+	u.AddStatic("Receiver", "...")
+
+	err := u.Validate()
+	assert.ErrorContains(t, err, "Message", "missing")
+}
+
+func TestUnitValidateSucess(t *testing.T) {
+	email := &example.EmailAction{}
+	u := unit.NewUnit(email)
+	unit.Register(email)
+	u.SetName("MyEmail")
+
+	u.AddStatic("Subject", "...")
+	u.AddStatic("Receiver", "...")
+	u.AddStatic("Message", "...")
+
+	err := u.Validate()
+	assert.NotError(t, err)
 }

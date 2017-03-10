@@ -98,7 +98,7 @@ func (c *Unit) Validate() error {
 	}
 	meta, ok := GetMetaByID(c.ID)
 	if !ok {
-		return fmt.Errorf("Uknown unit name '%v'", c.ID)
+		return fmt.Errorf("Unknown unit id '%v'", c.ID)
 	}
 	for _, input := range meta.Input {
 		if _, err := c.GetIngredientByArgument(input.Name); err != nil {
