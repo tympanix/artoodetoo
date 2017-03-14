@@ -24,9 +24,10 @@
           <h3 class="panel-title">Mock Units</h3>
         </div>
         <div class="panel-body">
-            <template ngFor let-unit [ngForOf]="units">
-              <p>{{unit.id}}</p>
-            </template>
+            <div *ngFor="let unit of units">
+              <strong>{{unit.id}}</strong>
+              <p>{{unit.description}}</p>
+            </div>
         </div>
       </div>
     </div>
@@ -43,10 +44,10 @@
 
         <div class="panel-body">
 
-          <div *ngFor="let i of [1,2,3,4]" class="form-group row">
-            <label for="e1" class="col-md-2 col-lg-1 control-label">Event</label>
+          <div class="form-group row">
+            <label class="col-md-2 col-lg-1 control-label">Unit</label>
             <div class="col-md-10 col-lg-11">
-              <select id="e1" class="form-control">
+              <select class="form-control">
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -57,7 +58,7 @@
           </div>
 
           <div class="center">
-            <a class="btn btn-raised btn-blue">Add Action</a>
+            <a class="btn btn-raised btn-blue" (click)="getUnitsByType('string')">Add Action</a>
             <a class="btn btn-success btn-raised">Save</a>
           </div>
 
