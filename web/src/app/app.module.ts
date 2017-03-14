@@ -12,6 +12,7 @@ import { AdministrationComponent } from './administration/administration.compone
 import { StatisticsComponent } from './statistics/statistics.component';
 
 import { UnitService }          from './unit.service';
+import { TaskService}           from './task.service';
 
 @NgModule({
   imports: [
@@ -27,7 +28,7 @@ import { UnitService }          from './unit.service';
     AdministrationComponent,
     StatisticsComponent
   ],
-  providers: [UnitService],
+  providers: [UnitService, TaskService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

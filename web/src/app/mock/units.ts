@@ -1,4 +1,4 @@
-import { Unit } from './unit';
+import { Unit } from '../unit';
 
 export const UNITS: Unit[] = [
   { id: "example.EmailAction",

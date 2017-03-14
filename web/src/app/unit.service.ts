@@ -4,7 +4,7 @@ import { Http, Response } from '@angular/http'
 import 'rxjs/add/operator/toPromise';
 
 import { Unit } from './unit';
-import { UNITS } from './mock-units';
+import { UNITS } from './mock/units';
 
 @Injectable()
 export class UnitService {
