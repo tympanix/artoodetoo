@@ -12,28 +12,25 @@ export class TaskService {
 
   constructor(private http: Http) {}
 
-  createTask(task: Task): Promise<Task>{
+  createTask(task: Task): Promise<boolean>{
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
     return this.http.post("api/tasks", { task }, options)
                 .toPromise()
-                .then(this.extractData)
+                .then((res:Response) => res.ok)
                 .catch(this.handleError);
   }
 
-  createMockTask(): Promise<Task>{
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
-    console.log(TASK);
-    return this.http.post("api/tasks", TASK, options)
+  getTasks(): Promise<Task[]>{
+    return this.http.get("/api/tasks")
                 .toPromise()
                 .then(this.extractData)
                 .catch(this.handleError);
   }
 
   private extractData(res: Response) {
-    let body = res.status;
+    let body = res.json();
     return body || { };
   }
 
@@ -42,4 +39,12 @@ export class TaskService {
     return Promise.reject(error.message || error);
   }
 
+  createMockTask(): Promise<Task>{
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post("api/tasks", TASK, options)
+                .toPromise()
+                .then(this.extractData)
+                .catch(this.handleError);
+  }
 }

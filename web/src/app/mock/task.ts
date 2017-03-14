@@ -1,7 +1,7 @@
 import { Task } from '../task';
 
 export const TASK: Task = {
-	"name": "MyFirstTask2",
+	"name": "MyFirstTask4",
 	"event": {
 		"id": "example.PersonEvent",
 		"name": "Person",
