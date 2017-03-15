@@ -8,3 +8,8 @@
 @import 'scss/dashboard';
 @import 'scss/header';
 @import 'scss/administration';
+
+// Always show scroll bars
+html {
+    overflow-y: scroll;
+}
