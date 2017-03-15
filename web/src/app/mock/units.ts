@@ -1,6 +1,6 @@
-import { Unit } from '../unit';
+import { Meta } from '../meta';
 
-export const UNITS: Unit[] = [
+export const UNITS: Meta[] = [
   { id: "example.EmailAction",
     description: "test1",
     input: [{name:"Receiver",type:"string"},{name:"Subject",type:"string"},{name:"Message",type:"string"}],

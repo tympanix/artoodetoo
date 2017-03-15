@@ -14,6 +14,7 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { UnitService }          from './unit.service';
 import { TaskService}           from './task.service';
 import { ApiService }           from './api.service';
+import { UnitComponent } from './unit/unit.component';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { ApiService }           from './api.service';
     SiteHeaderComponent,
     DashboardComponent,
     AdministrationComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    UnitComponent
   ],
   providers: [UnitService, TaskService, ApiService],
   bootstrap: [AppComponent]

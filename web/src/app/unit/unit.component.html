@@ -1,0 +1,18 @@
+<div class="panel panel-primary">
+
+  <div class="panel-heading">
+    <h3 class="panel-title">{{unit.name}}</h3>
+  </div>
+
+  <div class="panel-body">
+      <h4>Inputs</h4>
+      <div *ngFor="let input of meta.input">
+          <div>input.name</div>
+      </div>
+
+      <h4>Outputs</h4>
+      <div *ngFor="let output of meta.output">
+          <div>output.name</div>
+      </div>
+  </div>
+</div>

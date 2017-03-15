@@ -5,11 +5,13 @@ import { AdministrationComponent } from '../administration/administration.compon
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { StatisticsComponent } from '../statistics/statistics.component';
 
+
+
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
-  { path: 'dashboard',      component: DashboardComponent},
+  { path: 'dashboard', component: DashboardComponent},
   { path: 'administration', component: AdministrationComponent},
-  { path: 'statistics',     component: StatisticsComponent}
+  { path: 'statistics', component: StatisticsComponent}
 ];
 
 @NgModule({

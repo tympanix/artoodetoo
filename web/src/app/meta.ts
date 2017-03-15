@@ -8,7 +8,7 @@ class Output {
   type: string;
 }
 
-export class Unit {
+export class Meta {
   id: string;
   description: string;
   input: Input[];

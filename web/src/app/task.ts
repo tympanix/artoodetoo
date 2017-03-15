@@ -1,10 +1,10 @@
 export class Task {
   name: string
-  event: TaskUnit
-  actions: TaskUnit[]
+  event: Unit
+  actions: Unit[]
 }
 
-class TaskUnit {
+export class Unit {
   id: string
   name: string
   recipe: Recipe[]

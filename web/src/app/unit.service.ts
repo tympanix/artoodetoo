@@ -3,7 +3,8 @@ import { Http, Response } from '@angular/http'
 
 import 'rxjs/add/operator/toPromise';
 
-import { Unit } from './unit';
+import { Unit } from './task';
+import { Meta } from './meta';
 import { UNITS } from './mock/units';
 
 @Injectable()
@@ -11,7 +12,7 @@ export class UnitService {
 
   constructor(private http: Http) {}
 
-  getUnits(): Promise<Unit[]>{
+  getMetas(): Promise<Meta[]>{
     return this.http.get("/api/units")
                 .toPromise()
                 .then(this.extractData)
@@ -28,7 +29,7 @@ export class UnitService {
     return Promise.reject(error.message || error);
   }
 
-  getMockUnits(): Promise<Unit[]> {
+  getMockUnits(): Promise<Meta[]> {
     return Promise.resolve(UNITS);
   }
 

@@ -3,8 +3,7 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http'
 
 import 'rxjs/add/operator/toPromise';
 
-import { Unit } from './unit';
-import { Task } from './task';
+import { Task, Unit } from './task';
 import { TASK } from './mock/task';
 
 @Injectable()
