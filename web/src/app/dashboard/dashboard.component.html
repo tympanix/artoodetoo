@@ -8,7 +8,7 @@
       <a href=""><i class="material-icons">settings</i></a>
     </div>
     <div class="panel-body">
-      <a class="btn btn-raised"><i class="type material-icons">notifications</i>{{task.name}}</a>
+      <a class="btn btn-raised"><i class="type material-icons">notifications</i>{{task.event.name}}</a>
 
       <template ngFor let-action [ngForOf]="task.actions">
         <i class="next material-icons">arrow_forward</i>

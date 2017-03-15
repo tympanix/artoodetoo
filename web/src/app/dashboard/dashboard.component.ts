@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Task } from '../task';
 import { TaskService} from '../task.service';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,10 +12,12 @@ import { TaskService} from '../task.service';
 export class DashboardComponent implements OnInit {
   tasks: Task[]
 
-  constructor(private taskService: TaskService) { }
+  constructor(private taskService: TaskService, private api: ApiService) {
+    api.tasks.subscribe((tasks) => this.tasks = tasks)
+  }
 
   ngOnInit() {
-    this.getTasks();
+
   }
 
   getTasks(): void {
