@@ -5,7 +5,7 @@
   <div *ngFor="let task of tasks" class="panel panel-primary">
     <div class="panel-heading">
       <h3 class="panel-title">{{task.name}}</h3>
-      <a href=""><i class="material-icons">settings</i></a>
+      <a routerLink="/administration/{{task.name}}"><i class="material-icons">settings</i></a>
     </div>
     <div class="panel-body">
       <a class="btn btn-raised"><i class="type material-icons">notifications</i>{{task.event.name}}</a>

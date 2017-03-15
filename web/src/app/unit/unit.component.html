@@ -5,14 +5,24 @@
   </div>
 
   <div class="panel-body">
-      <h4>Inputs</h4>
-      <div *ngFor="let input of meta.input">
-          <div>input.name</div>
-      </div>
+  <div *ngIf="meta">
+      <strong>Inputs</strong>
+      <span *ngIf="!meta.input.length">
+          <a class="btn btn-raised btn-xs">No Input</a>
+      </span>
+      <span *ngFor="let input of meta.input">
+          <a class="btn btn-raised btn-xs btn-blue">{{input.name}}</a>
+      </span>
 
-      <h4>Outputs</h4>
-      <div *ngFor="let output of meta.output">
-          <div>output.name</div>
-      </div>
+      &nbsp;
+
+      <strong>Outputs</strong>
+      <span *ngIf="!meta.output.length">
+          <a class="btn btn-raised btn-xs">No Output</a>
+      </span>
+      <span *ngFor="let output of meta.output">
+          <a class="btn btn-raised btn-xs btn-success">{{output.name}}</a>
+      </span>
+  </div>
   </div>
 </div>

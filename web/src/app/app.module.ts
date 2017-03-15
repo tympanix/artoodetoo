@@ -16,6 +16,8 @@ import { TaskService}           from './task.service';
 import { ApiService }           from './api.service';
 import { UnitComponent } from './unit/unit.component';
 
+import { TaskResolver } from './resolvers/task-resolver.service';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -31,7 +33,7 @@ import { UnitComponent } from './unit/unit.component';
     StatisticsComponent,
     UnitComponent
   ],
-  providers: [UnitService, TaskService, ApiService],
+  providers: [UnitService, TaskService, ApiService, TaskResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

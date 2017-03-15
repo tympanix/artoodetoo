@@ -25,14 +25,15 @@ export class AdministrationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.data.subscribe((data: {task: Task}) => this.task = data.task)
+    this.route.data.subscribe((data: {task: Task}) => {
+      this.task = data.task
+    })
   }
 
   // Return units with an input type mathcing the given argument
   getUnitsByType(type: string) {
     let typeUnits: Meta[];
     typeUnits =  this.metas.filter(meta => meta.input.find(x => x.type === type));
-    console.log(typeUnits);
     return typeUnits;
   }
 

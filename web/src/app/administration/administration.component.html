@@ -38,7 +38,8 @@
           <h1 class="heading">Task Editor</h1>
 
           <div *ngIf="task">
-            <unit *ngFor="let unit of task.actions" unit="unit"></unit>
+            <unit [unit]="task.event"></unit>
+            <unit *ngFor="let unit of task.actions" [unit]="unit"></unit>
           </div>
 
           <div class="center">

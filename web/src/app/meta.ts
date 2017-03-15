@@ -11,6 +11,6 @@ class Output {
 export class Meta {
   id: string;
   description: string;
-  input: Input[];
-  output: Output[];
+  input: Input[] = [];
+  output: Output[] = [];
 }

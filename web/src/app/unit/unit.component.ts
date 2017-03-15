@@ -12,16 +12,15 @@ import { Meta} from '../meta';
 export class UnitComponent implements OnInit {
   @Input() unit: Unit;
 
-  meta: Meta
+  meta: Meta = new Meta()
 
-  constructor(private api: ApiService) {
-    api.metas.subscribe((metas) => {
+  constructor(private api: ApiService) {}
+
+  ngOnInit() {
+    this.api.metas.subscribe((metas) => {
       this.meta = this.findMetaById(this.unit.id, metas)
-      console.log("Found meta", this.meta)
     })
   }
-
-  ngOnInit() {}
 
   findMetaById(id: string, metas: Meta[]): Meta {
     return metas.find((meta) => meta.id == id)
