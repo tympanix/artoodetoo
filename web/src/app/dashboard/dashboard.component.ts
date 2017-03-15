@@ -16,9 +16,7 @@ export class DashboardComponent implements OnInit {
     api.tasks.subscribe((tasks) => this.tasks = tasks)
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   getTasks(): void {
     this.taskService.getTasks().then(tasks => this.tasks = tasks);

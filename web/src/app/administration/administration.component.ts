@@ -4,6 +4,7 @@ import { Unit } from '../unit';
 import { Task } from '../task';
 import { UnitService } from '../unit.service';
 import { TaskService} from '../task.service';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-administration',
@@ -12,20 +13,17 @@ import { TaskService} from '../task.service';
 })
 export class AdministrationComponent implements OnInit {
   units: Unit[]
+  tasks: Task[]
   event: Unit
   actions: Unit[]
   task: Task
 
-  constructor(private unitService: UnitService, private taskService: TaskService) { }
-
-  getUnits(): void {
-    this.unitService.getUnits().then(units => this.units = units);
+  constructor(private api: ApiService, private taskService: TaskService) {
+    api.units.subscribe((units) => this.units = units)
+    api.tasks.subscribe((tasks) => this.tasks = tasks)
   }
 
-  ngOnInit() {
-    this.getUnits();
-
-  }
+  ngOnInit() {}
 
   // Return units with an input type mathcing the given argument
   getUnitsByType(type: string) {
@@ -42,7 +40,6 @@ export class AdministrationComponent implements OnInit {
   // For test purpose only
   createMockTask():void {
     this.taskService.createMockTask()
-
   }
 
 
