@@ -13,5 +13,5 @@ func init() {
 
 func listUnits(w http.ResponseWriter, r *http.Request) {
 	SetJSON(w)
-	json.NewEncoder(w).Encode(util.AllMetas())
+	json.NewEncoder(w).Encode(util.AllUnits())
 }

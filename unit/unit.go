@@ -19,7 +19,9 @@ const (
 func NewUnit(a Action) *Unit {
 	return &Unit{
 		ID:     unitName(a),
-		Recipe: make([]Ingredient, 0),
+		Desc:   a.Describe(),
+		In:     describeInput(a.Input()),
+		Out:    describeOutput(a.Output()),
 		action: a,
 	}
 }
@@ -36,9 +38,11 @@ func unitName(unit interface{}) string {
 
 // Unit wraps the elements of the application and extends it's functionality.
 type Unit struct {
-	ID     string       `json:"id"`
-	Name   string       `json:"name"`
-	Recipe []Ingredient `json:"recipe"`
+	ID     string   `json:"id"`
+	Name   string   `json:"name"`
+	Desc   string   `json:"description"`
+	In     []Input  `json:"input"`
+	Out    []Output `json:"output"`
 	action Action
 }
 
@@ -52,42 +56,25 @@ func (c *Unit) Input() interface{} {
 	return c.action.Input()
 }
 
-// AddIngredient sets the recipe wanted by this unit as input
-func (c *Unit) AddIngredient(i Ingredient) *Unit {
-	c.Recipe = append(c.Recipe, i)
-	return c
-}
-
 // GetOutputByName returns the output field as a reflected value
-func (c *Unit) GetOutputByName(name string) (value reflect.Value, err error) {
-	value, err = getIOField(name, c.Output())
-	if err != nil {
-		err = fmt.Errorf("Output with name '%s' could not be resolved", name)
-		return
+func (c *Unit) GetOutputByName(name string) (output Output, err error) {
+	for _, output := range c.Out {
+		if output.Name == name {
+			return output, nil
+		}
 	}
+	err = fmt.Errorf("Output with name '%s' could not be resolved", name)
 	return
 }
 
 // GetInputByName returns the input field as a reflected value
-func (c *Unit) GetInputByName(name string) (value reflect.Value, err error) {
-	value, err = getIOField(name, c.Input())
-	if err != nil {
-		err = fmt.Errorf("Input with name '%s' could not be resolved", name)
-		return
-	}
-	return
-}
-
-// GetIngredientByArgument returns the ingredient from the recipe which matches
-// the argument. If the ingredient is not found an error is returned as 2nd return value
-func (c *Unit) GetIngredientByArgument(argument string) (ingr Ingredient, err error) {
-	for _, ingredient := range c.Recipe {
-		if ingredient.Argument == argument {
-			ingr = ingredient
-			return
+func (c *Unit) GetInputByName(name string) (input Input, err error) {
+	for _, input := range c.In {
+		if input.Name == name {
+			return input, nil
 		}
 	}
-	err = fmt.Errorf("Ingredient for argument '%s' missing", argument)
+	err = fmt.Errorf("Input with name '%s' could not be resolved", name)
 	return
 }
 
@@ -96,12 +83,11 @@ func (c *Unit) Validate() error {
 	if len(c.Name) == 0 {
 		return errors.New("Unit was not given a name")
 	}
-	meta, ok := GetMetaByID(c.ID)
-	if !ok {
-		return fmt.Errorf("Unknown unit id '%v'", c.ID)
+	if c.ID != unitName(c.action) {
+		return fmt.Errorf("Unit with id '%s' is not valid", c.ID)
 	}
-	for _, input := range meta.Input {
-		if _, err := c.GetIngredientByArgument(input.Name); err != nil {
+	for _, input := range c.In {
+		if err := input.Validate(); err != nil {
 			return err
 		}
 	}
@@ -137,13 +123,14 @@ func (c *Unit) AssignInput(state state.State) error {
 		t = t.Elem()
 	}
 
-	for _, ingredient := range c.Recipe {
-
-		f := t.FieldByName(ingredient.Argument)
+	for _, input := range c.In {
+		f := input.field
 
 		if !f.IsValid() || !f.CanSet() {
 			return fmt.Errorf("Could not set field %v for unit %v", f, c)
 		}
+
+		ingredient := input.Recipe[0]
 
 		value, err := ingredient.GetValue(state)
 
@@ -152,11 +139,13 @@ func (c *Unit) AssignInput(state state.State) error {
 		}
 
 		if !value.Type().AssignableTo(f.Type()) {
-			return fmt.Errorf("Field <%s> of value <%v> can't be assigned <%v>", ingredient.Argument, f.Type(), value.Type())
+			return fmt.Errorf("Field <%s> of value <%v> can't be assigned <%v>", input.Name, f.Type(), value.Type())
 		}
 
 		f.Set(value)
+
 	}
+
 	return nil
 }
 
@@ -170,25 +159,31 @@ func (c *Unit) StoreOutput(state state.State) error {
 
 // AddVar is a shortcut method for adding an ingredient to the unit
 // which is a variable reference from another unit
-func (c *Unit) AddVar(argument string, source string, variable string) *Unit {
-	c.AddIngredient(Ingredient{
-		Type:     IngredientVar,
-		Argument: argument,
-		Source:   source,
-		Value:    variable,
+func (c *Unit) AddVar(argument string, source string, variable string) error {
+	input, err := c.GetInputByName(argument)
+	if err != nil {
+		return err
+	}
+	input.AddIngredient(Ingredient{
+		Type:   IngredientVar,
+		Source: source,
+		Value:  variable,
 	})
-	return c
+	return nil
 }
 
 // AddStatic is a shortcut method for adding an ingredient to the unit
 // which is a static argument
-func (c *Unit) AddStatic(argument string, value interface{}) *Unit {
-	c.AddIngredient(Ingredient{
-		Type:     IngredientStatic,
-		Argument: argument,
-		Value:    value,
+func (c *Unit) AddStatic(argument string, value interface{}) error {
+	input, err := c.GetInputByName(argument)
+	if err != nil {
+		return err
+	}
+	input.AddIngredient(Ingredient{
+		Type:  IngredientStatic,
+		Value: value,
 	})
-	return c
+	return nil
 }
 
 // Execute executes the unit by evaluating input and assigning output
@@ -211,6 +206,42 @@ func (c *Unit) Action() *Action {
 	return &c.action
 }
 
+func (c *Unit) bindInput() error {
+	input := describeInput(c.Input())
+	if len(input) != len(c.In) {
+		return errors.New("Unexpected number of inputs for unit")
+	}
+	for _, in := range input {
+		inn, err := c.GetInputByName(in.Name)
+		if err != nil {
+			return err
+		}
+		if !in.Compatible(inn) {
+			return fmt.Errorf("Input %s has incorrect type %s", inn.Name, inn.Type)
+		}
+		inn.field = in.field
+	}
+	return nil
+}
+
+func (c *Unit) bindOutput() error {
+	output := describeOutput(c.Output())
+	if len(output) != len(c.Out) {
+		return errors.New("Unexpected number of inputs for unit")
+	}
+	for _, out := range output {
+		outt, err := c.GetOutputByName(out.Name)
+		if err != nil {
+			return err
+		}
+		if !out.Compatible(outt) {
+			return fmt.Errorf("Output %s has incorrect type %s", outt.Name, outt.Type)
+		}
+		outt.field = out.field
+	}
+	return nil
+}
+
 // UnmarshalJSON is used to transform json data into a units
 func (c *Unit) UnmarshalJSON(b []byte) error {
 	type unit Unit
@@ -223,8 +254,16 @@ func (c *Unit) UnmarshalJSON(b []byte) error {
 	if !ok {
 		return fmt.Errorf("Can't find action by id %s", u.ID)
 	}
-
 	u.action = action
+
 	*c = Unit(u)
+
+	if err := c.bindInput(); err != nil {
+		return err
+	}
+	if err := c.bindOutput(); err != nil {
+		return err
+	}
+
 	return nil
 }

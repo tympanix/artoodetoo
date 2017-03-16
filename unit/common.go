@@ -1,36 +1,36 @@
 package unit
 
-// Metas contains all available units in the aplication
-var Metas map[string]*Meta
+// Units contains all available units in the aplication
+var Units map[string]*Unit
 
 func init() {
-	Metas = make(map[string]*Meta)
+	Units = make(map[string]*Unit)
 }
 
 // Register is called to register a new unit in the hub thus
 // to make it public for use by the web app
 func Register(action Action) {
-	meta := NewMeta(action)
-	Metas[meta.ID] = meta
+	unit := NewUnit(action)
+	Units[unit.ID] = unit
 }
 
 // Unregister removes an action from the application
 func Unregister(action Action) {
-	meta := NewMeta(action)
-	delete(Metas, meta.ID)
+	unit := NewUnit(action)
+	delete(Units, unit.ID)
 }
 
 // GetActionByID returns the underlying action for the unit identified by id
 func GetActionByID(id string) (action Action, ok bool) {
-	meta, ok := Metas[id]
+	unit, ok := Units[id]
 	if !ok {
 		return
 	}
-	return meta.Action(), ok
+	return *unit.Action(), ok
 }
 
-// GetMetaByID retrieves the meta object associated with the given name
-func GetMetaByID(id string) (meta *Meta, ok bool) {
-	meta, ok = Metas[id]
+// GetUnitByID retrieves the unit object associated with the given name
+func GetUnitByID(id string) (unit *Unit, ok bool) {
+	unit, ok = Units[id]
 	return
 }

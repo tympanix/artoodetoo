@@ -2,11 +2,11 @@ package util
 
 import "github.com/Tympanix/automato/unit"
 
-// AllMetas returns a slice of all available units as meta objects
-func AllMetas() []*unit.Meta {
-	metas := make([]*unit.Meta, len(unit.Metas))
+// AllUnits returns a slice of all available units as meta objects
+func AllUnits() []*unit.Unit {
+	metas := make([]*unit.Unit, len(unit.Units))
 	idx := 0
-	for _, v := range unit.Metas {
+	for _, v := range unit.Units {
 		metas[idx] = v
 		idx++
 	}
