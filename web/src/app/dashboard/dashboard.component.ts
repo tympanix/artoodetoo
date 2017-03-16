@@ -18,8 +18,4 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {}
 
-  getTasks(): void {
-    this.taskService.getTasks().then(tasks => this.tasks = tasks);
-  }
-
 }

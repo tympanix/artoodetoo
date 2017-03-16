@@ -53,13 +53,18 @@
       <div class="well">
       <h1 class="heading">Existing tasks</h1>
 
-      <div *ngFor="let i of [1,2,3,4,5,6]" class="panel panel-primary">
+      <div *ngFor="let task of tasks" class="panel panel-primary">
         <div class="panel-heading">
-          <h3 class="panel-title">Facebook bla bla mock task</h3>
-          <a><i class="material-icons">settings</i></a>
+          <h3 class="panel-title">{{task.name}}</h3>
+          <a routerLink="/administration/{{task.name}}"><i class="material-icons">settings</i></a>
         </div>
         <div class="panel-body">
-          <p>Bla bla <i class="next material-icons">arrow_forward</i> bla <i class="next material-icons">arrow_forward</i> bla <i class="next material-icons">arrow_forward</i> Action</p>
+          <p>{{task.event.name}}
+            <template ngFor let-action [ngForOf]="task.actions">
+              <i class="next material-icons">arrow_forward</i>
+              {{action.name}}
+            </template>
+          </p>
         </div>
       </div>
 
