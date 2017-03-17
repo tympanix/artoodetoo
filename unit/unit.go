@@ -124,10 +124,14 @@ func (c *Unit) AssignInput(state state.State) error {
 	}
 
 	for _, input := range c.In {
-		f := input.field
+		f, err := getIOField(input.Name, c.Input())
+
+		if err != nil {
+			return fmt.Errorf("Field ”%s” not found in ”%v”", input.Name, c)
+		}
 
 		if !f.IsValid() || !f.CanSet() {
-			return fmt.Errorf("Could not set field %v for unit %v", f, c)
+			return fmt.Errorf("Could not set field ”%v” for unit ”%v”", input.Name, c.Name)
 		}
 
 		ingredient := input.Recipe[0]

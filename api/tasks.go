@@ -85,5 +85,8 @@ func runTask(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	task.Run()
+	if err := task.Run(); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
 }

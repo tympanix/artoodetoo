@@ -44,6 +44,8 @@ func (t *Task) GetUnitByName(name string) (unit *unit.Unit, err error) {
 func (t *Task) Run() error {
 	state := state.New()
 
+	log.Printf("Running task %s\n", t.Name)
+
 	t.Event.Execute()
 	if err := t.Event.StoreOutput(state); err != nil {
 		return err

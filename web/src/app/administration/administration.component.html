@@ -36,6 +36,7 @@
     <main class="col-md-6">
       <div class="well">
           <h1 class="heading">Task Editor</h1>
+          <a class="btn btn-raised btn-blue" (click)="runTask()">Run Task</a>
 
           <div *ngIf="task">
             <unit [unit]="task.event"></unit>

@@ -46,5 +46,10 @@ export class AdministrationComponent implements OnInit {
     this.taskService.createMockTask()
   }
 
+  runTask() {
+      console.log("Run task")
+      this.taskService.runTask(this.task)
+  }
+
 
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http'
 
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/map'
 
 import { Task, Unit } from './task';
 import { TASK } from './mock/task';
@@ -26,6 +27,14 @@ export class TaskService {
                 .toPromise()
                 .then(this.extractData)
                 .catch(this.handleError);
+  }
+
+  runTask(task: Task): Promise<boolean> {
+      console.log("Running task", task.name)
+      return this.http.post("/api/tasks/"+task.name, {})
+                .toPromise()
+                .then(res => res.ok)
+                .catch(this.handleError)
   }
 
   private extractData(res: Response) {
