@@ -215,6 +215,10 @@ func (c *Unit) bindInput() error {
 	if len(input) != len(c.In) {
 		return fmt.Errorf("Unexpected number of inputs for unit %s", c.ID)
 	}
+	if len(input) == 0 {
+		c.In = make([]Input, 0)
+		return nil
+	}
 	for _, in := range input {
 		inn, err := c.GetInputByName(in.Name)
 		if err != nil {
@@ -232,6 +236,10 @@ func (c *Unit) bindOutput() error {
 	output := describeOutput(c.Output())
 	if len(output) != len(c.Out) {
 		return fmt.Errorf("Unexpected number of output for unit %s", c.ID)
+	}
+	if len(output) == 0 {
+		c.Out = make([]Output, 0)
+		return nil
 	}
 	for _, out := range output {
 		outt, err := c.GetOutputByName(out.Name)

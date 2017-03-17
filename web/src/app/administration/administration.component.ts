@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Meta } from '../meta';
 import { Task, Unit } from '../task';
 import { UnitService } from '../unit.service';
 import { TaskService} from '../task.service';
@@ -13,14 +12,12 @@ import { ActivatedRoute } from '@angular/router';
   styles: []
 })
 export class AdministrationComponent implements OnInit {
-  metas: Meta[]
   tasks: Task[]
-  event: Unit
-  actions: Unit[]
+  units: Unit[]
   task: Task
 
   constructor(private api: ApiService, private taskService: TaskService, private route: ActivatedRoute) {
-    api.metas.subscribe((metas) => this.metas = metas)
+    api.units.subscribe((units) => this.units = units)
     api.tasks.subscribe((tasks) => this.tasks = tasks)
   }
 
@@ -31,9 +28,9 @@ export class AdministrationComponent implements OnInit {
   }
 
   // Return units with an input type mathcing the given argument
-  getUnitsByType(type: string) {
-    let typeUnits: Meta[];
-    typeUnits =  this.metas.filter(meta => meta.input.find(x => x.type === type));
+  getUnitsByType(type: string): Unit[] {
+    let typeUnits: Unit[];
+    typeUnits =  this.units.filter(unit => unit.input.find(x => x.type === type));
     return typeUnits;
   }
 
@@ -47,7 +44,6 @@ export class AdministrationComponent implements OnInit {
   }
 
   runTask() {
-      console.log("Run task")
       this.taskService.runTask(this.task)
   }
 

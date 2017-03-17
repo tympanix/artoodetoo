@@ -8,8 +8,8 @@ export class Unit {
   id: string
   name: string
   description: string
-  input: Input[]
-  output: Output[]
+  input: Input[] = []
+  output: Output[] = []
 }
 
 class Input {

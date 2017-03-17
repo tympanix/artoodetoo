@@ -5,22 +5,22 @@
   </div>
 
   <div class="panel-body">
-  <div *ngIf="meta">
+  <div *ngIf="unit">
       <strong>Inputs</strong>
-      <span *ngIf="!meta.input.length">
+      <span *ngIf="!unit.input.length">
           <a class="btn btn-raised btn-xs">No Input</a>
       </span>
-      <span *ngFor="let input of meta.input">
+      <span *ngFor="let input of unit.input">
           <a class="btn btn-raised btn-xs btn-blue">{{input.name}}</a>
       </span>
 
       &nbsp;
 
       <strong>Outputs</strong>
-      <span *ngIf="!meta.output.length">
+      <span *ngIf="!unit.output.length">
           <a class="btn btn-raised btn-xs">No Output</a>
       </span>
-      <span *ngFor="let output of meta.output">
+      <span *ngFor="let output of unit.output">
           <a class="btn btn-raised btn-xs btn-success">{{output.name}}</a>
       </span>
   </div>
