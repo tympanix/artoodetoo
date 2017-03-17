@@ -16,33 +16,45 @@
                       <div class="col-lg-2">
                           <a class="btn btn-raised btn-xs btn-blue">{{input.name}}</a>
                       </div>
-                      <md-radio-group ngModel="input.type">
-                        <div class="col-lg-5">
-                          <md-radio-button value="0">
-                            Static
-                          </md-radio-button>
+                      <div class="col-lg-10" *ngFor="let ingr of input.recipe">
+                        <div class="row">
+                          <md-radio-group [(ngModel)]="ingr.type">
+                            <div class="col-lg-2">
+                              <md-radio-button value="0">
+                                Variable
+                              </md-radio-button>
+                            </div>
+                            <div class="col-lg-2">
+                              <md-radio-button value="1">
+                                Static
+                              </md-radio-button>
+                            </div>
+                          </md-radio-group>
+                          <div class="col-lg-8">
+                            <span [ngSwitch]="ingr.type">
+                              <template ngSwitchCase="0">
+                                <a class="btn btn-raised btn-xs">{{ingr.source}}</a>
+                                <a class="btn btn-raised btn-xs btn-success">{{ingr.value}}</a>
+                              </template>
+                              <template ngSwitchCase="1">
+                                <span [ngSwitch]="input.type">
+                                    <template ngSwitchCase="string">
+                                      <md-input-container class="fluid">
+                                        <input mdInput [placeholder]="input.name" [(value)]="ingr.value">
+                                      </md-input-container>
+                                    </template>
+                                    <template ngSwitchCase="int">
+                                        <input class="form-control" type="number">
+                                    </template>
+                                    <template ngSwitchCase="interface {}">
+                                        <input class="form-control" type="text">
+                                    </template>
+                                    <template ngSwitchDefault>Unknown input</template>
+                                </span>
+                              </template>
+                            </span>
+                          </div>
                         </div>
-                        <div class="col-lg-5">
-                          <md-radio-button value="1">
-                            Variable
-                          </md-radio-button>
-                        </div>
-                      </md-radio-group>
-                  </div>
-                  <div class="row">
-                      <div class="col-lg-12">
-                          <span [ngSwitch]="input.type">
-                              <template ngSwitchCase="string">
-                                <input class="form-control" type="text">
-                              </template>
-                              <template ngSwitchCase="int">
-                                  <input class="form-control" type="number">
-                              </template>
-                              <template ngSwitchCase="interface {}">
-                                  <input class="form-control" type="text">
-                              </template>
-                              <template ngSwitchDefault>Unknown input</template>
-                          </span>
                       </div>
                   </div>
               </div>

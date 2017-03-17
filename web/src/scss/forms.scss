@@ -1,3 +1,15 @@
 input {
     box-shadow: none !important;
 }
+
+md-input-container {
+  font-size: 1.25em;
+}
+
+.mat-radio-label-content {
+  font-weight: 300 !important;
+}
+
+md-radio-button {
+  margin: 10px 0
+}
