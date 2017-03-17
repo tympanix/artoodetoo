@@ -7,12 +7,24 @@ export class Task {
 export class Unit {
   id: string
   name: string
-  recipe: Recipe[]
+  description: string
+  input: Input[]
+  output: Output[]
 }
 
-class Recipe{
+class Input {
+  name: string;
+  type: string;
+  recipe: Ingredient[]
+}
+
+class Output {
+  name: string;
+  type: string;
+}
+
+class Ingredient{
   type: number
-  argument: string
   source: string
   value: string
 }

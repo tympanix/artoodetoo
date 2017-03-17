@@ -5,7 +5,6 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map'
 
 import { Unit } from './task';
-import { Meta } from './meta';
 import { UNITS } from './mock/units';
 
 @Injectable()
@@ -13,7 +12,7 @@ export class UnitService {
 
   constructor(private http: Http) {}
 
-  getMetas(): Promise<Meta[]>{
+  getUnits(): Promise<Unit[]>{
     return this.http.get("/api/units")
                 .toPromise()
                 .then(this.extractData)
@@ -30,7 +29,7 @@ export class UnitService {
     return Promise.reject(error.message || error);
   }
 
-  getMockUnits(): Promise<Meta[]> {
+  getMockUnits(): Promise<Unit[]> {
     return Promise.resolve(UNITS);
   }
 
