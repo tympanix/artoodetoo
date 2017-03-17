@@ -6,6 +6,10 @@
     margin: 0px;
   }
 
+  .panel-title{
+    float: left;
+  }
+
   a{
     float: right;
     color: white;
@@ -17,12 +21,22 @@
     }
 
     i{
-      font-size: 30px;
+      font-size: 21px;
     }
   }
 } // .panel-heading
 
 .dashboard{
+  .panel-heading{
+    min-height: 39px;
+
+    a{
+
+      i{
+        font-size: 30px;
+      }
+    }
+  }
   .panel-body{
     .btn{
       padding-left: 10px;

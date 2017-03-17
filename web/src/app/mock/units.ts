@@ -1,6 +1,6 @@
-import { Meta } from '../meta';
+import { Unit } from '../task';
 
-export const UNITS: Meta[] = [
+export const UNITS = [
   { id: "example.EmailAction",
     description: "test1",
     input: [{name:"Receiver",type:"string"},{name:"Subject",type:"string"},{name:"Message",type:"string"}],
