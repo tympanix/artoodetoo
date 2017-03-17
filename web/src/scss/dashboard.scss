@@ -1,16 +1,23 @@
 .panel-heading{
   min-height: 39px;
 
-  h3{
+  h2{
     float: left;
+    margin: 0px;
   }
 
   a{
     float: right;
     color: white;
+    margin-left: 10px;
+
+    &:hover{
+      cursor: pointer;
+      color: $mdb-text-color-primary;
+    }
 
     i{
-      font-size: 21px;
+      font-size: 30px;
     }
   }
 } // .panel-heading

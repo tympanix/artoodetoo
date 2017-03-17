@@ -4,8 +4,13 @@
   <!-- All panels -->
   <div *ngFor="let task of tasks" class="panel panel-primary">
     <div class="panel-heading">
-      <h3 class="panel-title">{{task.name}}</h3>
-      <a routerLink="/administration/{{task.name}}"><i class="material-icons">settings</i></a>
+      <div class="row">
+        <div class="col-sm-12">
+          <h2>{{task.name}}</h2>
+          <a routerLink="/administration/{{task.name}}"><i class="material-icons">settings</i></a>
+          <a (click)="runTask(task)"><i class="material-icons">play_arrow</i></a>
+        </div>
+      </div>
     </div>
     <div class="panel-body">
       <a class="btn btn-raised"><i class="type material-icons">notifications</i>{{task.event.name}}</a>

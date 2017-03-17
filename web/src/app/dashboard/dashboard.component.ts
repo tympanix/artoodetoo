@@ -18,4 +18,8 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {}
 
+  runTask(task: Task) {
+      this.taskService.runTask(task)
+  }
+
 }
