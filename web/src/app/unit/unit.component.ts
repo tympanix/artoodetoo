@@ -11,6 +11,9 @@ import { Task, Unit } from '../task';
 export class UnitComponent implements OnInit {
   @Input() unit: Unit;
 
+  model: boolean = true
+  model2: boolean = false
+
   constructor(private api: ApiService) {}
 
   ngOnInit() {

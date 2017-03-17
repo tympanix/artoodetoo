@@ -2,8 +2,11 @@
 @import 'scss/variables';
 @import 'scss/lib/material/variables';
 @import '../node_modules/bootstrap-sass/assets/stylesheets/bootstrap-sprockets';
+//@import 'scss/bootstrap';
 @import '../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 @import 'scss/lib/material/bootstrap-material-design';
+
+@import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';
 
 @import 'scss/dashboard';
 @import 'scss/header';
