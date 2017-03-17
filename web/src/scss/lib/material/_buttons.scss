@@ -86,6 +86,14 @@
     }
   }
 
+  &.btn-green{
+    background-image: linear-gradient(to right, #66ce94, #29671e);
+
+    &:hover{
+      color:black;
+    }
+  }
+
   //---
   // btn-raised
   &.btn-raised,
