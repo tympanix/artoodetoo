@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http'
+import {MdSnackBar} from '@angular/material';
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map'
@@ -10,7 +11,7 @@ import { TASK } from './mock/task';
 @Injectable()
 export class TaskService {
 
-  constructor(private http: Http) {}
+  constructor(private http: Http, private snackBar: MdSnackBar) {}
 
   createTask(task: Task): Promise<boolean>{
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -34,6 +35,8 @@ export class TaskService {
       return this.http.post("/api/tasks/"+task.name, {})
                 .toPromise()
                 .then(res => res.ok)
+                .then(() => this.snackBar.open("Your task has been queued! Depending on the queue it may take a while..","", {duration: 4000}))
+                .then(() => true)
                 .catch(this.handleError)
   }
 

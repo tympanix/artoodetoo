@@ -1,13 +1,24 @@
 .panel-heading{
   min-height: 39px;
 
-  h3{
+  h2{
+    float: left;
+    margin: 0px;
+  }
+
+  .panel-title{
     float: left;
   }
 
   a{
     float: right;
     color: white;
+    margin-left: 10px;
+
+    &:hover{
+      cursor: pointer;
+      color: $mdb-text-color-primary;
+    }
 
     i{
       font-size: 21px;
@@ -16,6 +27,16 @@
 } // .panel-heading
 
 .dashboard{
+  .panel-heading{
+    min-height: 39px;
+
+    a{
+
+      i{
+        font-size: 30px;
+      }
+    }
+  }
   .panel-body{
     .btn{
       padding-left: 10px;
