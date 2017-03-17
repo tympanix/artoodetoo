@@ -16,6 +16,10 @@ class Input {
   name: string;
   type: string;
   recipe: Ingredient[]
+
+  public isArray(): boolean {
+      return this.type.startsWith("[]")
+  }
 }
 
 class Output {

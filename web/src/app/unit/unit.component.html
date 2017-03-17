@@ -6,23 +6,47 @@
 
   <div class="panel-body">
   <div *ngIf="unit">
-      <strong>Inputs</strong>
-      <span *ngIf="!unit.input.length">
-          <a class="btn btn-raised btn-xs">No Input</a>
-      </span>
-      <span *ngFor="let input of unit.input">
-          <a class="btn btn-raised btn-xs btn-blue">{{input.name}}</a>
-      </span>
-
-      &nbsp;
-
-      <strong>Outputs</strong>
-      <span *ngIf="!unit.output.length">
-          <a class="btn btn-raised btn-xs">No Output</a>
-      </span>
-      <span *ngFor="let output of unit.output">
-          <a class="btn btn-raised btn-xs btn-success">{{output.name}}</a>
-      </span>
+      <div class="row">
+          <div class="col-sm-12">
+              <div *ngIf="!unit.input.length">
+                  <a class="btn btn-raised btn-xs">No Input</a>
+              </div>
+              <div *ngFor="let input of unit.input">
+                  <div class="row">
+                      <div class="col-lg-2">
+                          <a class="btn btn-raised btn-xs btn-blue">{{input.name}}</a>
+                      </div>
+                      <div class="col-lg-4">
+                          
+                      </div>
+                      <div class="col-lg-6">
+                          <span [ngSwitch]="input.type">
+                              <template ngSwitchCase="string">
+                                  <input class="form-control" type="text">
+                              </template>
+                              <template ngSwitchCase="int">
+                                  <input class="form-control" type="number">
+                              </template>
+                              <template ngSwitchCase="interface {}">
+                                  <input class="form-control" type="text">
+                              </template>
+                              <template ngSwitchDefault>Unknown input</template>
+                          </span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-sm-12">
+              <span *ngIf="!unit.output.length">
+                  <a class="btn btn-raised btn-xs">No Output</a>
+              </span>
+              <span *ngFor="let output of unit.output">
+                  <a class="btn btn-raised btn-xs btn-success">{{output.name}}</a>
+              </span>
+          </div>
+      </div>
   </div>
   </div>
 </div>
