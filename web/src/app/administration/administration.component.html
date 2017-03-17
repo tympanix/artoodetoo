@@ -3,8 +3,6 @@
     <main class="col-lg-9 col-md-12">
       <div class="well">
         <h1 class="heading">Task Editor</h1>
-        <a class="btn btn-raised btn-blue" (click)="runTask()">Run Task</a>
-
         <div *ngIf="task">
           <unit [unit]="task.event"></unit>
           <unit *ngFor="let unit of task.actions" [unit]="unit"></unit>
