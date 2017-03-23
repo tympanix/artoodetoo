@@ -9,6 +9,7 @@ import { Task, Unit } from '../task';
   styles: []
 })
 export class UnitComponent implements OnInit {
+  @Input() task: Task
   @Input() unit: Unit;
 
   model: boolean = true
@@ -16,8 +17,10 @@ export class UnitComponent implements OnInit {
 
   constructor(private api: ApiService) {}
 
-  ngOnInit() {
-      console.log("Loading unit", this.unit)
+  ngOnInit() { }
+
+  test() {
+    console.log(this.unit)
   }
 
 }

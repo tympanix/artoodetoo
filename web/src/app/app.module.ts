@@ -17,6 +17,7 @@ import { UnitComponent } from './unit/unit.component';
 
 import { TaskResolver } from './resolvers/task-resolver.service';
 import { DropdownComponent } from './dropdown/dropdown.component';
+import { IngredientComponent } from './ingredient/ingredient.component';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { DropdownComponent } from './dropdown/dropdown.component';
     AdministrationComponent,
     StatisticsComponent,
     UnitComponent,
-    DropdownComponent
+    DropdownComponent,
+    IngredientComponent
   ],
   providers: [ApiService, TaskResolver],
   bootstrap: [AppComponent]

@@ -8,8 +8,6 @@ import {MdSnackBar} from '@angular/material';
 import 'rxjs/add/operator/map'
 
 import { Task, Unit } from './task';
-import { TaskService} from './task.service';
-import { UnitService } from './unit.service';
 
 @Injectable()
 export class ApiService {
@@ -47,6 +45,7 @@ export class ApiService {
   getTasks(): Observable<Task[]> {
     this.http.get("/api/tasks")
       .map(this.extractData)
+      .map(json => json.map(data => new Task(data)))
       .catch(this.handleError)
       .subscribe(tasks => this.tasks.next(tasks));
     return this.tasks
@@ -58,9 +57,16 @@ export class ApiService {
       .catch(this.handleError)
   }
 
+  updateTask(task: Task): Observable<boolean> {
+    return this.http.put("/api/tasks", task, this.options)
+      .map(res => res.ok)
+      .catch(this.handleError)
+  }
+
   getUnits(): Observable<Unit[]> {
     this.http.get("/api/units")
       .map(this.extractData)
+      .map(json => json.map(data => new Unit(data)))
       .catch(this.handleError)
       .subscribe(units => this.units.next(units))
     return this.units

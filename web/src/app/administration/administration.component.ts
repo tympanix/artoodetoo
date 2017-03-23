@@ -35,12 +35,19 @@ export class AdministrationComponent implements OnInit {
   }
 
   createTask(): void {
-    this.api.createTask(this.task).subscribe();
+    this.api.createTask(this.task).subscribe()
   }
 
   runTask() {
       this.api.runTask(this.task).subscribe()
   }
 
+  updateTask() {
+    this.api.updateTask(this.task).subscribe()
+  }
+
+  test() {
+    console.log(this.task)
+  }
 
 }

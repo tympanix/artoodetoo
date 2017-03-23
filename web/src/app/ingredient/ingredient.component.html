@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<div class="row" *ngIf="model != undefined">
+
+    <!-- Choose variable or static input -->
+    <md-radio-group [(ngModel)]="model.type">
+        <div class="col-lg-2">
+            <md-radio-button value="0">
+                Variable
+            </md-radio-button>
+        </div>
+        <div class="col-lg-2">
+            <md-radio-button value="1">
+                Static
+            </md-radio-button>
+        </div>
+    </md-radio-group>
+
+    <div class="col-lg-8">
+        <span [ngSwitch]="model.type">
+            <!-- Define your variable input -->
+            <template ngSwitchCase="0">
+                <md-select placeholder="Source">
+                    <md-option *ngFor="let unit of task.actions" [value]="unit.name">{{ unit.name }}</md-option>
+                </md-select>
+                <md-select placeholder="Variable">
+                    <md-option *ngFor="let unit of task.actions" [value]="unit.name">{{ unit.name }}</md-option>
+                </md-select>
+            </template>
+
+            <!-- Define your static input -->
+            <template ngSwitchCase="1">
+                <span [ngSwitch]="input.type">
+
+                    <template ngSwitchCase="string">
+                        <md-input-container class="fluid">
+                            <input mdInput [placeholder]="input.name" [(ngModel)]="model.value">
+                        </md-input-container>
+                    </template>
+
+                    <template ngSwitchCase="int">
+                        <md-input-container class="fluid">
+                            <input mdInput [placeholder]="input.name" type="number" [(ngModel)]="model.value">
+                        </md-input-container>
+                    </template>
+
+                    <template ngSwitchCase="interface {}">
+                        <md-input-container class="fluid">
+                            <input mdInput [placeholder]="input.name" type="text" [(ngModel)]="model.value">
+                        </md-input-container>
+                    </template>
+
+                    <template ngSwitchDefault>Unknown input</template>
+                </span>
+            </template>
+
+        </span>
+    </div>
+
+</div>
