@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Http, Response, Headers, RequestOptions } from '@angular/http'
 
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Observable } from 'rxjs/Observable';
+import {MdSnackBar} from '@angular/material';
+
+import 'rxjs/add/operator/map'
 
 import { Task, Unit } from './task';
 import { TaskService} from './task.service';
@@ -12,9 +17,53 @@ export class ApiService {
   public tasks: ReplaySubject<Task[]> = new ReplaySubject<Task[]>(1)
   public units: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)
 
-  constructor(private tasksService: TaskService, private unitsService: UnitService) {
-    this.tasksService.getTasks().then(tasks => this.tasks.next(tasks))
-    this.unitsService.getUnits().then(units => this.units.next(units))
+  private options: RequestOptions
+
+  constructor(private http: Http, private snackBar: MdSnackBar) {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    this.options = new RequestOptions({ headers: headers });
+
+    this.getTasks()
+    this.getUnits()
+  }
+
+  private extractData(res: Response) {
+    let body = res.json();
+    return body || {};
+  }
+
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error); // for demo purposes only
+    this.snackBar.open("Error", error.message || error, {duration: 4000})
+    return Promise.reject(error.message || error);
+  }
+
+  createTask(task: Task): Observable<boolean> {
+    return this.http.post("api/tasks", { task }, this.options)
+      .map((res: Response) => res.ok)
+      .catch(this.handleError)
+  }
+
+  getTasks(): Observable<Task[]> {
+    this.http.get("/api/tasks")
+      .map(this.extractData)
+      .catch(this.handleError)
+      .subscribe(tasks => this.tasks.next(tasks));
+    return this.tasks
+  }
+
+  runTask(task: Task): Observable<boolean> {
+    return this.http.post("/api/tasks/" + task.name, {})
+      .map(res => res.ok)
+      .catch(this.handleError)
+  }
+
+  getUnits(): Observable<Unit[]> {
+    this.http.get("/api/units")
+      .map(this.extractData)
+      .catch(this.handleError)
+      .subscribe(units => this.units.next(units))
+    return this.units
   }
 
 }

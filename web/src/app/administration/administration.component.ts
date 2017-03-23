@@ -16,7 +16,7 @@ export class AdministrationComponent implements OnInit {
   units: Unit[]
   task: Task
 
-  constructor(private api: ApiService, private taskService: TaskService, private route: ActivatedRoute) {
+  constructor(private api: ApiService, private route: ActivatedRoute) {
     api.units.subscribe((units) => this.units = units)
     api.tasks.subscribe((tasks) => this.tasks = tasks)
   }
@@ -35,16 +35,11 @@ export class AdministrationComponent implements OnInit {
   }
 
   createTask(): void {
-    this.taskService.createTask(this.task);
-  }
-
-  // For test purpose only
-  createMockTask():void {
-    this.taskService.createMockTask()
+    this.api.createTask(this.task).subscribe();
   }
 
   runTask() {
-      this.taskService.runTask(this.task)
+      this.api.runTask(this.task).subscribe()
   }
 
 

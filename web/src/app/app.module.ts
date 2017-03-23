@@ -12,8 +12,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdministrationComponent } from './administration/administration.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 
-import { UnitService }          from './unit.service';
-import { TaskService}           from './task.service';
 import { ApiService }           from './api.service';
 import { UnitComponent } from './unit/unit.component';
 
@@ -37,7 +35,7 @@ import { DropdownComponent } from './dropdown/dropdown.component';
     UnitComponent,
     DropdownComponent
   ],
-  providers: [UnitService, TaskService, ApiService, TaskResolver],
+  providers: [ApiService, TaskResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

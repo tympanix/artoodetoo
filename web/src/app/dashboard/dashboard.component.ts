@@ -12,14 +12,15 @@ import { ApiService } from '../api.service';
 export class DashboardComponent implements OnInit {
   tasks: Task[]
 
-  constructor(private taskService: TaskService, private api: ApiService) {
+  constructor(private api: ApiService) {
     api.tasks.subscribe((tasks) => this.tasks = tasks)
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   runTask(task: Task) {
-      this.taskService.runTask(task)
+    console.log("Running", task.name)
+    this.api.runTask(task).subscribe()
   }
 
 }
