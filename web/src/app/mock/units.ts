@@ -1,4 +1,4 @@
-import { Unit } from '../task';
+import { Unit } from '../model';
 
 export const UNITS = [
   { id: "example.EmailAction",

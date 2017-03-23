@@ -4,7 +4,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 import { ApiService } from '../api.service';
-import { Task } from '../task';
+import { Task } from '../model';
 
 @Injectable()
 export class TaskResolver implements Resolve<Task> {

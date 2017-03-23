@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { ApiService } from '../api.service';
-import { Task, Unit } from '../task';
+import { Task, Unit } from '../model';
 
 @Component({
   selector: 'unit',

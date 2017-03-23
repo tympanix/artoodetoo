@@ -3,11 +3,11 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http'
 
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Observable } from 'rxjs/Observable';
-import {MdSnackBar} from '@angular/material';
+import { MdSnackBar } from '@angular/material';
 
 import 'rxjs/add/operator/map'
 
-import { Task, Unit } from './task';
+import { Task, Unit } from './model';
 
 @Injectable()
 export class ApiService {

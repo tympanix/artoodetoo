@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Task, Unit } from '../task';
-import { UnitService } from '../unit.service';
-import { TaskService} from '../task.service';
+import { Task, Unit } from '../model';
 import { ApiService } from '../api.service';
 
 import { ActivatedRoute } from '@angular/router';

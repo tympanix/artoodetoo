@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Task, Unit, Ingredient, Input as UnitInput, Output as UnitOutput } from '../task';
+import { Task, Unit, Ingredient, Input as UnitInput, Output as UnitOutput } from '../model';
 import { ApiService } from '../api.service'
 
 @Component({

@@ -1,4 +1,4 @@
-import { Task } from '../task';
+import { Task } from '../model';
 
 export const TASK = {
   "name": "MyFirstTask",
