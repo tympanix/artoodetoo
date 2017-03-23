@@ -103,6 +103,7 @@ export class Input implements IInput, Model {
 
   constructor(model: IInput) {
     Object.assign(this, model)
+    this.recipe = model.recipe.map(r => Ingredient.fromJson(r))
   }
 
   toJson(): IInput {
@@ -145,10 +146,16 @@ interface IIngredient {
   value: string
 }
 
-export class Ingredient{
+export class Ingredient implements IIngredient, Model{
   type: number
   source: string
   value: string
+
+  static fromJson(model: IIngredient): Ingredient {
+    let ingredient = new Ingredient()
+    Object.assign(ingredient, model)
+    return ingredient
+  }
 
   toJson(): IIngredient {
     return {
