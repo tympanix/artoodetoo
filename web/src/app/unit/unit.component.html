@@ -8,16 +8,24 @@
   <div *ngIf="unit">
       <div class="row">
           <div class="col-sm-12">
+              <!-- Unit doesn't take input -->
               <div *ngIf="!unit.input.length">
                   <a class="btn btn-raised btn-xs">No Input</a>
               </div>
+
+              <!-- Unit takes input  -->
               <div *ngFor="let input of unit.input">
                   <div class="row">
+
                       <div class="col-lg-2">
                           <a class="btn btn-raised btn-xs btn-blue">{{input.name}}</a>
                       </div>
+
+                      <!-- For each input field  -->
                       <div class="col-lg-10" *ngFor="let ingr of input.recipe">
                         <div class="row">
+
+                          <!-- Choose variable or static input -->
                           <md-radio-group [(ngModel)]="ingr.type">
                             <div class="col-lg-2">
                               <md-radio-button value="0">
@@ -30,30 +38,44 @@
                               </md-radio-button>
                             </div>
                           </md-radio-group>
+
                           <div class="col-lg-8">
                             <span [ngSwitch]="ingr.type">
+                              <!-- Define your variable input -->
                               <template ngSwitchCase="0">
                                 <a class="btn btn-raised btn-xs btn-green">{{ingr.source}}</a>
                                 <a class="btn btn-raised btn-xs btn-success">{{ingr.value}}</a>
                               </template>
+
+                              <!-- Define your static input -->
                               <template ngSwitchCase="1">
                                 <span [ngSwitch]="input.type">
+
                                     <template ngSwitchCase="string">
                                       <md-input-container class="fluid">
                                         <input mdInput [placeholder]="input.name" [(value)]="ingr.value">
                                       </md-input-container>
                                     </template>
+
                                     <template ngSwitchCase="int">
-                                        <input class="form-control" type="number">
+                                      <md-input-container class="fluid">
+                                        <input mdInput [placeholder]="input.name" type="number" [(value)]="ingr.value">
+                                      </md-input-container>
                                     </template>
+
                                     <template ngSwitchCase="interface {}">
-                                        <input class="form-control" type="text">
+                                      <md-input-container class="fluid">
+                                        <input mdInput [placeholder]="input.name" type="text" [(value)]="ingr.value">
+                                      </md-input-container>
                                     </template>
+                                    
                                     <template ngSwitchDefault>Unknown input</template>
                                 </span>
                               </template>
+
                             </span>
                           </div>
+
                         </div>
                       </div>
                   </div>
