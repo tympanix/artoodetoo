@@ -123,7 +123,7 @@ interface IOutput {
   type: string;
 }
 
-class Output implements IOutput, Model {
+export class Output implements IOutput, Model {
   name: string;
   type: string;
 

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Task, Unit, Ingredient, Input as UnitInput } from '../task';
+import { Task, Unit, Ingredient, Input as UnitInput, Output as UnitOutput } from '../task';
+import { ApiService } from '../api.service'
 
 @Component({
   selector: 'ingredient',
@@ -12,11 +13,23 @@ export class IngredientComponent implements OnInit {
   @Input() model: Ingredient
 
   sources: Unit[]
+  source: Unit = new Unit()
 
-  constructor() { }
+  constructor(private api: ApiService) { }
 
   ngOnInit() {
     this.task.units.subscribe(units => this.sources = units)
+    this.changeSource(this.model.source)
+  }
+
+  changeSourceEvent(event) {
+    this.changeSource(event.value)
+  }
+
+  changeSource(source: string) {
+    let src = source ? source : this.model.source
+    this.source = this.sources.find(u => u.name == src)
+    console.log("Changed", this.source)
   }
 
 }
