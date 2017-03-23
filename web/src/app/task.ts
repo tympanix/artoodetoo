@@ -1,12 +1,54 @@
-export class Task implements ITask {
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+
+interface Model {
+  toJson()
+}
+
+interface ITask {
+  name: string
+  event: IUnit
+  actions: IUnit[]
+}
+
+export class Task implements ITask, Model {
+  // Model properties
   name: string
   event: Unit
   actions: Unit[]
 
-  constructor(model: ITask) {
-    Object.assign(this, model)
-    this.event = new Unit(model.event)
-    this.actions = model.actions.map(action => new Unit(action))
+  // State properties
+  units: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)
+
+  constructor(fields?: {
+    name?: string
+  }) {
+    if (fields) Object.assign(this, fields)
+  }
+
+  static fromJson(model: ITask): Task {
+    let task = new Task()
+    Object.assign(task, model)
+    task.event = Unit.fromJson(model.event)
+    task.actions = model.actions.map(action => Unit.fromJson(action))
+    task.updateUnitList()
+    return task
+  }
+
+  public toJson(): ITask {
+    return {
+      name: this.name,
+      event: this.event.toJson(),
+      actions: this.actions.map(a => a.toJson())
+    }
+  }
+
+  private updateUnitList() {
+    let units: Unit[] = []
+    this.event && units.push(this.event)
+    this.actions.forEach(action => {
+      action && units.push(action)
+    })
+    this.units.next(units)
   }
 
   speak() {
@@ -14,23 +56,29 @@ export class Task implements ITask {
   }
 }
 
-interface ITask {
-  name: string
-  event: Unit
-  actions: Unit[]
-}
-
-export class Unit {
+export class Unit implements Model {
   id: string
   name: string
   description: string
   input: Input[]
   output: Output[]
 
-  constructor(model: IUnit) {
-    Object.assign(this, model)
-    this.input = model.input.map(input => new Input(input))
-    this.output = model.output.map(output => new Output(output))
+  static fromJson(model: IUnit): Unit {
+    let unit = Object.create(Unit.prototype)
+    Object.assign(unit, model)
+    unit.input = model.input.map(input => new Input(input))
+    unit.output = model.output.map(output => new Output(output))
+    return unit
+  }
+
+  toJson(): IUnit {
+    return {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      input: this.input.map(i => i.toJson()),
+      output: this.output.map(o => o.toJson())
+    }
   }
 }
 
@@ -38,17 +86,31 @@ interface IUnit {
   id: string
   name: string
   description: string
-  input: Input[]
-  output: Output[]
+  input: IInput[]
+  output: IOutput[]
 }
 
-export class Input {
+interface IInput {
+  name: string;
+  type: string;
+  recipe: IIngredient[]
+}
+
+export class Input implements IInput, Model {
   name: string;
   type: string;
   recipe: Ingredient[]
 
-  constructor(model: Input) {
+  constructor(model: IInput) {
     Object.assign(this, model)
+  }
+
+  toJson(): IInput {
+    return {
+      name: this.name,
+      type: this.type,
+      recipe: this.recipe.map(i => i.toJson())
+    }
   }
 
   public isArray(): boolean {
@@ -56,17 +118,43 @@ export class Input {
   }
 }
 
-class Output {
+interface IOutput {
+  name: string;
+  type: string;
+}
+
+class Output implements IOutput, Model {
   name: string;
   type: string;
 
-  constructor(model: Output) {
+  constructor(model: IOutput) {
     Object.assign(this, model)
   }
+
+  toJson(): IOutput {
+    return {
+      name: this.name,
+      type: this.type,
+    }
+  }
+}
+
+interface IIngredient {
+  type: number
+  source: string
+  value: string
 }
 
 export class Ingredient{
   type: number
   source: string
   value: string
+
+  toJson(): IIngredient {
+    return {
+      type: this.type,
+      source: this.source,
+      value: this.value
+    }
+  }
 }

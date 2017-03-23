@@ -25,9 +25,11 @@ export class ApiService {
     this.getUnits()
   }
 
-  private extractData(res: Response) {
-    let body = res.json();
-    return body || {};
+  private extractData<T>(): (res: Response) => T {
+    return function(res: Response): T {
+      let body:T = res.json();
+      return body || {} as T;
+    }
   }
 
   private handleError(error: any): Promise<any> {
@@ -37,15 +39,15 @@ export class ApiService {
   }
 
   createTask(task: Task): Observable<boolean> {
-    return this.http.post("api/tasks", { task }, this.options)
+    return this.http.post("api/tasks", task.toJson(), this.options)
       .map((res: Response) => res.ok)
       .catch(this.handleError)
   }
 
   getTasks(): Observable<Task[]> {
     this.http.get("/api/tasks")
-      .map(this.extractData)
-      .map(json => json.map(data => new Task(data)))
+      .map(this.extractData<Task[]>())
+      .map(json => json.map(data => Task.fromJson(data)))
       .catch(this.handleError)
       .subscribe(tasks => this.tasks.next(tasks));
     return this.tasks
@@ -58,15 +60,15 @@ export class ApiService {
   }
 
   updateTask(task: Task): Observable<boolean> {
-    return this.http.put("/api/tasks", task, this.options)
+    return this.http.put("/api/tasks", task.toJson(), this.options)
       .map(res => res.ok)
       .catch(this.handleError)
   }
 
   getUnits(): Observable<Unit[]> {
     this.http.get("/api/units")
-      .map(this.extractData)
-      .map(json => json.map(data => new Unit(data)))
+      .map(this.extractData<Unit[]>())
+      .map(json => json.map(data => Unit.fromJson(data)))
       .catch(this.handleError)
       .subscribe(units => this.units.next(units))
     return this.units

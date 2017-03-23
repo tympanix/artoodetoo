@@ -20,10 +20,10 @@
             <!-- Define your variable input -->
             <template ngSwitchCase="0">
                 <md-select placeholder="Source">
-                    <md-option *ngFor="let unit of task.actions" [value]="unit.name">{{ unit.name }}</md-option>
+                    <md-option *ngFor="let unit of sources" [value]="unit.name">{{ unit.name }}</md-option>
                 </md-select>
                 <md-select placeholder="Variable">
-                    <md-option *ngFor="let unit of task.actions" [value]="unit.name">{{ unit.name }}</md-option>
+                    <md-option *ngFor="let unit of sources" [value]="unit.name">{{ unit.name }}</md-option>
                 </md-select>
             </template>
 

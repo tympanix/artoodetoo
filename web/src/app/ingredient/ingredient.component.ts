@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Task, Ingredient, Input as UnitInput } from '../task';
+import { Task, Unit, Ingredient, Input as UnitInput } from '../task';
 
 @Component({
   selector: 'ingredient',
@@ -11,8 +11,12 @@ export class IngredientComponent implements OnInit {
   @Input() input: UnitInput
   @Input() model: Ingredient
 
+  sources: Unit[]
+
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.task.units.subscribe(units => this.sources = units)
+  }
 
 }
