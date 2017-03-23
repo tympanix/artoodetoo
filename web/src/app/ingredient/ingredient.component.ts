@@ -28,7 +28,8 @@ export class IngredientComponent implements OnInit {
 
   changeSource(source: string) {
     let src = source ? source : this.model.source
-    this.source = this.sources.find(u => u.name == src)
+    let found = this.sources.find(u => u.name == src)
+    if (found) this.source = found
     console.log("Changed", this.source)
   }
 
