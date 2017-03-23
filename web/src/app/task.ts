@@ -103,7 +103,7 @@ export class Input implements IInput, Model {
 
   constructor(model: IInput) {
     Object.assign(this, model)
-    this.recipe = model.recipe.map(r => Ingredient.fromJson(r))
+    this.recipe = model.recipe ? model.recipe.map(r => Ingredient.fromJson(r)) : []
   }
 
   toJson(): IInput {
