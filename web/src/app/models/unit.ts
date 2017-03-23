@@ -10,6 +10,7 @@ export interface IUnit {
 }
 
 export class Unit implements Model {
+  // Model properties
   id: string
   name: string
   description: string

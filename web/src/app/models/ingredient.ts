@@ -7,6 +7,7 @@ export interface IIngredient {
 }
 
 export class Ingredient implements IIngredient, Model{
+  // Model properties
   type: number
   source: string
   value: string

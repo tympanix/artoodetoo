@@ -8,6 +8,7 @@ export interface IInput {
 }
 
 export class Input implements IInput, Model {
+  // Model properties
   name: string;
   type: string;
   recipe: Ingredient[]
