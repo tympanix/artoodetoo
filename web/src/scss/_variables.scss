@@ -10,7 +10,8 @@ $bootstrap-sass-asset-helper: false !default;
 
 $gray-base:              #fff !default;
 $gray-darker:            darken($gray-base, 13.5%) !default; // #222
-$gray-dark:              darken($gray-base, 20%) !default;   // #333
+//$gray-dark:              darken($gray-base, 20%) !default;   // #333
+$gray-dark:              #9cb3c9;
 $gray:                   darken($gray-base, 33.5%) !default; // #555
 $gray-light:             darken($gray-base, 46.7%) !default; // #777
 $gray-lighter:           darken($gray-base, 93.5%) !default; // #eee
@@ -33,9 +34,9 @@ $body-bg:               #0e2439 !default;
 $text-color:            $gray-dark !default;
 
 //** Global textual link color.
-$link-color:            $gray-dark !default;
+$link-color:            $gray-base !default;
 //** Link hover color set via `darken()` function.
-$link-hover-color:      darken($link-color, 15%) !default;
+$link-hover-color:      $gray-dark !default;
 //** Link hover decoration.
 $link-hover-decoration: underline !default;
 
@@ -71,7 +72,7 @@ $line-height-computed:    floor(($font-size-base * $line-height-base)) !default;
 $headings-font-family:    inherit !default;
 $headings-font-weight:    300 !default;
 $headings-line-height:    1.1 !default;
-$headings-color:          inherit !default;
+$headings-color:          #fff !default;
 
 
 //== Iconography
@@ -151,29 +152,29 @@ $table-border-color:            #ddd !default;
 
 $btn-font-weight:                normal !default;
 
-$btn-default-color:              #333 !default;
-$btn-default-bg:                 #fff !default;
-$btn-default-border:             #ccc !default;
+$btn-default-color:              $gray-base !default;
+$btn-default-bg:                 #385573 !default;
+$btn-default-border:             $btn-default-bg !default;
 
 $btn-primary-color:              #fff !default;
 $btn-primary-bg:                 $brand-primary !default;
-$btn-primary-border:             darken($btn-primary-bg, 5%) !default;
+$btn-primary-border:             $btn-primary-bg !default;
 
 $btn-success-color:              #fff !default;
 $btn-success-bg:                 $brand-success !default;
-$btn-success-border:             darken($btn-success-bg, 5%) !default;
+$btn-success-border:             $btn-success-bg !default;
 
 $btn-info-color:                 #fff !default;
 $btn-info-bg:                    $brand-info !default;
-$btn-info-border:                darken($btn-info-bg, 5%) !default;
+$btn-info-border:                $btn-info-bg !default;
 
 $btn-warning-color:              #fff !default;
 $btn-warning-bg:                 $brand-warning !default;
-$btn-warning-border:             darken($btn-warning-bg, 5%) !default;
+$btn-warning-border:             $btn-warning-bg !default;
 
 $btn-danger-color:               #fff !default;
 $btn-danger-bg:                  $brand-danger !default;
-$btn-danger-border:              darken($btn-danger-bg, 5%) !default;
+$btn-danger-border:              $btn-danger-bg !default;
 
 $btn-link-disabled-color:        $gray-light !default;
 

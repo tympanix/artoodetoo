@@ -1,0 +1,26 @@
+.btn{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  border:none;
+}
+
+.btn-xs{
+  padding: 4px 15px;
+}
+
+.btn-blue{
+  background: linear-gradient(to right,#3ec7e0,#526bf4);
+
+  &:hover{
+    background: linear-gradient(to right,darken(#3ec7e0, 10%),darken(#526bf4, 10%));
+  }
+}
+
+.btn-red{
+  background: linear-gradient(to right,#e052a0,#f15c41);
+
+  &:hover{
+    background: linear-gradient(to right, darken(#e052a0,10%), darken(#f15c41,10%))
+  }
+}

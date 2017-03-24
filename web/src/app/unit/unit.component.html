@@ -10,7 +10,7 @@
         <div class="col-sm-12">
           <!-- Unit doesn't take input -->
           <div *ngIf="!unit.input.length">
-            <a class="btn btn-raised btn-xs">No Input</a>
+            <a class="btn btn-default btn-xs">No Input</a>
           </div>
 
           <!-- Unit takes input  -->
@@ -18,7 +18,7 @@
             <div class="row">
 
               <div class="col-lg-2">
-                <a class="btn btn-raised btn-xs btn-blue">{{input.name}}</a>
+                <a class="btn btn-xs btn-blue">{{input.name}}</a>
               </div>
 
               <!-- For each input field  -->
@@ -35,7 +35,7 @@
                   <a class="btn btn-raised btn-xs">No Output</a>
               </span>
           <span *ngFor="let output of unit.output">
-                  <a class="btn btn-raised btn-xs btn-success">{{output.name}}</a>
+                  <a class="btn btn-raised btn-xs btn-red">{{output.name}}</a>
               </span>
         </div>
       </div>
