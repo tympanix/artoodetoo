@@ -19,12 +19,14 @@
         <span [ngSwitch]="model.type">
             <!-- Define your variable input -->
             <template ngSwitchCase="0">
+              <div class="select-container">
                 <md-select placeholder="Source" [(ngModel)]="model.source" (change)="changeSourceEvent($event)">
                     <md-option *ngFor="let unit of sources" [value]="unit.name">{{ unit.name }}</md-option>
                 </md-select>
                 <md-select placeholder="Variable" [(ngModel)]="model.value">
                     <md-option *ngFor="let output of source.output" [value]="output.name">{{ output.name }}</md-option>
                 </md-select>
+              </div>
             </template>
 
             <!-- Define your static input -->
