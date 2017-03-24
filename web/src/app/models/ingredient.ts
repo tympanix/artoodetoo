@@ -12,6 +12,10 @@ export class Ingredient implements IIngredient, Model{
   source: string
   value: string
 
+  constructor() {
+    this.type = 1
+  }
+
   static fromJson(model: IIngredient): Ingredient {
     let ingredient = new Ingredient()
     Object.assign(ingredient, model)

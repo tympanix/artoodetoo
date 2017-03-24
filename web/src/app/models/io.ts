@@ -26,6 +26,12 @@ export class Input implements IInput, Model {
     }
   }
 
+  bootstrap() {
+    if (!this.recipe || !this.recipe.length) {
+      this.recipe = [new Ingredient()]
+    }
+  }
+
   public isArray(): boolean {
       return this.type.startsWith("[]")
   }

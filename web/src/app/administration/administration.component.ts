@@ -56,8 +56,10 @@ export class AdministrationComponent implements OnInit {
       height: '500px',
       width: '750px',
     });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
+    dialogRef.afterClosed().subscribe(unit => {
+      if (unit) {
+        this.task.addAction(unit)
+      }
     });
   }
 

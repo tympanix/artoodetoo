@@ -40,6 +40,11 @@ export class Task implements ITask, Model {
     }
   }
 
+  addAction(unit: Unit) {
+    this.actions.push(unit)
+    this.updateUnitList()
+  }
+
   private updateUnitList() {
     let units: Unit[] = []
     this.event && units.push(this.event)

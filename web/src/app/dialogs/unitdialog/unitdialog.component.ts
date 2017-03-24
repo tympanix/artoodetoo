@@ -26,7 +26,13 @@ export class UnitDialog implements OnInit {
   }
 
   addUnit() {
-    this.dialogRef.close(this.filtered[0] || undefined)
+    let unit
+    let template = this.filtered[0] || undefined
+    if (template) {
+      unit = template.copy()
+      unit.bootstrap()
+    }
+    this.dialogRef.close(unit)
   }
 
   close() {

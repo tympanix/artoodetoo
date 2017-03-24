@@ -11,11 +11,11 @@
     cursor: pointer;
 
     &:hover {
-      background-color: gray;
+      background-color: $steel-blue;
     }
 
     &.active {
-      background-color: blue;
+      background-color: $body-bg;
     }
 
   }

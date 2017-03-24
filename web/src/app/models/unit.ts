@@ -1,5 +1,6 @@
 import { Input, IInput, Output, IOutput } from './io'
 import { Model } from './model'
+import * as _ from "lodash";
 
 export interface IUnit {
   id: string
@@ -9,7 +10,7 @@ export interface IUnit {
   output: IOutput[]
 }
 
-export class Unit implements Model {
+export class Unit implements IUnit, Model {
   // Model properties
   id: string
   name: string
@@ -23,6 +24,15 @@ export class Unit implements Model {
     unit.input = model.input.map(input => new Input(input))
     unit.output = model.output.map(output => new Output(output))
     return unit
+  }
+
+  copy(): Unit {
+    let copy = _.cloneDeep(this)
+    return copy
+  }
+
+  bootstrap() {
+    this.input.forEach(input => input.bootstrap())
   }
 
   toJson(): IUnit {
