@@ -7,7 +7,7 @@
   height: 100%;
 
   li {
-    padding: 0.5em;
+    padding: 1em;
     cursor: pointer;
 
     &:hover {
@@ -21,12 +21,15 @@
   }
 
 
-  &-header {
-    font-size: 1.25em;
-  }
+  .unititem{
+    &-header {
+      font-size: 1.25em;
+      margin-top: 0px;
+    }
 
-  &-desc {
+    &-desc {
 
+    }
   }
 
 }

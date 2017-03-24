@@ -1,3 +1,18 @@
 .navbar .navbar-nav > li > .active , .navbar .navbar-nav > li > .active:hover, .navbar .navbar-nav > li > .active:focus {
-    color: blue;
+    color: $white;
+}
+
+.navbar{
+    background-image: linear-gradient(to bottom, $blue-light, $blue-dark);
+    border: none;
+
+    li a{
+      color: $blue-steel;
+
+      &:hover{
+        color: white;
+        background-color: transparent;
+      }
+    }
+
 }

@@ -25,8 +25,8 @@ $mdb-label-color-toggle-focus: unquote("rgba(#{$rgb-black}, .54)") !default;
 // Converted bs variables
 
 // Bootstrap brand color customization
-$brand-primary: #0e2439 !default;
-$brand-primary-light: #1f364d !default;
+$brand-primary: $blue-dark !default;
+$brand-primary-light: $blue-light !default;
 $brand-success: $green !default;
 $brand-danger: $red !default;
 $brand-warning: $deep-orange !default;
@@ -39,7 +39,7 @@ $border-radius-small: 1px !default;
 $font-family-sans-serif: 'Roboto', 'Helvetica', 'Arial', sans-serif !default;
 $headings-font-weight: 300 !default;
 
-$body-bg: #0e2439 !default;
+$body-bg: $blue-dark !default;
 //---
 
 // import bs variables for sass, first declared wins.
