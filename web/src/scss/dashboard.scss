@@ -12,12 +12,10 @@
 
   a{
     float: right;
-    color: white;
     margin-left: 10px;
 
     &:hover{
       cursor: pointer;
-      color: $mdb-text-color-primary;
     }
 
     i{
