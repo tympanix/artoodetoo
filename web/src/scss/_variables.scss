@@ -10,13 +10,17 @@ $bootstrap-sass-asset-helper: false !default;
 
 $white:                 #fff !default;
 $base1:                 darken($white, 13.5%) !default; // #222
-$steel-blue:            #9cb3c9;
+$blue-steel:            #9cb3c9;
 $gray:                  darken($white, 33.5%) !default; // #555
 $gray-dark:             darken($white, 46.7%) !default; // #777
 $gray-darker:           darken($white, 93.5%) !default; // #eee
 
+$blue-dark:             #0e2439;
+$blue-light:            #1f364d;
+$blue-lighter:          #274059;
+
 //$brand-primary:         darken(#428bca, 6.5%) !default; // #337ab7
-$brand-primary:         #0e2439;
+$brand-primary:         $blue-dark;
 $brand-success:         #5cb85c !default;
 $brand-info:            #5bc0de !default;
 $brand-warning:         #f0ad4e !default;
@@ -28,14 +32,14 @@ $brand-danger:          #d9534f !default;
 //## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-$body-bg:               #0e2439 !default;
+$body-bg:               $blue-dark !default;
 //** Global text color on `<body>`.
-$text-color:            $steel-blue !default;
+$text-color:            $blue-steel !default;
 
 //** Global textual link color.
 $link-color:            $white !default;
 //** Link hover color set via `darken()` function.
-$link-hover-color:      $steel-blue !default;
+$link-hover-color:      $blue-steel !default;
 //** Link hover decoration.
 $link-hover-decoration: underline !default;
 
@@ -222,7 +226,7 @@ $input-height-small:             (floor($font-size-small * $line-height-small) +
 //** `.form-group` margin
 $form-group-margin-bottom:       15px !default;
 
-$legend-color:                   $steel-blue !default;
+$legend-color:                   $blue-steel !default;
 $legend-border-color:            #e5e5e5 !default;
 
 //** Background color for textual input addons
@@ -248,9 +252,9 @@ $dropdown-fallback-border:       #ccc !default;
 $dropdown-divider-bg:            #e5e5e5 !default;
 
 //** Dropdown link text color.
-$dropdown-link-color:            $steel-blue !default;
+$dropdown-link-color:            $blue-steel !default;
 //** Hover color for dropdown links.
-$dropdown-link-hover-color:      darken($steel-blue, 5%) !default;
+$dropdown-link-hover-color:      darken($blue-steel, 5%) !default;
 //** Hover background for dropdown links.
 $dropdown-link-hover-bg:         #f5f5f5 !default;
 
@@ -709,7 +713,7 @@ $list-group-link-heading-color: #333 !default;
 //
 //##
 
-$panel-bg:                    #274059 !default;
+$panel-bg:                    $blue-lighter !default;
 $panel-body-padding:          15px !default;
 $panel-heading-padding:       10px 15px !default;
 $panel-footer-padding:        $panel-heading-padding !default;
@@ -717,11 +721,11 @@ $panel-border-radius:         $border-radius-base !default;
 
 //** Border color for elements within panels
 $panel-inner-border:          #ddd !default;
-$panel-footer-bg:             #274059 !default;
+$panel-footer-bg:             $blue-lighter !default;
 
-$panel-default-text:          $steel-blue !default;
+$panel-default-text:          $blue-steel !default;
 $panel-default-border:        #ddd !default;
-$panel-default-heading-bg:    #274059 !default;
+$panel-default-heading-bg:    $blue-lighter !default;
 
 $panel-primary-text:          #fff !default;
 $panel-primary-border:        $brand-primary !default;
@@ -767,7 +771,7 @@ $thumbnail-caption-padding:   9px !default;
 //
 //##
 
-$well-bg:                     #1f364d !default;
+$well-bg:                     $blue-light !default;
 $well-border:                 darken($well-bg, 7%) !default;
 
 
@@ -843,7 +847,7 @@ $kbd-color:                   #fff !default;
 $kbd-bg:                      #333 !default;
 
 $pre-bg:                      #f5f5f5 !default;
-$pre-color:                   $steel-blue !default;
+$pre-color:                   $blue-steel !default;
 $pre-border-color:            #ccc !default;
 $pre-scrollable-max-height:   340px !default;
 

@@ -3,7 +3,7 @@
 .panel {
   border-radius: 2px;
   border: 0;
-  background-color: #274059;
+  background-color: $blue-lighter;
 
   @include variations(unquote(".panel"), unquote(" > .panel-heading"), background-color, $grey-200);
   @include shadow-z-1;

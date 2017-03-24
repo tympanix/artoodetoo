@@ -7,11 +7,11 @@
   height: 100%;
 
   li {
-    padding: 0.5em;
+    padding: 1em;
     cursor: pointer;
 
     &:hover {
-      background-color: gray;
+      background-color: $blue-lighter;
     }
 
     &.active {
@@ -21,12 +21,15 @@
   }
 
 
-  &-header {
-    font-size: 1.25em;
-  }
+  .unititem{
+    &-header {
+      font-size: 1.25em;
+      margin-top: 0px;
+    }
 
-  &-desc {
+    &-desc {
 
+    }
   }
 
 }

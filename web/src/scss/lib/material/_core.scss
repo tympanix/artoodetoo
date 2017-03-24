@@ -3,7 +3,7 @@
 body {
   background-color: $body-bg;
   &.inverse {
-    background: #0e2439;
+    background: $blue-dark;
     &, .form-control {
       color: $mdb-text-color-light;
     }
