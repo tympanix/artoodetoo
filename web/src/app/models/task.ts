@@ -49,7 +49,4 @@ export class Task implements ITask, Model {
     this.units.next(units)
   }
 
-  speak() {
-    console.log("This is task", this.name)
-  }
 }

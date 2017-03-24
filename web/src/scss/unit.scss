@@ -1,0 +1,32 @@
+.unitlist {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+
+  li {
+    padding: 0.5em;
+    cursor: pointer;
+
+    &:hover {
+      background-color: gray;
+    }
+
+    &.active {
+      background-color: blue;
+    }
+
+  }
+
+
+  &-header {
+    font-size: 1.25em;
+  }
+
+  &-desc {
+
+  }
+
+}

@@ -18,6 +18,7 @@ import { UnitComponent } from './unit/unit.component';
 import { TaskResolver } from './resolvers/task-resolver.service';
 import { DropdownComponent } from './dropdown/dropdown.component';
 import { IngredientComponent } from './ingredient/ingredient.component';
+import { UnitDialog } from './dialogs/unitdialog/unitdialog.component';
 
 @NgModule({
   imports: [
@@ -35,7 +36,11 @@ import { IngredientComponent } from './ingredient/ingredient.component';
     StatisticsComponent,
     UnitComponent,
     DropdownComponent,
-    IngredientComponent
+    IngredientComponent,
+    UnitDialog
+  ],
+  entryComponents: [
+    UnitDialog
   ],
   providers: [ApiService, TaskResolver],
   bootstrap: [AppComponent]

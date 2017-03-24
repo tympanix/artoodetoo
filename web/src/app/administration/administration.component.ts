@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Task, Unit } from '../model';
 import { ApiService } from '../api.service';
 
+import { MdDialog, MdDialogRef } from '@angular/material';
+import { UnitDialog } from '../dialogs/unitdialog/unitdialog.component'
+
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -14,7 +17,7 @@ export class AdministrationComponent implements OnInit {
   units: Unit[]
   task: Task
 
-  constructor(private api: ApiService, private route: ActivatedRoute) {
+  constructor(private api: ApiService, private route: ActivatedRoute, public dialog: MdDialog) {
     api.units.subscribe((units) => this.units = units)
     api.tasks.subscribe((tasks) => this.tasks = tasks)
   }
@@ -37,7 +40,7 @@ export class AdministrationComponent implements OnInit {
   }
 
   runTask() {
-      this.api.runTask(this.task).subscribe()
+    this.api.runTask(this.task).subscribe()
   }
 
   updateTask() {
@@ -46,6 +49,16 @@ export class AdministrationComponent implements OnInit {
 
   test() {
     console.log(this.task)
+  }
+
+  openUnitDialog() {
+    let dialogRef = this.dialog.open(UnitDialog, {
+      height: '500px',
+      width: '750px',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+    });
   }
 
 }

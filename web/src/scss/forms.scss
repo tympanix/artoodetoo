@@ -13,3 +13,11 @@ md-input-container {
 md-radio-button {
   margin: 10px 0
 }
+
+.mat-autocomplete-panel {
+  max-width: none !important;
+}
+
+.full-width {
+  width: 100%;
+}
