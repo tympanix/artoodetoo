@@ -19,8 +19,16 @@ export class UnitComponent implements OnInit {
 
   ngOnInit() { }
 
-  test() {
-    console.log(this.unit)
+  delete() {
+    this.task.deleteUnit(this.unit)
+  }
+
+  moveDown() {
+    this.task.moveUnitDown(this.unit)
+  }
+
+  moveUp() {
+    this.task.moveUnitUp(this.unit)
   }
 
 }

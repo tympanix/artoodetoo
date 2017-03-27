@@ -54,4 +54,29 @@ export class Task implements ITask, Model {
     this.units.next(units)
   }
 
+  deleteUnit(unit: Unit) {
+    if (this.event === unit) {
+      this.event === undefined
+    }
+    this.actions = this.actions.filter(u => u !== unit)
+  }
+
+  private swapActions(indexFrom: number, indexTo: number) {
+    if (indexFrom < 0 || indexFrom >= this.actions.length) return
+    if (indexTo < 0 || indexTo >= this.actions.length) return
+    let temp = this.actions[indexTo]
+    this.actions[indexTo] = this.actions[indexFrom]
+    this.actions[indexFrom] = temp
+  }
+
+  moveUnitUp(unit: Unit) {
+    let indexFrom = this.actions.indexOf(unit)
+    this.swapActions(indexFrom, indexFrom - 1)
+  }
+
+  moveUnitDown(unit: Unit) {
+    let indexFrom = this.actions.indexOf(unit)
+    this.swapActions(indexFrom, indexFrom + 1)
+  }
+
 }
