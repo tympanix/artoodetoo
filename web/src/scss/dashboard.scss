@@ -1,3 +1,7 @@
+.panel{
+  position: relative;
+}
+
 .panel-heading{
   min-height: 39px;
 
@@ -11,8 +15,9 @@
   }
 
   .panel-actions{
-    float: right;
-    margin: -10px -10px;
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 
   a{
