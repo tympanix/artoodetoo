@@ -10,9 +10,9 @@ interface ITask {
 
 export class Task implements ITask, Model {
   // Model properties
-  name: string
-  event: Unit
-  actions: Unit[]
+  name: string = ""
+  event: Unit = null
+  actions: Unit[] = []
 
   // State properties
   units: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)
