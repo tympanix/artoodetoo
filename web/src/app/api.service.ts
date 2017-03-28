@@ -38,6 +38,13 @@ export class ApiService {
     return Promise.reject(error.message || error);
   }
 
+  private handleResponse(): (res: Response) => boolean{
+    this.snackBar.open("Task has been deployed", "", {duration: 4000})
+    return function(res: Response): boolean{
+      return res.ok;
+    }
+  }
+
   createTask(task: Task): Observable<boolean> {
     return this.http.post("api/tasks", task.toJson(), this.options)
       .map((res: Response) => res.ok)
@@ -55,7 +62,7 @@ export class ApiService {
 
   runTask(task: Task): Observable<boolean> {
     return this.http.post("/api/tasks/" + task.name, {})
-      .map(res => res.ok)
+      .map(this.handleResponse())
       .catch(this.handleError)
   }
 
