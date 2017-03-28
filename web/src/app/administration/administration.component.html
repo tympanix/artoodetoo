@@ -37,13 +37,13 @@
           <div class="well">
             <h1 class="heading">Service Overview</h1>
 
-            <div class="panel panel-primary">
+            <div mdTooltip="You must unlock in order to get advanced features" mdTooltipPosition="right" class="panel panel-primary">
               <div class="panel-heading">
                 <h3 class="panel-title">Facebook</h3>
                 <a>Unclock</a>
               </div>
             </div>
-            <div class="panel panel-primary">
+            <div mdTooltip="You must unlock in order to get advanced features" mdTooltipPosition="right" class="panel panel-primary">
               <div class="panel-heading">
                 <h3 class="panel-title">Google</h3>
                 <a>Unclock</a>
@@ -71,7 +71,7 @@
             <div *ngFor="let task of tasks" class="panel panel-primary">
               <div class="panel-heading">
                 <h3 class="panel-title">{{task.name}}</h3>
-                <a routerLink="/administration/{{task.name}}"><i class="material-icons">settings</i></a>
+                <a mdTooltip="Edit {{task.name}}" mdTooltipPosition="above" routerLink="/administration/{{task.name}}"><i class="material-icons">settings</i></a>
               </div>
               <div class="panel-body">
                 <p>{{task.event.name}}
