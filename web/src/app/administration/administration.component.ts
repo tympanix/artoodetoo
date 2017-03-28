@@ -66,8 +66,11 @@ export class AdministrationComponent implements OnInit {
 
   openTaskDialog(){
     let dialogRef = this.dialog.open(TaskDialog);
+
     dialogRef.afterClosed().subscribe(name => {
-      console.log(name);
+      if(name != undefined && name != ""){
+        this.task = new Task({name: name})
+      }
     })
   }
 

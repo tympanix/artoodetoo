@@ -14,7 +14,7 @@
 
 
         <div *ngIf="task">
-          <unit [task]="task" [unit]="task.event"></unit>
+          <unit *ngIf="task.event" [task]="task" [unit]="task.event"></unit>
           <unit *ngFor="let unit of task.actions" [task]="task" [unit]="unit"></unit>
 
           <div class="center">
