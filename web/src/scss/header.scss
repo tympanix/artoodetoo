@@ -1,6 +1,13 @@
-.navbar .navbar-nav > li > .active , .navbar .navbar-nav > li > .active:hover, .navbar .navbar-nav > li > .active:focus {
-    color: $white;
+.navbar .navbar-nav > li {
+  > .active, > .active:hover, > .active:focus{
+    color: white;
+  }
+
+  a:focus{
+    background-color: transparent;
+  }
 }
+
 
 .navbar{
     background-image: linear-gradient(to bottom, $blue-light, $blue-dark);
