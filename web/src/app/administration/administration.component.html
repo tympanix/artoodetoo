@@ -4,16 +4,27 @@
     <!-- Task editor -->
     <main class="col-lg-9 col-md-12">
       <div class="well">
-        <h1 class="heading">Task Editor</h1>
+        <div class="row">
+          <div class="col-sm-6"><h1 class="heading">Task Editor</h1></div>
+
+          <div *ngIf="!task" class="col-sm-6">
+            <a class="btn btn-blue create-task" (click)="openTaskDialog()">Create Task</a>
+          </div>
+        </div>
+
+
         <div *ngIf="task">
           <unit [task]="task" [unit]="task.event"></unit>
           <unit *ngFor="let unit of task.actions" [task]="task" [unit]="unit"></unit>
+
+          <div class="center">
+            <a class="btn btn-blue" (click)="openUnitDialog()">Add Unit</a>
+            <a class="btn btn-red" (click)="updateTask()">Save</a>
+          </div>
         </div>
 
-        <div class="center">
-          <a class="btn btn-blue" (click)="openUnitDialog()">Add Unit</a>
-          <a class="btn btn-red" (click)="updateTask()">Save</a>
-        </div>
+
+
       </div>
     </main>
 

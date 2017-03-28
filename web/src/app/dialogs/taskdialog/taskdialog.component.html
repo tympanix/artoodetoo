@@ -1,0 +1,13 @@
+<h1 md-dialog-title>Add Unit</h1>
+<div md-dialog-content>
+    <form (ngSubmit)="createTask(taskname)">
+      <md-input-container class="full-width">
+        <input name="taskname" mdInput placeholder="Task Name" autocomplete="off" required
+           [(ngModel)]="taskname">
+      </md-input-container>
+    </form>
+</div>
+<div md-dialog-actions>
+  <button md-button (click)="createTask(taskname)">Add Unit</button>
+  <button md-button (click)="close()">Cancel</button>
+</div>
