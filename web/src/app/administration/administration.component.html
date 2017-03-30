@@ -7,23 +7,62 @@
         <div class="row">
           <div class="col-sm-6"><h1 class="heading">Task Editor</h1></div>
 
-          <div *ngIf="!task" class="col-sm-6">
-            <a class="btn btn-blue create-task" (click)="openTaskDialog()">Create Task</a>
+          <div class="col-sm-6">
+            <a *ngIf="!task" class="btn btn-blue task-util-button" (click)="openTaskDialog()">Create Task</a>
+            <a *ngIf="task && task.event" class="btn btn-red task-util-button" (click)="updateTask()">Save</a>
           </div>
+
         </div>
 
 
         <div *ngIf="task">
-          <unit *ngIf="task.event" [task]="task" [unit]="task.event"></unit>
-          <unit *ngFor="let unit of task.actions" [task]="task" [unit]="unit"></unit>
 
-          <div class="center">
-            <a class="btn btn-blue" (click)="openUnitDialog()">Add Unit</a>
-            <a class="btn btn-red" (click)="updateTask()">Save</a>
+          <!--
+          Event container
+          -->
+          <div class="event-container">
+            <div class="row">
+              <div class="col-sm-12"><h3>Event</h3></div>
+            </div>
+
+            <!-- Display if no Event is present -->
+            <div *ngIf="!task.event">
+              <p class="center">
+                Your task need an event to kick it off the ground. <br/>
+                Choose from a vararity of basic events or unlock more advanced
+                events by unlocking services in the Service Overview
+              </p>
+              <div class="center">
+                <a class="btn btn-blue" (click)="openUnitDialog()">Add Event</a>
+              </div>
+            </div>
+
+            <!-- Display event if one exists -->
+            <unit *ngIf="task.event" [task]="task" [unit]="task.event"></unit>
+          </div>
+
+          <!--
+          Actions container
+          -->
+          <div class="actions-container">
+            <div class="row">
+              <div class="col-sm-12"><h3>Actions</h3></div>
+            </div>
+
+            <p *ngIf="!task.actions" class="center">
+              Your task need an event to kick it off the ground. <br/>
+              Choose from a vararity of basic events or unlock more advanced
+              events by unlocking services in the Service Overview
+            </p>
+
+            <unit *ngFor="let unit of task.actions" [task]="task" [unit]="unit"></unit>
+
+            <div class="center">
+              <a class="btn btn-blue" (click)="openUnitDialog()">Add Unit</a>
+            </div>
+
           </div>
         </div>
-
-
 
       </div>
     </main>
