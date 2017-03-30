@@ -9,7 +9,7 @@
 
           <div class="col-sm-6">
             <a *ngIf="!task" class="btn btn-blue task-util-button" (click)="openTaskDialog()">Create Task</a>
-            <a *ngIf="task && task.event" class="btn btn-red task-util-button" (click)="updateTask()">Save</a>
+            <a *ngIf="task && task.event" routerLink="/dashboard/" class="btn btn-red task-util-button" (click)="updateTask()">Save</a>
           </div>
 
         </div>
@@ -28,7 +28,7 @@
             <!-- Display if no Event is present -->
             <div *ngIf="!task.event">
               <p class="center">
-                Your task need an event to kick it off the ground. <br/>
+                Your task need an <a (click)="openUnitDialog()">Event</a> to kick it off the ground. <br/>
                 Choose from a vararity of basic events or unlock more advanced
                 events by unlocking services in the Service Overview
               </p>
@@ -49,7 +49,7 @@
               <div class="col-sm-12"><h3>Actions</h3></div>
             </div>
 
-            <p *ngIf="!task.actions" class="center">
+            <p *ngIf="!task.actions.length" class="center">
               Your task need an event to kick it off the ground. <br/>
               Choose from a vararity of basic events or unlock more advanced
               events by unlocking services in the Service Overview
@@ -90,7 +90,7 @@
             </div>
             <div class="panel panel-primary">
               <div class="panel-heading">
-                <h3 class="panel-title">Mock Units</h3>
+                <h3 class="panel-title">Dummy Units</h3>
               </div>
               <div class="panel-body">
                 <div *ngFor="let unit of units">

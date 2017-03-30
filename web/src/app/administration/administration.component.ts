@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Task, Unit } from '../model';
 import { ApiService } from '../api.service';
+import { MdSnackBar } from '@angular/material';
 
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { UnitDialog } from '../dialogs/unitdialog/unitdialog.component';
@@ -18,7 +19,7 @@ export class AdministrationComponent implements OnInit {
   units: Unit[]
   task: Task
 
-  constructor(private api: ApiService, private route: ActivatedRoute, public dialog: MdDialog) {
+  constructor(private api: ApiService, private route: ActivatedRoute, public dialog: MdDialog, private snackBar: MdSnackBar) {
     api.units.subscribe((units) => this.units = units)
     api.tasks.subscribe((tasks) => this.tasks = tasks)
   }
@@ -46,6 +47,7 @@ export class AdministrationComponent implements OnInit {
 
   updateTask() {
     this.api.updateTask(this.task).subscribe()
+    this.snackBar.open(this.task.name + " has been saved", "", {duration: 4000})
   }
 
   test() {
