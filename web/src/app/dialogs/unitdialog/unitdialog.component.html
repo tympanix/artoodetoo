@@ -6,7 +6,7 @@
         <input name="unitsearch" mdInput placeholder="Search" autocomplete="off"
           (ngModelChange)="doSearch($event)" [(ngModel)]="search">
       </md-input-container>
-      <li *ngFor="let unit of filtered; let first = first" [ngClass]="{active: first && search}">
+      <li *ngFor="let unit of filtered; let first = first" (click)="addUnit(unit)" [ngClass]="{active: first && search}">
         <h4 class="unititem-header">{{unit.id}}</h4>
         <div class="unititem-desc">{{unit.description}}</div>
       </li>

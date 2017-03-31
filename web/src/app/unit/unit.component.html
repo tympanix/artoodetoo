@@ -27,7 +27,7 @@
     <div *ngIf="!unit.name">
       <form (ngSubmit)="changeUnitName(unitname)">
         <md-input-container class="full-width">
-          <input name="unitname" mdInput placeholder="Unit Name" autocomplete="off" required
+          <input name="unitname" mdInput placeholder="Unit Name" autocomplete="off" autofocus required
              [(ngModel)]="unitname">
         </md-input-container>
       </form>
@@ -62,7 +62,7 @@
       </div>
 
       <hr>
-      
+
       <div class="row">
         <div class="col-sm-12">
           <h4 class="bold">Output</h4>
