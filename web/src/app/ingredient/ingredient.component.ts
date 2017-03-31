@@ -39,4 +39,8 @@ export class IngredientComponent implements OnInit {
     console.log("Changed", this.source)
   }
 
+  typeToNumber() {
+    this.model.type = +this.model.type
+  }
+
 }

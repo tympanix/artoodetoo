@@ -2,14 +2,14 @@
 <div class="row" *ngIf="model != undefined">
 
     <!-- Choose variable or static input -->
-    <md-radio-group [(ngModel)]="model.type">
+    <md-radio-group [(ngModel)]="model.type" (ngModelChange)="typeToNumber()">
         <div class="col-lg-2">
-            <md-radio-button value="0">
+            <md-radio-button value=0>
                 Variable
             </md-radio-button>
         </div>
         <div class="col-lg-2">
-            <md-radio-button value="1">
+            <md-radio-button value=1>
                 Static
             </md-radio-button>
         </div>

@@ -27,6 +27,7 @@ export class AdministrationComponent implements OnInit {
   ngOnInit() {
     this.route.data.subscribe((data: {task: Task}) => {
       this.task = data.task
+      console.log("Task", data.task)
     })
   }
 
