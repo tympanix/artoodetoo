@@ -1,4 +1,5 @@
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Subject } from 'rxjs/Subject';
 import { Unit, IUnit } from './unit'
 import { Model } from './model'
 
@@ -45,7 +46,7 @@ export class Task implements ITask, Model {
     this.updateUnitList()
   }
 
-  private updateUnitList() {
+  updateUnitList() {
     let units: Unit[] = []
     this.event && units.push(this.event)
     this.actions.forEach(action => {
@@ -59,6 +60,7 @@ export class Task implements ITask, Model {
       this.event === undefined
     }
     this.actions = this.actions.filter(u => u !== unit)
+    this.updateUnitList()
   }
 
   private swapActions(indexFrom: number, indexTo: number) {
@@ -77,6 +79,11 @@ export class Task implements ITask, Model {
   moveUnitDown(unit: Unit) {
     let indexFrom = this.actions.indexOf(unit)
     this.swapActions(indexFrom, indexFrom + 1)
+  }
+
+  getSourceByName(name: string): Unit {
+    if (this.event && this.event.name == name) return this.event
+    return this.actions.find(unit => unit.name == name)
   }
 
 }

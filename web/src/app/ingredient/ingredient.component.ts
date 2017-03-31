@@ -18,8 +18,14 @@ export class IngredientComponent implements OnInit {
   constructor(private api: ApiService) { }
 
   ngOnInit() {
-    this.task.units.subscribe(units => this.sources = units)
+    this.task.units.subscribe(units => this.sources = this.filterUnits(units))
     this.changeSource(this.model.source)
+  }
+
+  private filterUnits(units: Unit[]): Unit[] {
+    return units.filter(unit =>
+      unit.name && unit.name.length > 0
+    )
   }
 
   changeSourceEvent(event) {
