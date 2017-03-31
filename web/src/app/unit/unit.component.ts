@@ -12,8 +12,8 @@ export class UnitComponent implements OnInit {
   @Input() task: Task
   @Input() unit: Unit;
 
-  model: boolean = true
-  model2: boolean = false
+  // Temporary placeholder when changing unit name
+  unitname: string = ""
 
   constructor(private api: ApiService) {}
 
@@ -29,6 +29,11 @@ export class UnitComponent implements OnInit {
 
   moveUp() {
     this.task.moveUnitUp(this.unit)
+  }
+
+  changeUnitName(name: string) {
+    this.unit.name = name
+    this.unitname = ""
   }
 
 }
