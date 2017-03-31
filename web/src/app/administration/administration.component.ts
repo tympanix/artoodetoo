@@ -48,7 +48,11 @@ export class AdministrationComponent implements OnInit {
 
   updateTask() {
     this.api.updateTask(this.task).subscribe()
-    this.snackBar.open(this.task.name + " has been saved", "", {duration: 4000, extraClasses: ["snackbar-success"]})
+    //this.snackBar.open(this.task.name + " has been saved", "", {duration: 4000, extraClasses: ["snackbar-success"]})
+  }
+
+  deleteTask(){
+    this.api.deleteTask(this.task).subscribe()
   }
 
   test() {

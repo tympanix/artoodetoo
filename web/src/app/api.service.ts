@@ -34,20 +34,17 @@ export class ApiService {
 
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error); // for demo purposes only
+    console.log(this);
     this.snackBar.open("Error", error.message || error, {duration: 4000})
     return Promise.reject(error.message || error);
   }
 
-  private handleResponse(): (res: Response) => boolean{
-    this.snackBar.open("Task has been deployed", "", {duration: 4000, extraClasses: ["snackbar-success"]})
-    return function(res: Response): boolean{
-      return res.ok;
-    }
-  }
-
   createTask(task: Task): Observable<boolean> {
     return this.http.post("api/tasks", task.toJson(), this.options)
-      .map((res: Response) => res.ok)
+      .map(res => res.ok)
+      .do(bool => {
+          this.snackBar.open(task.name + " has been created!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
+      })
       .catch(this.handleError)
   }
 
@@ -62,13 +59,19 @@ export class ApiService {
 
   runTask(task: Task): Observable<boolean> {
     return this.http.post("/api/tasks/" + task.name, {})
-      .map(this.handleResponse())
+      .map(res => res.ok)
+      .do(bool => {
+          this.snackBar.open(task.name + " has been deployed!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
+      })
       .catch(this.handleError)
   }
 
   updateTask(task: Task): Observable<boolean> {
     return this.http.put("/api/tasks", task.toJson(), this.options)
       .map(res => res.ok)
+      .do(bool => {
+          this.snackBar.open(task.name + " has been updated!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
+      })
       .catch(this.handleError)
   }
 
@@ -79,6 +82,15 @@ export class ApiService {
       .catch(this.handleError)
       .subscribe(units => this.units.next(units))
     return this.units
+  }
+
+  deleteTask(task: Task): Observable<boolean> {
+    return this.http.delete("api/tasks/" + task.name, {})
+      .map(res => res.ok)
+      .do(bool => {
+          this.snackBar.open(task.name + " has been deleted!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
+      })
+      .catch(this.handleError)
   }
 
 }

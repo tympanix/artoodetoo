@@ -70,11 +70,11 @@
 
         <div class="col-sm-12">
           <span *ngIf="!unit.output.length">
-            <a class="btn btn-raised btn-xs">No Output</a>
+            <a class="btn btn-default btn-xs">No Output</a>
           </span>
 
           <span *ngFor="let output of unit.output">
-            <a class="btn btn-raised btn-xs btn-red">{{output.name}}</a>
+            <a class="btn btn-xs btn-red">{{output.name}}</a>
           </span>
         </div>
       </div>

@@ -13,11 +13,11 @@
       </div>
     </div>
     <div class="panel-body">
-      <a class="btn btn-raised"><i class="type material-icons">notifications</i>{{task.event.name}}</a>
+      <a class="btn btn-default"><i class="type material-icons">notifications</i>{{task.event.name}}</a>
 
       <template ngFor let-action [ngForOf]="task.actions">
         <i class="next material-icons">arrow_forward</i>
-        <a class="btn btn-raised"><i class="type material-icons">computer</i>{{action.name}}</a>
+        <a class="btn btn-default"><i class="type material-icons">computer</i>{{action.name}}</a>
       </template>
 
     </div>
