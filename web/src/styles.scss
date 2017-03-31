@@ -5,12 +5,14 @@
 
 @import '~@angular/material/core/theming/prebuilt/pink-bluegrey';
 
+@import 'scss/util';
 @import 'scss/elements';
 @import 'scss/dashboard';
 @import 'scss/header';
 @import 'scss/administration';
 @import 'scss/forms';
 @import 'scss/unit';
+
 
 // Always show scroll bars
 html {

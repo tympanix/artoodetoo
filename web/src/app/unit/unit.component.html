@@ -27,6 +27,9 @@
     <div *ngIf="unit">
       <div class="row">
         <div class="col-sm-12">
+          <h4 class="bold">Input</h4>
+        </div>
+        <div class="col-sm-12">
           <!-- Unit doesn't take input -->
           <div *ngIf="!unit.input.length">
             <a class="btn btn-default btn-xs">No Input</a>
@@ -44,15 +47,24 @@
               <div class="col-lg-10" *ngFor="let ingr of input.recipe">
                 <ingredient [model]="ingr" [input]="input" [task]="task"></ingredient>
               </div>
+
             </div>
           </div>
         </div>
       </div>
+
+      <hr>
+      
       <div class="row">
+        <div class="col-sm-12">
+          <h4 class="bold">Output</h4>
+        </div>
+
         <div class="col-sm-12">
           <span *ngIf="!unit.output.length">
             <a class="btn btn-raised btn-xs">No Output</a>
           </span>
+
           <span *ngFor="let output of unit.output">
             <a class="btn btn-raised btn-xs btn-red">{{output.name}}</a>
           </span>

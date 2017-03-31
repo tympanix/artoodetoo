@@ -35,3 +35,12 @@ a:hover{
 .mat-dialog-container {
     background: $blue-light;
 }
+
+.snackbar-success{
+  background-color: $brand-success !important;
+}
+
+hr{
+  margin: 10px 0;
+  border-color: $blue-dark;
+}
