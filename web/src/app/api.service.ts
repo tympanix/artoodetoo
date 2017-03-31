@@ -39,7 +39,7 @@ export class ApiService {
   }
 
   private handleResponse(): (res: Response) => boolean{
-    this.snackBar.open("Task has been deployed", "", {duration: 40000, extraClasses: ["snackbar-success"]})
+    this.snackBar.open("Task has been deployed", "", {duration: 4000, extraClasses: ["snackbar-success"]})
     return function(res: Response): boolean{
       return res.ok;
     }
