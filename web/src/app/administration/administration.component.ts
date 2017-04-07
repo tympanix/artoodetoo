@@ -59,14 +59,23 @@ export class AdministrationComponent implements OnInit {
     console.log(this.task)
   }
 
-  openUnitDialog() {
+  openUnitDialog(type: string) {
     let dialogRef = this.dialog.open(UnitDialog, {
       height: '500px',
       width: '750px',
     });
     dialogRef.afterClosed().subscribe(unit => {
       if (unit) {
-        this.task.addAction(unit)
+        console.log(type);
+        switch(type){
+
+          case "event" :
+            this.task.event = unit;
+            break;
+          case "action":
+            this.task.addAction(unit);
+            break;
+        }
       }
     });
   }

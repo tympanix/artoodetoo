@@ -28,12 +28,12 @@
             <!-- Display if no Event is present -->
             <div *ngIf="!task.event">
               <p class="center">
-                Your task need an <a (click)="openUnitDialog()">Event</a> to kick it off the ground. <br/>
+                Your task need an <a (click)="openUnitDialog('event')">Event</a> to kick it off the ground. <br/>
                 Choose from a vararity of basic events or unlock more advanced
                 events by unlocking services in the Service Overview
               </p>
               <div class="center">
-                <a class="btn btn-blue" (click)="openUnitDialog()">Add Event</a>
+                <a class="btn btn-blue" (click)="openUnitDialog('event')">Add Event</a>
               </div>
             </div>
 
@@ -58,7 +58,7 @@
             <unit *ngFor="let unit of task.actions" [task]="task" [unit]="unit"></unit>
 
             <div class="center">
-              <a class="btn btn-blue" (click)="openUnitDialog()">Add Unit</a>
+              <a class="btn btn-blue" (click)="openUnitDialog('action')">Add Action</a>
             </div>
 
           </div>
@@ -112,14 +112,14 @@
                 <h3 class="panel-title">{{task.name}}</h3>
                 <a mdTooltip="Edit {{task.name}}" mdTooltipPosition="above" routerLink="/administration/{{task.name}}"><i class="material-icons">settings</i></a>
               </div>
-              <div class="panel-body">
+              <!-- <div class="panel-body">
                 <p>{{task.event.name}}
                   <template ngFor let-action [ngForOf]="task.actions">
                     <i class="next material-icons">arrow_forward</i>
                     {{action.name}}
                   </template>
                 </p>
-              </div>
+              </div> -->
             </div>
           </div>
         </aside>

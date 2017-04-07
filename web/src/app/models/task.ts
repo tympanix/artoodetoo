@@ -56,8 +56,9 @@ export class Task implements ITask, Model {
   }
 
   deleteUnit(unit: Unit) {
-    if (this.event === unit) {
-      this.event === undefined
+    console.log("Deleting unit: ", unit)
+    if (this.event.name === unit.name) {
+      this.event = null
     }
     this.actions = this.actions.filter(u => u !== unit)
     this.updateUnitList()
