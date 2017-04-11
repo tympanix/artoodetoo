@@ -38,11 +38,11 @@ func unitName(unit interface{}) string {
 
 // Unit wraps the elements of the application and extends it's functionality.
 type Unit struct {
-	ID     string   `json:"id"`
-	Name   string   `json:"name"`
-	Desc   string   `json:"description"`
-	In     []Input  `json:"input"`
-	Out    []Output `json:"output"`
+	ID     string    `json:"id"`
+	Name   string    `json:"name"`
+	Desc   string    `json:"description"`
+	In     []*Input  `json:"input"`
+	Out    []*Output `json:"output"`
 	action Action
 }
 
@@ -57,7 +57,7 @@ func (c *Unit) Input() interface{} {
 }
 
 // GetOutputByName returns the output field as a reflected value
-func (c *Unit) GetOutputByName(name string) (output Output, err error) {
+func (c *Unit) GetOutputByName(name string) (output *Output, err error) {
 	for _, output := range c.Out {
 		if output.Name == name {
 			return output, nil
@@ -68,7 +68,7 @@ func (c *Unit) GetOutputByName(name string) (output Output, err error) {
 }
 
 // GetInputByName returns the input field as a reflected value
-func (c *Unit) GetInputByName(name string) (input Input, err error) {
+func (c *Unit) GetInputByName(name string) (input *Input, err error) {
 	for _, input := range c.In {
 		if input.Name == name {
 			return input, nil
@@ -132,6 +132,10 @@ func (c *Unit) AssignInput(state state.State) error {
 
 		if !f.IsValid() || !f.CanSet() {
 			return fmt.Errorf("Could not set field ”%v” for unit ”%v”", input.Name, c.Name)
+		}
+
+		if len(input.Recipe) == 0 {
+			return fmt.Errorf("Missing recipe for field ”%s” of unit ”%s”", input.Name, c.Name)
 		}
 
 		ingredient := input.Recipe[0]
@@ -216,7 +220,7 @@ func (c *Unit) bindInput() error {
 		return fmt.Errorf("Unexpected number of inputs for unit %s", c.ID)
 	}
 	if len(input) == 0 {
-		c.In = make([]Input, 0)
+		c.In = make([]*Input, 0)
 		return nil
 	}
 	for _, in := range input {
@@ -224,7 +228,7 @@ func (c *Unit) bindInput() error {
 		if err != nil {
 			return err
 		}
-		if !in.Compatible(inn) {
+		if !in.Compatible(*inn) {
 			return fmt.Errorf("Input %s has incorrect type %s", inn.Name, inn.Type)
 		}
 		inn.field = in.field
@@ -238,7 +242,7 @@ func (c *Unit) bindOutput() error {
 		return fmt.Errorf("Unexpected number of output for unit %s", c.ID)
 	}
 	if len(output) == 0 {
-		c.Out = make([]Output, 0)
+		c.Out = make([]*Output, 0)
 		return nil
 	}
 	for _, out := range output {
@@ -246,7 +250,7 @@ func (c *Unit) bindOutput() error {
 		if err != nil {
 			return err
 		}
-		if !out.Compatible(outt) {
+		if !out.Compatible(*outt) {
 			return fmt.Errorf("Output %s has incorrect type %s", outt.Name, outt.Type)
 		}
 		outt.field = out.field

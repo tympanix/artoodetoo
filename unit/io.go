@@ -45,11 +45,11 @@ func (o Output) Compatible(oo Output) bool {
 	return o.Name == oo.Name && o.Type == oo.Type
 }
 
-func describeInput(obj interface{}) []Input {
-	var input []Input
+func describeInput(obj interface{}) []*Input {
+	var input []*Input
 
 	if obj == nil {
-		return make([]Input, 0)
+		return make([]*Input, 0)
 	}
 
 	s := reflect.ValueOf(obj)
@@ -65,17 +65,17 @@ func describeInput(obj interface{}) []Input {
 			Type:  f.Type().String(),
 			field: f,
 		}
-		input = append(input, in)
+		input = append(input, &in)
 	}
 
 	return input
 }
 
-func describeOutput(obj interface{}) []Output {
-	var output []Output
+func describeOutput(obj interface{}) []*Output {
+	var output []*Output
 
 	if obj == nil {
-		return make([]Output, 0)
+		return make([]*Output, 0)
 	}
 
 	s := reflect.ValueOf(obj)
@@ -91,7 +91,7 @@ func describeOutput(obj interface{}) []Output {
 			Type:  f.Type().String(),
 			field: f,
 		}
-		output = append(output, out)
+		output = append(output, &out)
 	}
 
 	return output
