@@ -8,8 +8,12 @@
           <div class="col-sm-6"><h1 class="heading">Task Editor</h1></div>
 
           <div class="col-sm-6">
+            <!--  Not in editor mode -->
             <a *ngIf="!task" class="btn btn-blue task-util-button" (click)="openTaskDialog()">Create Task</a>
+
+            <!-- In editor mode -->  
             <a *ngIf="task && task.event" routerLink="/dashboard/" class="btn btn-red task-util-button" (click)="updateTask()">Save</a>
+            <a *ngIf="task" routerLink="/administration/" class="btn btn-default task-util-button">Cancel</a>
           </div>
 
         </div>
@@ -112,14 +116,14 @@
                 <h3 class="panel-title">{{task.name}}</h3>
                 <a mdTooltip="Edit {{task.name}}" mdTooltipPosition="above" routerLink="/administration/{{task.name}}"><i class="material-icons">settings</i></a>
               </div>
-              <!-- <div class="panel-body">
+              <div class="panel-body">
                 <p>{{task.event.name}}
                   <template ngFor let-action [ngForOf]="task.actions">
                     <i class="next material-icons">arrow_forward</i>
                     {{action.name}}
                   </template>
                 </p>
-              </div> -->
+              </div>
             </div>
           </div>
         </aside>

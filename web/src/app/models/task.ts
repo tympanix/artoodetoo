@@ -2,6 +2,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Subject } from 'rxjs/Subject';
 import { Unit, IUnit } from './unit'
 import { Model } from './model'
+import * as _ from "lodash";
 
 interface ITask {
   name: string
@@ -31,6 +32,11 @@ export class Task implements ITask, Model {
     task.actions = model.actions.map(action => Unit.fromJson(action))
     task.updateUnitList()
     return task
+  }
+
+  copy(): Task {
+    let copy = _.cloneDeep(this)
+    return copy
   }
 
   public toJson(): ITask {
