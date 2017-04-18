@@ -11,7 +11,7 @@
             <!--  Not in editor mode -->
             <a *ngIf="!task" class="btn btn-blue task-util-button" (click)="openTaskDialog()">Create Task</a>
 
-            <!-- In editor mode -->  
+            <!-- In editor mode -->
             <a *ngIf="task && task.event" routerLink="/dashboard/" class="btn btn-red task-util-button" (click)="updateTask()">Save</a>
             <a *ngIf="task" routerLink="/administration/" class="btn btn-default task-util-button">Cancel</a>
           </div>
@@ -30,19 +30,30 @@
             </div>
 
             <!-- Display if no Event is present -->
-            <div *ngIf="!task.event">
-              <p class="center">
-                Your task need an <a (click)="openUnitDialog('event')">Event</a> to kick it off the ground. <br/>
-                Choose from a vararity of basic events or unlock more advanced
-                events by unlocking services in the Service Overview
-              </p>
+            <p class="center">
+              Choose if you want to start your task manually, or if an Event should kick it off. <br/>
+              Choose from a vararity of basic events or unlock more advanced
+              events by unlocking services in the Service Overview
+            </p>
+
+            <div class="row">
+              <md-radio-group [(ngModel)]="eventType">
+                <div class="center">
+                  <md-radio-button value=0>Manual</md-radio-button>
+                  <md-radio-button value=1>Event</md-radio-button>
+                </div>
+              </md-radio-group>
+            </div>
+
+
+            <div *ngIf="eventType==1">
+              <unit *ngIf="task.event" [task]="task" [unit]="task.event"></unit>
+
               <div class="center">
-                <a class="btn btn-blue" (click)="openUnitDialog('event')">Add Event</a>
+                <a class="btn btn-blue" (click)="openUnitDialog('event')">Choose Event</a>
               </div>
             </div>
 
-            <!-- Display event if one exists -->
-            <unit *ngIf="task.event" [task]="task" [unit]="task.event"></unit>
           </div>
 
           <!--

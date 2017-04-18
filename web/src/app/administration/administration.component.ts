@@ -19,6 +19,10 @@ export class AdministrationComponent implements OnInit {
   units: Unit[]
   task: Task
 
+  // Refactor this into event model later
+  eventType: number
+
+
   constructor(private api: ApiService, private route: ActivatedRoute, public dialog: MdDialog, private snackBar: MdSnackBar) {
     api.units.subscribe((units) => this.units = units)
     api.tasks.subscribe((tasks) => this.tasks = tasks)
