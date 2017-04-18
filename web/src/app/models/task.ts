@@ -8,6 +8,7 @@ interface ITask {
   name: string
   event: IUnit
   actions: IUnit[]
+  // running: boolean
 }
 
 export class Task implements ITask, Model {
@@ -15,6 +16,7 @@ export class Task implements ITask, Model {
   name: string = ""
   event: Unit = null
   actions: Unit[] = []
+  running: boolean = false
 
   // State properties
   units: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)

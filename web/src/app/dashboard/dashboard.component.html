@@ -8,7 +8,11 @@
         <div class="col-sm-12">
           <h2>{{task.name}}</h2>
           <a routerLink="/administration/{{task.name}}" mdTooltip="Edit {{task.name}}" mdTooltipPosition="above"><i class="material-icons">settings</i></a>
-          <a (click)="runTask(task)" mdTooltip="Run Task" mdTooltipPosition="above"><i class="material-icons">play_arrow</i></a>
+
+          <!-- Start / Stop task -->
+          <a *ngIf="!task.running" (click)="runTask(task)" mdTooltip="Run Task" mdTooltipPosition="above"><i class="material-icons">play_arrow</i></a>
+          <a *ngIf="task.running" (click)="stopTask(task)" mdTooltip="Stop Task" mdTooltipPosition="above"><i class="material-icons">stop</i></a>
+
         </div>
       </div>
     </div>
