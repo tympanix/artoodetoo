@@ -6,7 +6,7 @@
     <div class="panel-heading">
       <div class="row">
         <div class="col-sm-12">
-          <h2>{{task.name}}</h2>
+          <h2>{{task.name}}<small *ngIf="task.running" class="text-success"> - Running</small></h2>
           <a routerLink="/administration/{{task.name}}" mdTooltip="Edit {{task.name}}" mdTooltipPosition="above"><i class="material-icons">settings</i></a>
 
           <!-- Start / Stop task -->
