@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Task, Unit } from '../model';
+import { Task, Unit, Event } from '../model';
 import { ApiService } from '../api.service';
 import { MdSnackBar } from '@angular/material';
 
@@ -18,10 +18,7 @@ export class AdministrationComponent implements OnInit {
   tasks: Task[]
   units: Unit[]
   task: Task
-
-  // Refactor this into event model later
-  eventType: number
-
+  event: Event
 
   constructor(private api: ApiService, private route: ActivatedRoute, public dialog: MdDialog, private snackBar: MdSnackBar) {
     api.units.subscribe((units) => this.units = units)
@@ -35,6 +32,7 @@ export class AdministrationComponent implements OnInit {
       }
       console.log("Task", data.task)
     })
+    this.event = new Event();
   }
 
   // Return units with an input type mathcing the given argument

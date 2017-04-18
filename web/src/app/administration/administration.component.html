@@ -37,7 +37,7 @@
             </p>
 
             <div class="row">
-              <md-radio-group [(ngModel)]="eventType">
+              <md-radio-group [(ngModel)]="event.type">
                 <div class="center">
                   <md-radio-button value=0>Manual</md-radio-button>
                   <md-radio-button value=1>Event</md-radio-button>
@@ -46,7 +46,7 @@
             </div>
 
 
-            <div *ngIf="eventType==1">
+            <div *ngIf="event.type==1">
               <unit *ngIf="task.event" [task]="task" [unit]="task.event"></unit>
 
               <div class="center">
