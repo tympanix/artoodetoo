@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 
+	"github.com/Tympanix/automato/event"
 	"github.com/Tympanix/automato/task"
 )
 
@@ -17,6 +18,8 @@ type Store interface {
 	DeleteTask(*task.Task) error
 	UpdateTask(*task.Task) error
 	GetAllTasks() ([]*task.Task, error)
+	GetAllEvents() ([]event.Event, error)
+	SaveEvent(event.Event) error
 }
 
 // Register sets a new Store as the current storage method
@@ -45,6 +48,14 @@ func Load() int {
 		}
 	}
 	return len(tasks)
+}
+
+// SaveEvent saves an event in the storage manager
+func SaveEvent(event event.Event) error {
+	if err := hasDriver(); err != nil {
+		return err
+	}
+	return Driver.SaveEvent(event)
 }
 
 // GetAllTasks returns all tasks saved in the storage manager

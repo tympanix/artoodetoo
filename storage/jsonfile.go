@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/Tympanix/automato/event"
 	"github.com/Tympanix/automato/task"
 )
 
@@ -14,23 +15,38 @@ const fileMode = 0666
 
 // JSONFile is a store implementation that saves tasks consistently to a json file
 type JSONFile struct {
-	path  string
-	Tasks []*task.Task `json:"tasks"`
+	path   string
+	Tasks  []*task.Task  `json:"tasks"`
+	Events []event.Event `json:"events"`
 }
 
 // NewJSONFile creates a new json file storage type
-func NewJSONFile(filepath string) (json *JSONFile, err error) {
-	json = &JSONFile{
+func NewJSONFile(filepath string) (j *JSONFile, err error) {
+	j = &JSONFile{
 		path: filepath,
 	}
-	if json.missing() {
+
+	var file *os.File
+	defer file.Close()
+
+	if j.missing() {
 		log.Println("Creating new json file")
-		var file *os.File
-		file, err = json.create()
+		file, err = j.create()
 		if err != nil {
 			return
 		}
-		defer file.Close()
+	} else {
+		file, err = j.open()
+		if err != nil {
+			return
+		}
+	}
+
+	decoder := json.NewDecoder(file)
+	if err := decoder.Decode(j); err != nil {
+		if err != io.EOF {
+			log.Fatal(err)
+		}
 	}
 	return
 }
@@ -60,6 +76,31 @@ func (j *JSONFile) SaveTask(task *task.Task) error {
 	return nil
 }
 
+func (j *JSONFile) eventExists(event event.Event) bool {
+	for _, e := range j.Events {
+		if e == event || e.ID() == event.ID() {
+			return true
+		}
+	}
+	return false
+}
+
+func (j *JSONFile) appendEvent(event event.Event) {
+	j.Events = append(j.Events, event)
+}
+
+// SaveEvent saves an event in the json file
+func (j *JSONFile) SaveEvent(event event.Event) error {
+	if j.eventExists(event) {
+		return errors.New("Event could not be saved, already exists in json file")
+	}
+	j.appendEvent(event)
+	if err := j.write(); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (j *JSONFile) write() error {
 	file, err := j.create()
 	defer file.Close()
@@ -72,20 +113,14 @@ func (j *JSONFile) write() error {
 	return nil
 }
 
-// GetAllTasks loads all tasks stored in the json file and returns them
+// GetAllTasks returns all tasks loaded from the json file
 func (j *JSONFile) GetAllTasks() ([]*task.Task, error) {
-	file, err := j.open()
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-	decoder := json.NewDecoder(file)
-	if err := decoder.Decode(j); err != nil {
-		if err != io.EOF {
-			log.Fatal(err)
-		}
-	}
 	return j.Tasks, nil
+}
+
+// GetAllEvents returns all events loaded from the json file
+func (j *JSONFile) GetAllEvents() ([]event.Event, error) {
+	return j.Events, nil
 }
 
 // DeleteTask deletes a task from the json file

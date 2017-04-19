@@ -9,6 +9,7 @@ import (
 	"github.com/Tympanix/automato/storage"
 
 	_ "github.com/Tympanix/automato/example"
+	_ "github.com/Tympanix/automato/service/cron"
 )
 
 const (
