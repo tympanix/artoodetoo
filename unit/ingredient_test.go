@@ -10,10 +10,9 @@ import (
 
 func TestIngredientVariableNameNotString(t *testing.T) {
 	ingredient := unit.Ingredient{
-		Type:     unit.IngredientVar,
-		Argument: "myArgument",
-		Source:   "mySourceEvent",
-		Value:    42, /* Oops */
+		Type:   unit.IngredientVar,
+		Source: "mySourceEvent",
+		Value:  42, /* Oops */
 	}
 
 	state := state.New()
@@ -23,10 +22,9 @@ func TestIngredientVariableNameNotString(t *testing.T) {
 
 func TestIngredientWrongType(t *testing.T) {
 	ingredient := unit.Ingredient{
-		Type:     42,
-		Argument: "...",
-		Source:   "...",
-		Value:    "...",
+		Type:   42,
+		Source: "...",
+		Value:  "...",
 	}
 
 	state := state.New()
