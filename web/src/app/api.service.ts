@@ -66,6 +66,10 @@ export class ApiService {
       .catch(this.handleError)
   }
 
+  stopTask(task: Task){
+    // To be filled
+  }
+
   updateTask(task: Task): Observable<boolean> {
     return this.http.put("/api/tasks", task.toJson(), this.options)
       .map(res => res.ok)

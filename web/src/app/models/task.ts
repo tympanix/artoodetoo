@@ -2,11 +2,13 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Subject } from 'rxjs/Subject';
 import { Unit, IUnit } from './unit'
 import { Model } from './model'
+import * as _ from "lodash";
 
 interface ITask {
   name: string
   event: IUnit
   actions: IUnit[]
+  // running: boolean
 }
 
 export class Task implements ITask, Model {
@@ -14,6 +16,7 @@ export class Task implements ITask, Model {
   name: string = ""
   event: Unit = null
   actions: Unit[] = []
+  running: boolean = false
 
   // State properties
   units: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)
@@ -31,6 +34,11 @@ export class Task implements ITask, Model {
     task.actions = model.actions.map(action => Unit.fromJson(action))
     task.updateUnitList()
     return task
+  }
+
+  copy(): Task {
+    let copy = _.cloneDeep(this)
+    return copy
   }
 
   public toJson(): ITask {

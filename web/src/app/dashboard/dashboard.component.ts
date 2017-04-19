@@ -20,6 +20,17 @@ export class DashboardComponent implements OnInit {
   runTask(task: Task) {
     console.log("Running", task.name)
     this.api.runTask(task).subscribe()
+
+    console.log("Remove after refactor")
+    task.running = true
+  }
+
+  stopTask(task: Task){
+    console.log("Stopping", task.name)
+    this.api.stopTask(task)
+
+    console.log("Remove after refactor")
+    task.running = false
   }
 
 }
