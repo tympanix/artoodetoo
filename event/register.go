@@ -3,14 +3,20 @@ package event
 import "errors"
 
 // Templates containes sample events as a preview to the user
-var Templates []Event
+var Templates map[string]Event
 
 // Events contains the registered events in the application
 var Events map[string]Event
 
+func init() {
+	Templates = make(map[string]Event)
+	Events = make(map[string]Event)
+}
+
 // Register registers events as templates for the user
 func Register(event Event) {
-	Templates = append(Templates, event)
+	newEvent := New(event)
+	Templates[newEvent.Type()] = newEvent
 }
 
 // AddEvent adds an event to the application
