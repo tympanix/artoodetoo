@@ -57,11 +57,12 @@ func UnmarshalJSON(data []byte) (Event, error) {
 // Base is a struct used for subtyping to implement different events
 // for the application
 type Base struct {
-	id        string
+	Identity  string       `json:"id"`
 	Observers []*task.Task `json:"-"`
 	Event     string       `json:"event"`
 }
 
+// New takes an event and applies its type. The same event is returned.
 func New(event Event) Event {
 	event.setEvent(eventType(event))
 	return event
@@ -79,6 +80,7 @@ func (e *Base) setEvent(event string) {
 	e.Event = event
 }
 
+// Type returns the type of the event as a string representation
 func (e *Base) Type() string {
 	return e.Event
 }
@@ -90,7 +92,7 @@ func (e *Base) Subscribe(task *task.Task) {
 
 // ID returns the unique id for the event
 func (e *Base) ID() string {
-	return e.id
+	return e.Identity
 }
 
 func (e *Base) findObserverIndex(task *task.Task) (int, error) {

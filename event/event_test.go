@@ -43,10 +43,3 @@ func TestEventMarshal(t *testing.T) {
 	assert.NotEqual(t, event.Templates[cron.Type()], cron)
 
 }
-
-func TestEventType(t *testing.T) {
-	//e := cron.Cron{}
-
-	//fmt.Println(e.ID())
-
-}

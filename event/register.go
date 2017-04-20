@@ -22,7 +22,7 @@ func Register(event Event) {
 // AddEvent adds an event to the application
 func AddEvent(event Event) error {
 	_, found := Events[event.ID()]
-	if !found {
+	if found {
 		return errors.New("Event with that id already exists")
 	}
 	Events[event.ID()] = event

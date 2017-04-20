@@ -36,18 +36,29 @@ func SaveTask(task *task.Task) error {
 }
 
 // Load loads the saved tasks and registers them into the application
-func Load() int {
+func Load() (int, int) {
 	tasks, err := GetAllTasks()
 	if err != nil {
 		log.Fatal(err)
 	}
 	for _, t := range tasks {
-		err := task.Register(t)
+		err = task.Register(t)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
-	return len(tasks)
+
+	events, err := GetAllEvents()
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, e := range events {
+		err := event.AddEvent(e)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	return len(tasks), len(events)
 }
 
 // SaveEvent saves an event in the storage manager
@@ -64,6 +75,14 @@ func GetAllTasks() ([]*task.Task, error) {
 		return nil, err
 	}
 	return Driver.GetAllTasks()
+}
+
+// GetAllEvents returns all events saved in the storage manager
+func GetAllEvents() ([]event.Event, error) {
+	if err := hasDriver(); err != nil {
+		return nil, err
+	}
+	return Driver.GetAllEvents()
 }
 
 // DeleteTask uses the current storage manager to delete a task

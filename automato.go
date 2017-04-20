@@ -43,6 +43,7 @@ func initStorage() {
 		log.Fatal(err)
 	}
 	storage.Register(json)
-	loaded := storage.Load()
-	log.Printf("Loaded %d tasks\n", loaded)
+	tasks, events := storage.Load()
+	log.Printf("Loaded %d task(s)\n", tasks)
+	log.Printf("Loaded %d event(s)\n", events)
 }
