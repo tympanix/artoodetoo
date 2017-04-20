@@ -5,6 +5,7 @@ import (
 	"github.com/robfig/cron"
 )
 
+// Cron is an event which triggers on specefic time intervals
 type Cron struct {
 	event.Base
 	Cron *cron.Cron `json:"-"`
@@ -15,9 +16,12 @@ func init() {
 	event.Register(&Cron{})
 }
 
+// Listen starts the cronjob
 func (c *Cron) Listen() error {
 	c.Cron = cron.New()
-	c.Cron.AddFunc(c.Time, c.Trigger)
+	if err := c.Cron.AddFunc(c.Time, c.Trigger); err != nil {
+		return err
+	}
 	c.Cron.Start()
 	return nil
 }

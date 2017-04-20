@@ -1,6 +1,9 @@
 package event
 
-import "errors"
+import (
+	"errors"
+	"log"
+)
 
 // Templates containes sample events as a preview to the user
 var Templates map[string]Event
@@ -26,6 +29,11 @@ func AddEvent(event Event) error {
 		return errors.New("Event with that id already exists")
 	}
 	Events[event.ID()] = event
+
+	err := event.Listen()
+	if err != nil {
+		log.Println(err)
+	}
 	return nil
 }
 

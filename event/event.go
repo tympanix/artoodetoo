@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"reflect"
 
 	"github.com/Tympanix/automato/task"
@@ -110,6 +111,7 @@ func (e *Base) removeObserver(index int) {
 
 // Trigger exectures all the subscribed tasks for this event
 func (e *Base) Trigger() {
+	log.Printf("Triggered event %s\n", e.Event)
 	for _, task := range e.Observers {
 		task.Run()
 	}
