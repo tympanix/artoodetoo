@@ -5,6 +5,11 @@ import (
 	"reflect"
 )
 
+type IO interface {
+	Input() interface{}
+	Output() interface{}
+}
+
 // Input describes the type of input and the ingredients used
 type Input struct {
 	Name   string       `json:"name"`

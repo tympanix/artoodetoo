@@ -11,13 +11,13 @@ func init() {
 // to make it public for use by the web app
 func Register(action Action) {
 	unit := NewUnit(action)
-	Units[unit.ID] = unit
+	Units[unit.Type()] = unit
 }
 
 // Unregister removes an action from the application
 func Unregister(action Action) {
 	unit := NewUnit(action)
-	delete(Units, unit.ID)
+	delete(Units, unit.Type())
 }
 
 // GetActionByID returns the underlying action for the unit identified by id

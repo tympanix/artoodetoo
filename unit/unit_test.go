@@ -16,14 +16,16 @@ func TestUnitConstructor(t *testing.T) {
 	event := &example.PersonEvent{}
 	unit := unit.NewUnit(event)
 
-	expectedID := "example.PersonEvent"
+	expectedType := "example.PersonEvent"
 	name := "MyFirstTask"
 
-	assert.Equal(t, unit.ID, expectedID)
-	assert.Equal(t, unit.SetName(name).Name, name)
+	unit.SetName(name)
+
+	assert.Equal(t, unit.Type(), expectedType)
+	assert.Equal(t, unit.Name, name)
 	assert.Equal(t, unit.Input(), event.Input())
 	assert.Equal(t, unit.Output(), event.Output())
-	assert.Equal(t, unit.String(), expectedID)
+	assert.Equal(t, unit.String(), expectedType)
 }
 
 func TestUnitAddIngredient(t *testing.T) {
@@ -244,7 +246,7 @@ func TestUnitValidateNoMeta(t *testing.T) {
 	email := &example.EmailAction{}
 	u := unit.NewUnit(email)
 	u.SetName("MyEmail")
-	u.ID = "BlahBlah" // Oops!
+	u.Identity = "BlahBlah" // Oops!
 
 	err := u.Validate()
 	assert.ErrorContains(t, err, "Unit", "not", "valid")
