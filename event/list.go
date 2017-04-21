@@ -3,7 +3,7 @@ package event
 import "encoding/json"
 
 // List is a list of events that supports JSON serialization
-type List []Event
+type List []*Event
 
 // UnmarshalJSON uses reflection to determine the actual type of each event
 func (l *List) UnmarshalJSON(data []byte) error {
@@ -13,7 +13,7 @@ func (l *List) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	var events []Event
+	var events []*Event
 	for _, raw := range rawEvents {
 		event, err := UnmarshalJSON([]byte(*raw))
 		if err != nil {

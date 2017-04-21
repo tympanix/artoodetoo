@@ -7,24 +7,61 @@ import (
 	"log"
 	"reflect"
 
+	"github.com/Tympanix/automato/generate"
+	"github.com/Tympanix/automato/subject"
 	"github.com/Tympanix/automato/types"
 )
 
-// Event is an interface for types that can listen on events
-type Event interface {
-	Listen() error
-	ID() string
-	Type() string
-	setEvent(event string)
+// Trigger is an interfaces which describes the implementations needed for an event
+type Trigger interface {
+	types.IO
+	types.Eventable
+	Describe() string
+}
+
+// Event is a type which is used to trigger tasks
+type Event struct {
+	subject.Subject
+	event types.Eventable
+	UUID  string `json:"uuid"`
+	Desc  string `json:"description"`
+}
+
+// Listen starts listening for events
+func (e *Event) Listen() error {
+	return e.event.Listen()
+}
+
+// ID returns the unique id of the event
+func (e *Event) ID() string {
+	return e.UUID
+}
+
+// Base is a struct used for subtyping to implement different events
+// for the application
+type Base struct {
+	Identity  string           `json:"id"`
+	Observers []types.Runnable `json:"-"`
+	Event     string           `json:"event"`
+}
+
+// New takes an event and applies its type. The same event is returned.
+func New(event Trigger) *Event {
+	return &Event{
+		Subject: *subject.New(event),
+		event:   event,
+		UUID:    generate.NewUUID(12),
+		Desc:    event.Describe(),
+	}
 }
 
 // UnmarshalJSON takes a byte array and uses type assertion to determine the type
 // of event that was passed
-func UnmarshalJSON(data []byte) (Event, error) {
+func UnmarshalJSON(data []byte) (*Event, error) {
 	m := make(map[string]interface{})
 	json.Unmarshal(data, &m)
 
-	eventString, ok := m["event"].(string)
+	eventString, ok := m["id"].(string)
 
 	if !ok {
 		return nil, errors.New("Could not parse event, no event type set")
@@ -52,21 +89,7 @@ func UnmarshalJSON(data []byte) (Event, error) {
 
 	err := json.Unmarshal(data, &newEvent)
 
-	return newEvent, err
-}
-
-// Base is a struct used for subtyping to implement different events
-// for the application
-type Base struct {
-	Identity  string           `json:"id"`
-	Observers []types.Runnable `json:"-"`
-	Event     string           `json:"event"`
-}
-
-// New takes an event and applies its type. The same event is returned.
-func New(event Event) Event {
-	event.setEvent(eventType(event))
-	return event
+	return &newEvent, err
 }
 
 func eventType(unit interface{}) string {

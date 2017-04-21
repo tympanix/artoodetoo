@@ -8,7 +8,7 @@ import (
 )
 
 // AddEvent adds a new event to application and saves it to storage
-func AddEvent(t event.Event) error {
+func AddEvent(t *event.Event) error {
 	if err := event.AddEvent(t); err != nil {
 		return err
 	}
@@ -20,8 +20,8 @@ func AddEvent(t event.Event) error {
 }
 
 // AllEventTemplates returns all available events in the application
-func AllEventTemplates() []event.Event {
-	events := make([]event.Event, len(event.Templates))
+func AllEventTemplates() []*event.Event {
+	events := make([]*event.Event, len(event.Templates))
 	idx := 0
 	for _, v := range event.Templates {
 		events[idx] = v
@@ -32,13 +32,12 @@ func AllEventTemplates() []event.Event {
 }
 
 // AllEvents returns all user created events in the application
-func AllEvents() []event.Event {
-	events := make([]event.Event, len(event.Events))
+func AllEvents() []*event.Event {
+	events := make([]*event.Event, len(event.Events))
 	idx := 0
 	for _, v := range event.Events {
 		events[idx] = v
 		idx++
 	}
-	log.Println(events)
 	return events
 }

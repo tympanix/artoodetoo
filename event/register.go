@@ -6,24 +6,24 @@ import (
 )
 
 // Templates containes sample events as a preview to the user
-var Templates map[string]Event
+var Templates map[string]*Event
 
 // Events contains the registered events in the application
-var Events map[string]Event
+var Events map[string]*Event
 
 func init() {
-	Templates = make(map[string]Event)
-	Events = make(map[string]Event)
+	Templates = make(map[string]*Event)
+	Events = make(map[string]*Event)
 }
 
 // Register registers events as templates for the user
-func Register(event Event) {
-	newEvent := New(event)
+func Register(trigger Trigger) {
+	newEvent := New(trigger)
 	Templates[newEvent.Type()] = newEvent
 }
 
 // AddEvent adds an event to the application
-func AddEvent(event Event) error {
+func AddEvent(event *Event) error {
 	_, found := Events[event.ID()]
 	if found {
 		return errors.New("Event with that id already exists")
@@ -38,6 +38,6 @@ func AddEvent(event Event) error {
 }
 
 // RemoveEvent removes an evenet from the application
-func RemoveEvent(event Event) {
+func RemoveEvent(event *Event) {
 	delete(Events, event.ID())
 }

@@ -18,8 +18,8 @@ type Store interface {
 	DeleteTask(*task.Task) error
 	UpdateTask(*task.Task) error
 	GetAllTasks() ([]*task.Task, error)
-	GetAllEvents() ([]event.Event, error)
-	SaveEvent(event.Event) error
+	GetAllEvents() ([]*event.Event, error)
+	SaveEvent(*event.Event) error
 }
 
 // Register sets a new Store as the current storage method
@@ -62,7 +62,7 @@ func Load() (int, int) {
 }
 
 // SaveEvent saves an event in the storage manager
-func SaveEvent(event event.Event) error {
+func SaveEvent(event *event.Event) error {
 	if err := hasDriver(); err != nil {
 		return err
 	}
@@ -78,7 +78,7 @@ func GetAllTasks() ([]*task.Task, error) {
 }
 
 // GetAllEvents returns all events saved in the storage manager
-func GetAllEvents() ([]event.Event, error) {
+func GetAllEvents() ([]*event.Event, error) {
 	if err := hasDriver(); err != nil {
 		return nil, err
 	}

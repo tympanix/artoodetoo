@@ -4,7 +4,7 @@ package types
 type Eventable interface {
 	Listen() error
 	Subscribe(Runnable)
-	Unsubscribe(Runnable)
+	Unsubscribe(Runnable) error
 }
 
 // Runnable is a type which can run certain tasks

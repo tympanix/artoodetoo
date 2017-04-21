@@ -76,7 +76,7 @@ func (j *JSONFile) SaveTask(task *task.Task) error {
 	return nil
 }
 
-func (j *JSONFile) eventExists(event event.Event) bool {
+func (j *JSONFile) eventExists(event *event.Event) bool {
 	for _, e := range j.Events {
 		if e == event || e.ID() == event.ID() {
 			return true
@@ -85,12 +85,12 @@ func (j *JSONFile) eventExists(event event.Event) bool {
 	return false
 }
 
-func (j *JSONFile) appendEvent(event event.Event) {
+func (j *JSONFile) appendEvent(event *event.Event) {
 	j.Events = append(j.Events, event)
 }
 
 // SaveEvent saves an event in the json file
-func (j *JSONFile) SaveEvent(event event.Event) error {
+func (j *JSONFile) SaveEvent(event *event.Event) error {
 	if j.eventExists(event) {
 		return errors.New("Event could not be saved, already exists in json file")
 	}
@@ -119,7 +119,7 @@ func (j *JSONFile) GetAllTasks() ([]*task.Task, error) {
 }
 
 // GetAllEvents returns all events loaded from the json file
-func (j *JSONFile) GetAllEvents() ([]event.Event, error) {
+func (j *JSONFile) GetAllEvents() ([]*event.Event, error) {
 	return j.Events, nil
 }
 
