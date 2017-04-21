@@ -57,35 +57,6 @@ func New(trigger Trigger) *Event {
 
 // UnmarshalJSON serialized an event fron json encoding
 func (e *Event) UnmarshalJSON(data []byte) error {
-	m := make(map[string]interface{})
-	json.Unmarshal(data, &m)
-
-	eventString, ok := m["id"].(string)
-
-	if !ok {
-		return errors.New("Could not parse event, no event type set")
-	}
-
-	eventTemplate, ok := Templates[eventString]
-
-	if !ok {
-		return fmt.Errorf("Event ”%s” is not a registered event type", eventString)
-	}
-
-	t := reflect.ValueOf(eventTemplate.trigger)
-	if t.Kind() == reflect.Ptr {
-		t = t.Elem()
-	}
-
-	log.Println(t.Type())
-
-	newEventInterface := reflect.New(t.Type()).Interface()
-	newTrigger, ok := newEventInterface.(Trigger)
-
-	if !ok {
-		return fmt.Errorf("Internal error while parsing event")
-	}
-
 	type event Event
 	var newEvent event
 	if err := json.Unmarshal(data, &newEvent); err != nil {
@@ -93,6 +64,24 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 	}
 
 	*e = Event(newEvent)
+
+	eventTemplate, ok := Templates[e.Type()]
+
+	if !ok {
+		return fmt.Errorf("Event ”%s” is not a registered event type", e.Type())
+	}
+
+	t := reflect.ValueOf(eventTemplate.trigger)
+	if t.Kind() == reflect.Ptr {
+		t = t.Elem()
+	}
+
+	newEventInterface := reflect.New(t.Type()).Interface()
+	newTrigger, ok := newEventInterface.(Trigger)
+
+	if !ok {
+		return fmt.Errorf("Internal error while parsing event")
+	}
 
 	if err := newEvent.BindIO(newTrigger); err != nil {
 		return err
