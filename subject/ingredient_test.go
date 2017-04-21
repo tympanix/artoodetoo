@@ -1,16 +1,16 @@
-package unit_test
+package subject_test
 
 import (
 	"testing"
 
 	"github.com/Tympanix/automato/assert"
 	"github.com/Tympanix/automato/state"
-	"github.com/Tympanix/automato/unit"
+	"github.com/Tympanix/automato/subject"
 )
 
 func TestIngredientVariableNameNotString(t *testing.T) {
-	ingredient := unit.Ingredient{
-		Type:   unit.IngredientVar,
+	ingredient := subject.Ingredient{
+		Type:   subject.IngredientVar,
 		Source: "mySourceEvent",
 		Value:  42, /* Oops */
 	}
@@ -21,7 +21,7 @@ func TestIngredientVariableNameNotString(t *testing.T) {
 }
 
 func TestIngredientWrongType(t *testing.T) {
-	ingredient := unit.Ingredient{
+	ingredient := subject.Ingredient{
 		Type:   42,
 		Source: "...",
 		Value:  "...",

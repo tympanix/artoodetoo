@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+
+	"github.com/Tympanix/automato/subject"
 )
 
 const (
@@ -16,7 +18,7 @@ const (
 // NewUnit creates a new unit from events, actions and converters
 func NewUnit(a Action) *Unit {
 	return &Unit{
-		Subject: *NewSubject(a),
+		Subject: *subject.New(a),
 		Desc:    a.Describe(),
 		action:  a,
 	}
@@ -34,7 +36,7 @@ func unitName(unit interface{}) string {
 
 // Unit wraps the elements of the application and extends it's functionality.
 type Unit struct {
-	Subject
+	subject.Subject
 	Desc   string `json:"description"`
 	action Action
 }

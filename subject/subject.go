@@ -1,4 +1,4 @@
-package unit
+package subject
 
 import (
 	"errors"
@@ -9,6 +9,7 @@ import (
 	"github.com/Tympanix/automato/types"
 )
 
+// Subject is a type which can manipulate and analyze structs
 type Subject struct {
 	types.IO `json:"-"`
 	Identity string    `json:"id"`
@@ -17,7 +18,9 @@ type Subject struct {
 	Out      []*Output `json:"output"`
 }
 
-func NewSubject(io types.IO) *Subject {
+// New creates a new subject from a input/output type. The input and output
+// of the type is analysed and can be manipulated through the subject
+func New(io types.IO) *Subject {
 	return &Subject{
 		IO:       io,
 		Identity: structName(io),

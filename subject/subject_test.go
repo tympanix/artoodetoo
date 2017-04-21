@@ -1,10 +1,10 @@
-package unit_test
+package subject_test
 
 import (
 	"testing"
 
 	"github.com/Tympanix/automato/assert"
-	"github.com/Tympanix/automato/unit"
+	"github.com/Tympanix/automato/subject"
 )
 
 type test struct {
@@ -30,7 +30,7 @@ func (test *test) Output() interface{} {
 func TestSubjectIO(t *testing.T) {
 
 	test := &test{}
-	subject := unit.NewSubject(test)
+	subject := subject.New(test)
 	assert.Equal(t, len(subject.In), 4)
 	assert.Equal(t, len(subject.Out), 1)
 
