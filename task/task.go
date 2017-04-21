@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/Tympanix/automato/event"
 	"github.com/Tympanix/automato/state"
 	"github.com/Tympanix/automato/unit"
 )
@@ -11,7 +12,7 @@ import (
 // Task is an object that processes data based on events, converters and actions
 type Task struct {
 	Name    string       `json:"name"`
-	Event   *unit.Unit   `json:"event"`
+	Event   event.Proxy  `json:"event"`
 	Actions []*unit.Unit `json:"actions"`
 }
 

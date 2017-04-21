@@ -6,17 +6,18 @@ import (
 	"reflect"
 
 	"github.com/Tympanix/automato/state"
+	"github.com/Tympanix/automato/types"
 )
 
 type Subject struct {
-	IO       `json:"-"`
+	types.IO `json:"-"`
 	Identity string    `json:"id"`
 	Name     string    `json:"name"`
 	In       []*Input  `json:"input"`
 	Out      []*Output `json:"output"`
 }
 
-func NewSubject(io IO) *Subject {
+func NewSubject(io types.IO) *Subject {
 	return &Subject{
 		IO:       io,
 		Identity: structName(io),
@@ -225,7 +226,7 @@ func (s *Subject) bindOutput() error {
 
 // BindIO rebinds the IO to the subject after json unmarshal has been run
 // This is neccessarry to correclt bootstrap a new subject from json
-func (s *Subject) BindIO(io IO) error {
+func (s *Subject) BindIO(io types.IO) error {
 	if io == nil {
 		return errors.New("Cannot bind nil value as a subject")
 	}

@@ -7,7 +7,7 @@ import (
 	"log"
 	"reflect"
 
-	"github.com/Tympanix/automato/task"
+	"github.com/Tympanix/automato/types"
 )
 
 // Event is an interface for types that can listen on events
@@ -58,9 +58,9 @@ func UnmarshalJSON(data []byte) (Event, error) {
 // Base is a struct used for subtyping to implement different events
 // for the application
 type Base struct {
-	Identity  string       `json:"id"`
-	Observers []*task.Task `json:"-"`
-	Event     string       `json:"event"`
+	Identity  string           `json:"id"`
+	Observers []types.Runnable `json:"-"`
+	Event     string           `json:"event"`
 }
 
 // New takes an event and applies its type. The same event is returned.
@@ -87,7 +87,7 @@ func (e *Base) Type() string {
 }
 
 // Subscribe adds a new task to this event's observers
-func (e *Base) Subscribe(task *task.Task) {
+func (e *Base) Subscribe(task types.Runnable) {
 	e.Observers = append(e.Observers, task)
 }
 
@@ -96,7 +96,7 @@ func (e *Base) ID() string {
 	return e.Identity
 }
 
-func (e *Base) findObserverIndex(task *task.Task) (int, error) {
+func (e *Base) findObserverIndex(task types.Runnable) (int, error) {
 	for i, t := range e.Observers {
 		if task == t {
 			return i, nil
@@ -118,7 +118,7 @@ func (e *Base) Trigger() {
 }
 
 // Unsubscribe removes a task from this events observables
-func (e *Base) Unsubscribe(task *task.Task) error {
+func (e *Base) Unsubscribe(task types.Runnable) error {
 	i, err := e.findObserverIndex(task)
 	if err != nil {
 		return err
