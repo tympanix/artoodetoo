@@ -26,20 +26,16 @@ func TestEvent(t *testing.T) {
 
 func TestEventMarshal(t *testing.T) {
 
-	e := event.New(&cron.Cron{
-		Time: "@every 1m",
-	})
+	cron := &cron.Cron{}
+	e := event.New(cron)
 
 	data, err := json.Marshal(e)
 	assert.NotError(t, err)
 
-	out, err := event.UnmarshalJSON(data)
+	var out event.Event
+	err = json.Unmarshal(data, &out)
 	assert.NotError(t, err)
 
-	cron, ok := out.(*cron.Cron)
-
-	assert.True(t, ok)
-	assert.Equal(t, cron.Time, "@every 1m")
 	assert.NotEqual(t, event.Templates[cron.Type()], cron)
 
 }

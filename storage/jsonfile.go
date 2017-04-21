@@ -16,8 +16,8 @@ const fileMode = 0666
 // JSONFile is a store implementation that saves tasks consistently to a json file
 type JSONFile struct {
 	path   string
-	Tasks  []*task.Task `json:"tasks"`
-	Events event.List   `json:"events"`
+	Tasks  []*task.Task   `json:"tasks"`
+	Events []*event.Event `json:"events"`
 }
 
 // NewJSONFile creates a new json file storage type

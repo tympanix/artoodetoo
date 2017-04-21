@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -27,19 +26,14 @@ func listEvents(w http.ResponseWriter, r *http.Request) {
 }
 
 func newEvent(w http.ResponseWriter, r *http.Request) {
-	data, err := ioutil.ReadAll(r.Body)
-	if err != nil {
+	var event event.Event
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&event); err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	event, err := event.UnmarshalJSON(data)
-	if err != nil {
-		log.Println(err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	if err := util.AddEvent(event); err != nil {
+	if err := util.AddEvent(&event); err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

@@ -22,14 +22,14 @@ type Trigger interface {
 // Event is a type which is used to trigger tasks
 type Event struct {
 	subject.Subject
-	event types.Eventable
-	UUID  string `json:"uuid"`
-	Desc  string `json:"description"`
+	trigger types.Eventable
+	UUID    string `json:"uuid"`
+	Desc    string `json:"description"`
 }
 
 // Listen starts listening for events
 func (e *Event) Listen() error {
-	return e.event.Listen()
+	return e.trigger.Listen()
 }
 
 // ID returns the unique id of the event
@@ -46,50 +46,61 @@ type Base struct {
 }
 
 // New takes an event and applies its type. The same event is returned.
-func New(event Trigger) *Event {
+func New(trigger Trigger) *Event {
 	return &Event{
-		Subject: *subject.New(event),
-		event:   event,
+		Subject: *subject.New(trigger),
+		trigger: trigger,
 		UUID:    generate.NewUUID(12),
-		Desc:    event.Describe(),
+		Desc:    trigger.Describe(),
 	}
 }
 
-// UnmarshalJSON takes a byte array and uses type assertion to determine the type
-// of event that was passed
-func UnmarshalJSON(data []byte) (*Event, error) {
+// UnmarshalJSON serialized an event fron json encoding
+func (e *Event) UnmarshalJSON(data []byte) error {
 	m := make(map[string]interface{})
 	json.Unmarshal(data, &m)
 
 	eventString, ok := m["id"].(string)
 
 	if !ok {
-		return nil, errors.New("Could not parse event, no event type set")
+		return errors.New("Could not parse event, no event type set")
 	}
 
-	event, ok := Templates[eventString]
+	eventTemplate, ok := Templates[eventString]
 
 	if !ok {
-		return nil, fmt.Errorf("Event ”%s” is not a registered event type", eventString)
+		return fmt.Errorf("Event ”%s” is not a registered event type", eventString)
 	}
 
-	t := reflect.ValueOf(event)
+	t := reflect.ValueOf(eventTemplate.trigger)
 	if t.Kind() == reflect.Ptr {
 		t = t.Elem()
 	}
 
-	eventType := reflect.TypeOf(t.Interface())
-	newEventInterface := reflect.New(eventType).Interface()
+	log.Println(t.Type())
 
-	newEvent, ok := newEventInterface.(Event)
+	newEventInterface := reflect.New(t.Type()).Interface()
+	newTrigger, ok := newEventInterface.(Trigger)
 
 	if !ok {
-		return nil, fmt.Errorf("Internal error while parsing event")
+		return fmt.Errorf("Internal error while parsing event")
 	}
 
-	err := json.Unmarshal(data, &newEvent)
+	type event Event
+	var newEvent event
+	if err := json.Unmarshal(data, &newEvent); err != nil {
+		return err
+	}
 
-	return &newEvent, err
+	*e = Event(newEvent)
+
+	if err := newEvent.BindIO(newTrigger); err != nil {
+		return err
+	}
+
+	e.trigger = newTrigger
+
+	return nil
 }
 
 func eventType(unit interface{}) string {
