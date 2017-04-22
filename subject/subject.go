@@ -120,11 +120,11 @@ func (s *Subject) AssignInput(state state.State) error {
 		}
 
 		if !f.IsValid() || !f.CanSet() {
-			return fmt.Errorf("Could not set field ”%v” for unit ”%v”", input.Name, s.Name)
+			return fmt.Errorf("Could not set field ”%v” for ”%v”", input.Name, s.Name)
 		}
 
 		if len(input.Recipe) == 0 {
-			return fmt.Errorf("Missing recipe for field ”%s” of unit ”%s”", input.Name, s.Name)
+			return fmt.Errorf("Missing recipe for field ”%s” of ”%s”", input.Name, s.Name)
 		}
 
 		ingredient := input.Recipe[0]
