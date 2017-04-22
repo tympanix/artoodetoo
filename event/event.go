@@ -8,6 +8,7 @@ import (
 	"reflect"
 
 	"github.com/Tympanix/automato/generate"
+	"github.com/Tympanix/automato/state"
 	"github.com/Tympanix/automato/subject"
 	"github.com/Tympanix/automato/types"
 )
@@ -83,11 +84,15 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 		return fmt.Errorf("Internal error while parsing event")
 	}
 
-	if err := newEvent.BindIO(newTrigger); err != nil {
+	if err := e.BindIO(newTrigger); err != nil {
 		return err
 	}
 
 	e.trigger = newTrigger
+
+	if err := e.AssignInput(state.New()); err != nil {
+		return err
+	}
 
 	return nil
 }
