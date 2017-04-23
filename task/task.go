@@ -27,6 +27,22 @@ func (t *Task) Describe() {
 	}
 }
 
+// Subscribe subscribes the task to its event
+func (t *Task) Subscribe() error {
+	if t.Event == nil {
+		return fmt.Errorf("Task %s has no event to subscribe to", t.Name)
+	}
+	return t.Event.Subscribe(t)
+}
+
+// Unsubscribe removed this task as an observer for its event
+func (t *Task) Unsubscribe() error {
+	if t.Event == nil {
+		return fmt.Errorf("Task %s has no event to subscribe to", t.Name)
+	}
+	return t.Event.Unsubscribe(t)
+}
+
 // GetUnitByName retrieves a unit in the actions list and returns it
 func (t *Task) GetUnitByName(name string) (unit *unit.Unit, err error) {
 	for _, u := range t.Actions {

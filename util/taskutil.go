@@ -7,11 +7,11 @@ import (
 
 // AddTask adds a new tasks to application and saves it to storage
 func AddTask(t *task.Task) error {
-	if err := task.Register(t); err != nil {
+	if err := task.AddTask(t); err != nil {
 		return err
 	}
 	if err := storage.SaveTask(t); err != nil {
-		task.Unregister(t)
+		task.RemoveTask(t)
 		return err
 	}
 	return nil
@@ -27,7 +27,7 @@ func DeleteTask(t *task.Task) error {
 	if err := storage.DeleteTask(t); err != nil {
 		return err
 	}
-	if err := task.Unregister(t); err != nil {
+	if err := task.RemoveTask(t); err != nil {
 		return err
 	}
 	return nil

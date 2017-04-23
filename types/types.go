@@ -10,7 +10,7 @@ type Triggerable interface {
 
 // Observable is a type which you can subscribe and unsunscibe to
 type Observable interface {
-	Subscribe(Runnable)
+	Subscribe(Runnable) error
 	Unsubscribe(Runnable) error
 }
 

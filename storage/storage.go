@@ -53,7 +53,7 @@ func Load() (int, int) {
 		log.Fatal(err)
 	}
 	for _, t := range tasks {
-		err = task.Register(t)
+		err = task.AddTask(t)
 		if err != nil {
 			log.Fatal(err)
 		}

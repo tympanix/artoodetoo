@@ -113,8 +113,13 @@ func eventType(unit interface{}) string {
 }
 
 // Subscribe adds a new task to this event's observers
-func (e *Event) Subscribe(task types.Runnable) {
+func (e *Event) Subscribe(task types.Runnable) error {
+	_, err := e.findObserverIndex(task)
+	if err == nil {
+		return errors.New("Runnable already subscribed to event")
+	}
 	e.Observers = append(e.Observers, task)
+	return nil
 }
 
 func (e *Event) findObserverIndex(task types.Runnable) (int, error) {
