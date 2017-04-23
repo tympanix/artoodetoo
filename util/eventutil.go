@@ -1,8 +1,6 @@
 package util
 
 import (
-	"log"
-
 	"github.com/Tympanix/automato/event"
 	"github.com/Tympanix/automato/storage"
 )
@@ -27,7 +25,6 @@ func AllEventTemplates() []*event.Event {
 		events[idx] = v
 		idx++
 	}
-	log.Println(events)
 	return events
 }
 
