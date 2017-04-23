@@ -5,22 +5,44 @@ import (
 	"reflect"
 )
 
-// Input describes the type of input and the ingredients used
-type Input struct {
-	Name   string       `json:"name"`
-	Type   string       `json:"type"`
-	Recipe []Ingredient `json:"recipe"`
-	field  reflect.Value
+// IO is a type which can describe input/output fields
+type IO struct {
+	reflect.Value `json:"-"`
+	Name          string `json:"name"`
+	TypeStr       string `json:"type"`
 }
 
-// Compatible returns whether or not this input is compatible with another.
-// Two inputs are compatible if they have the same name and the same type
-func (i Input) Compatible(o Input) bool {
-	return i.Name == o.Name && i.Type == o.Type
+// NewIO return a new IO type
+func NewIO(field reflect.StructField, value reflect.Value) IO {
+	return IO{
+		Value:   value,
+		Name:    field.Name,
+		TypeStr: field.Type.String(),
+	}
+}
+
+// Compatible returns whether or not this output is compatible with another.
+// Two outputs are compatible if they have the same name and the same type
+func (io *IO) Compatible(other Output) bool {
+	return io.Name == other.Name && io.TypeStr == other.TypeStr
+}
+
+// Input describes the type of input and the ingredients used
+type Input struct {
+	IO
+	Recipe []*Ingredient `json:"recipe"`
+}
+
+// NewInput returns a new input object from a struct field and value
+func NewInput(field reflect.StructField, value reflect.Value) *Input {
+	return &Input{
+		IO:     NewIO(field, value),
+		Recipe: make([]*Ingredient, 0),
+	}
 }
 
 // AddIngredient adds an ingredient to the input
-func (i *Input) AddIngredient(ingr Ingredient) {
+func (i *Input) AddIngredient(ingr *Ingredient) {
 	i.Recipe = append(i.Recipe, ingr)
 }
 
@@ -34,65 +56,12 @@ func (i Input) Validate() error {
 
 // Output describes the name and type of an output
 type Output struct {
-	Name  string `json:"name"`
-	Type  string `json:"type"`
-	field reflect.Value
+	IO
 }
 
-// Compatible returns whether or not this output is compatible with another.
-// Two outputs are compatible if they have the same name and the same type
-func (o Output) Compatible(oo Output) bool {
-	return o.Name == oo.Name && o.Type == oo.Type
-}
-
-func describeInput(obj interface{}) []*Input {
-	var input []*Input
-
-	if obj == nil {
-		return make([]*Input, 0)
+// NewOutput returns a new output object from a struct field and value
+func NewOutput(field reflect.StructField, value reflect.Value) *Output {
+	return &Output{
+		NewIO(field, value),
 	}
-
-	s := reflect.ValueOf(obj)
-	if s.Kind() == reflect.Ptr {
-		s = s.Elem()
-	}
-
-	typeOfT := s.Type()
-	for i := 0; i < s.NumField(); i++ {
-		f := s.Field(i)
-		in := Input{
-			Name:  typeOfT.Field(i).Name,
-			Type:  f.Type().String(),
-			field: f,
-		}
-		input = append(input, &in)
-	}
-
-	return input
-}
-
-func describeOutput(obj interface{}) []*Output {
-	var output []*Output
-
-	if obj == nil {
-		return make([]*Output, 0)
-	}
-
-	s := reflect.ValueOf(obj)
-	if s.Kind() == reflect.Ptr {
-		s = s.Elem()
-	}
-
-	typeOfT := s.Type()
-	for i := 0; i < s.NumField(); i++ {
-		f := s.Field(i)
-		out := Output{
-			Name:  typeOfT.Field(i).Name,
-			Type:  f.Type().String(),
-			field: f,
-		}
-		output = append(output, &out)
-	}
-
-	return output
 }

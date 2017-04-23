@@ -18,10 +18,22 @@ const (
 // NewUnit creates a new unit from events, actions and converters
 func NewUnit(a Action) *Unit {
 	return &Unit{
-		Subject: *subject.New(a),
+		Subject: *subject.New(a, new(ActionResolver)),
 		Desc:    a.Describe(),
 		action:  a,
 	}
+}
+
+// ActionResolver is a subject resolver which can look up actions
+type ActionResolver struct{}
+
+// ResolveSubject resolves an action
+func (a *ActionResolver) ResolveSubject(t string) (action interface{}, err error) {
+	action, ok := GetActionByID(t)
+	if !ok {
+		err = fmt.Errorf("Could not resolve action with type %v", t)
+	}
+	return
 }
 
 // UnitName returns a string representation of the unit
@@ -64,24 +76,14 @@ func (c *Unit) Action() *Action {
 
 // UnmarshalJSON is used to transform json data into a units
 func (c *Unit) UnmarshalJSON(b []byte) error {
-	type unit Unit
-	u := unit{}
+	type jsonUnit *Unit
+	c.SetResolver(new(ActionResolver))
+	u := jsonUnit(c)
 	if err := json.Unmarshal(b, &u); err != nil {
 		return err
 	}
 
-	*c = Unit(u)
-
-	action, ok := GetActionByID(u.Type())
-	if !ok {
-		return fmt.Errorf("Can't find unit by id %s", u.Type())
-	}
-
-	if err := c.BindIO(action); err != nil {
-		return err
-	}
-
-	c.action = action
+	*c = Unit(*u)
 
 	return nil
 }

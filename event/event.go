@@ -29,6 +29,17 @@ type Event struct {
 	Desc      string           `json:"description"`
 }
 
+// New takes an event and applies its type. The same event is returned.
+func New(trigger Trigger) *Event {
+	return &Event{
+		Subject:   *subject.New(trigger, new(eventResolver)),
+		trigger:   trigger,
+		Observers: make([]types.Runnable, 0),
+		UUID:      generate.NewUUID(12),
+		Desc:      trigger.Describe(),
+	}
+}
+
 // Listen starts listening for events
 func (e *Event) Listen() error {
 	go e.trigger.Listen()
@@ -52,51 +63,26 @@ func (e *Event) Trigger() chan bool {
 	return e.trigger.Trigger()
 }
 
-// New takes an event and applies its type. The same event is returned.
-func New(trigger Trigger) *Event {
-	return &Event{
-		Subject:   *subject.New(trigger),
-		trigger:   trigger,
-		Observers: make([]types.Runnable, 0),
-		UUID:      generate.NewUUID(12),
-		Desc:      trigger.Describe(),
-	}
-}
-
 // UnmarshalJSON serialized an event fron json encoding
 func (e *Event) UnmarshalJSON(data []byte) error {
-	type event Event
-	var newEvent event
+	type event *Event
+	e.SetResolver(new(eventResolver))
+	newEvent := event(e)
 	if err := json.Unmarshal(data, &newEvent); err != nil {
 		return err
 	}
 
-	*e = Event(newEvent)
+	*e = Event(*newEvent)
 
-	eventTemplate, ok := Templates[e.Type()]
-
-	if !ok {
-		return fmt.Errorf("Event ”%s” is not a registered event type", e.Type())
-	}
-
-	t := reflect.ValueOf(eventTemplate.trigger)
-	if t.Kind() == reflect.Ptr {
-		t = t.Elem()
-	}
-
-	newEventInterface := reflect.New(t.Type()).Interface()
-	newTrigger, ok := newEventInterface.(Trigger)
+	newTrigger, ok := e.GetSubject().(Trigger)
 
 	if !ok {
 		return fmt.Errorf("Internal error while parsing event")
 	}
 
-	if err := e.BindIO(newTrigger); err != nil {
-		return err
-	}
-
 	e.trigger = newTrigger
 
+	// Try to assign input to state, this should fail if any variables are used
 	if err := e.AssignInput(state.New()); err != nil {
 		return err
 	}

@@ -1,31 +1,97 @@
 package subject
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"reflect"
 
 	"github.com/Tympanix/automato/state"
-	"github.com/Tympanix/automato/types"
+)
+
+const (
+	ioTag     = "io"
+	inputTag  = "input"
+	outputTag = "output"
 )
 
 // Subject is a type which can manipulate and analyze structs
 type Subject struct {
-	types.IO `json:"-"`
+	Resolver
+	subject  interface{}
 	Identity string    `json:"id"`
 	Name     string    `json:"name"`
 	In       []*Input  `json:"input"`
 	Out      []*Output `json:"output"`
 }
 
+// Resolver is an interface for a type which can resolve the subject given
+// its type as a string. The resolver has to know the type of object
+// and resolve that object. This will be used with JSON serialization
+// because only a string representation of the subject type is known at that point
+type Resolver interface {
+	ResolveSubject(string) (interface{}, error)
+}
+
 // New creates a new subject from a input/output type. The input and output
 // of the type is analysed and can be manipulated through the subject
-func New(io types.IO) *Subject {
-	return &Subject{
-		IO:       io,
+func New(io interface{}, resolver Resolver) *Subject {
+	subject := &Subject{
+		Resolver: resolver,
+		subject:  io,
 		Identity: structName(io),
-		In:       describeInput(io.Input()),
-		Out:      describeOutput(io.Output()),
+		In:       make([]*Input, 0),
+		Out:      make([]*Output, 0),
+	}
+	subject.analyseIO()
+	return subject
+}
+
+// SetResolver sets the resolver used to identify objects
+func (s *Subject) SetResolver(resolver Resolver) {
+	s.Resolver = resolver
+}
+
+// GetSubject returns the underlying subject
+func (s *Subject) GetSubject() interface{} {
+	return s.subject
+}
+
+func (s *Subject) addInput(input *Input) {
+	s.In = append(s.In, input)
+}
+
+func (s *Subject) addOutput(output *Output) {
+	s.Out = append(s.Out, output)
+}
+
+func (s *Subject) analyseIO() {
+	structValue := reflect.Indirect(reflect.ValueOf(s.subject))
+	structType := structValue.Type()
+
+	if structValue.Kind() != reflect.Struct {
+		log.Fatal("Subject must be struct type")
+	}
+
+	for i := 0; i < structType.NumField(); i++ {
+		fieldType := structType.Field(i)
+		fieldValue := structValue.Field(i)
+		fieldTag := fieldType.Tag.Get(ioTag)
+
+		if !fieldValue.IsValid() || !fieldValue.CanSet() {
+			log.Fatalf("Field %s of %s not assignable", fieldType.Name, s.Type())
+		}
+
+		if fieldTag == inputTag {
+			s.addInput(NewInput(fieldType, fieldValue))
+		} else if fieldTag == outputTag {
+			s.addOutput(NewOutput(fieldType, fieldValue))
+		}
+	}
+
+	if len(s.In) == 0 && len(s.Out) == 0 {
+		log.Fatalf("No input/output specified for %s", s.Type())
 	}
 }
 
@@ -103,23 +169,9 @@ func (s *Subject) Validate() error {
 
 // AssignInput finds all ingredients in the state given and assigns it as input
 func (s *Subject) AssignInput(state state.State) error {
-	if s.Input() == nil {
-		return nil
-	}
-
-	t := reflect.ValueOf(s.Input())
-	if t.Kind() == reflect.Ptr {
-		t = t.Elem()
-	}
 
 	for _, input := range s.In {
-		f, err := getIOField(input.Name, s.Input())
-
-		if err != nil {
-			return fmt.Errorf("Field ”%s” not found in ”%v”", input.Name, s)
-		}
-
-		if !f.IsValid() || !f.CanSet() {
+		if !input.IsValid() || !input.CanSet() {
 			return fmt.Errorf("Could not set field ”%v” for ”%v”", input.Name, s.Name)
 		}
 
@@ -135,11 +187,11 @@ func (s *Subject) AssignInput(state state.State) error {
 			return err
 		}
 
-		if !value.Type().AssignableTo(f.Type()) {
-			return fmt.Errorf("Field <%s> of value <%v> can't be assigned <%v>", input.Name, f.Type(), value.Type())
+		if !value.Type().AssignableTo(input.Type()) {
+			return fmt.Errorf("Field <%s> of value <%v> can't be assigned <%v>", input.Name, input.Value.Type(), value.Type())
 		}
 
-		f.Set(value)
+		input.Value.Set(value)
 
 	}
 
@@ -148,8 +200,10 @@ func (s *Subject) AssignInput(state state.State) error {
 
 // StoreOutput saves the computed output in the state
 func (s *Subject) StoreOutput(state state.State) error {
-	if err := state.StoreStruct(s.Name, s.Output()); err != nil {
-		return err
+	for _, output := range s.Out {
+		if err := state.PutValue(s.Name, output.Name, output.Value); err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -161,7 +215,7 @@ func (s *Subject) AddVar(argument string, source string, variable string) error 
 	if err != nil {
 		return err
 	}
-	input.AddIngredient(Ingredient{
+	input.AddIngredient(&Ingredient{
 		Type:   IngredientVar,
 		Source: source,
 		Value:  variable,
@@ -176,71 +230,49 @@ func (s *Subject) AddStatic(argument string, value interface{}) error {
 	if err != nil {
 		return err
 	}
-	input.AddIngredient(Ingredient{
+	input.AddIngredient(&Ingredient{
 		Type:  IngredientStatic,
 		Value: value,
 	})
 	return nil
 }
 
-func (s *Subject) bindInput() error {
-	input := describeInput(s.Input())
-	if len(input) != len(s.In) {
-		return fmt.Errorf("Unexpected number of inputs for unit %s", s.Type())
-	}
-	if len(input) == 0 {
-		s.In = make([]*Input, 0)
-		return nil
-	}
-	for _, in := range input {
-		inn, err := s.GetInputByName(in.Name)
-		if err != nil {
-			return err
-		}
-		if !in.Compatible(*inn) {
-			return fmt.Errorf("Input %s has incorrect type %s", inn.Name, inn.Type)
-		}
-		inn.field = in.field
-	}
-	return nil
-}
-
-func (s *Subject) bindOutput() error {
-	output := describeOutput(s.Output())
-	if len(output) != len(s.Out) {
-		return fmt.Errorf("Unexpected number of output for unit %s", s.Type())
-	}
-	if len(output) == 0 {
-		s.Out = make([]*Output, 0)
-		return nil
-	}
-	for _, out := range output {
-		outt, err := s.GetOutputByName(out.Name)
-		if err != nil {
-			return err
-		}
-		if !out.Compatible(*outt) {
-			return fmt.Errorf("Output %s has incorrect type %s", outt.Name, outt.Type)
-		}
-		outt.field = out.field
-	}
-	return nil
-}
-
-// BindIO rebinds the IO to the subject after json unmarshal has been run
-// This is neccessarry to correclt bootstrap a new subject from json
-func (s *Subject) BindIO(io types.IO) error {
-	if io == nil {
-		return errors.New("Cannot bind nil value as a subject")
+// UnmarshalJSON creates an subject from JSON
+func (s *Subject) UnmarshalJSON(data []byte) error {
+	if s.Resolver == nil {
+		return errors.New("Subject could not be serialized from json because it has no resolver")
 	}
 
-	s.IO = io
+	type subjectFromJSON struct {
+		Identity string             `json:"id"`
+		Name     string             `json:"name"`
+		In       []*json.RawMessage `json:"input"`
+		Out      []*json.RawMessage `json:"output"`
+	}
 
-	if err := s.bindInput(); err != nil {
+	jsonSubject := new(subjectFromJSON)
+
+	if err := json.Unmarshal(data, &jsonSubject); err != nil {
 		return err
 	}
-	if err := s.bindOutput(); err != nil {
+
+	subject, err := s.ResolveSubject(jsonSubject.Identity)
+
+	if err != nil {
 		return err
 	}
+
+	*s = *New(subject, s.Resolver)
+
+	if len(s.In) != len(jsonSubject.In) {
+		return fmt.Errorf("Expected %d inputs got %d", len(s.In), len(jsonSubject.In))
+	}
+
+	if len(s.Out) != len(jsonSubject.Out) {
+		return fmt.Errorf("Expected %d outputs got %d", len(s.Out), len(jsonSubject.Out))
+	}
+
+	//TODO: Set recipe for inputs
+
 	return nil
 }

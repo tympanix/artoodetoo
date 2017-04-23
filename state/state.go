@@ -23,7 +23,13 @@ func (s State) GetValue(domain string, key string) (value reflect.Value, ok bool
 }
 
 // PutValue puts a new value into the state specified by the domain and key
-func (s State) PutValue(domain string, key string, value interface{}) {
+func (s State) PutValue(domain string, key string, value interface{}) error {
+	_, ok := s.GetValue(domain, key)
+
+	if ok {
+		return fmt.Errorf("State already contains key ”%v” for domain ”%v”", key, domain)
+	}
+
 	state, ok := s[domain]
 
 	if !ok {
@@ -32,35 +38,5 @@ func (s State) PutValue(domain string, key string, value interface{}) {
 	}
 
 	state[key] = reflect.ValueOf(value)
-}
-
-// StoreStruct takes a struct and stores key values in the strcut
-func (s State) StoreStruct(domain string, output interface{}) error {
-	state, ok := s[domain]
-
-	if !ok {
-		state = make(map[string]reflect.Value)
-		s[domain] = state
-	}
-
-	if output == nil {
-		return nil
-	}
-
-	t := reflect.ValueOf(output)
-
-	if t.Kind() == reflect.Ptr {
-		t = t.Elem()
-	}
-
-	typeOfT := t.Type()
-	for i := 0; i < t.NumField(); i++ {
-		f := t.Field(i)
-		key := typeOfT.Field(i).Name
-		if _, ok := state[key]; ok {
-			return fmt.Errorf("State key duplicate on domain: %v key: %v", domain, key)
-		}
-		state[typeOfT.Field(i).Name] = f.Addr()
-	}
 	return nil
 }
