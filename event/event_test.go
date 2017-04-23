@@ -11,7 +11,7 @@ import (
 )
 
 func TestEvent(t *testing.T) {
-	event := event.Base{}
+	event := event.New(&cron.Cron{})
 	task := &task.Task{}
 
 	event.Subscribe(task)
@@ -29,6 +29,8 @@ func TestEventMarshal(t *testing.T) {
 	cron := &cron.Cron{}
 	e := event.New(cron)
 
+	e.AddStatic("Time", "@every 1s")
+
 	data, err := json.Marshal(e)
 	assert.NotError(t, err)
 
@@ -36,6 +38,6 @@ func TestEventMarshal(t *testing.T) {
 	err = json.Unmarshal(data, &out)
 	assert.NotError(t, err)
 
-	assert.NotEqual(t, event.Templates[cron.Type()], cron)
+	assert.NotEqual(t, event.Templates[e.Type()], e)
 
 }
