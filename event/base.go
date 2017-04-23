@@ -8,6 +8,9 @@ type Base struct {
 
 // Trigger returns the trigger channel
 func (b *Base) Trigger() chan bool {
+	if b.trigger == nil {
+		b.trigger = make(chan bool)
+	}
 	return b.trigger
 }
 
