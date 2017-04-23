@@ -2,7 +2,6 @@ package cron
 
 import (
 	"errors"
-	"log"
 
 	"github.com/Tympanix/automato/event"
 	"github.com/robfig/cron"
@@ -38,7 +37,6 @@ func (c *Cron) Output() interface{} {
 
 // Listen starts the cronjob
 func (c *Cron) Listen() error {
-	log.Println("Crontab listening")
 	if len(c.input.Time) == 0 {
 		return errors.New("No time specefied for crontab")
 	}

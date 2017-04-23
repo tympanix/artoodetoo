@@ -34,10 +34,8 @@ func (e *Event) Listen() error {
 	go e.trigger.Listen()
 	for goon := range e.Trigger() {
 		if goon {
-			log.Printf("Triggered %s\n", e)
 			e.Fire()
 		} else {
-			log.Println("Break event")
 			break
 		}
 	}
