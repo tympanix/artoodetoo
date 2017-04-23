@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/Tympanix/automato/state"
 	"github.com/Tympanix/automato/task"
 	"github.com/Tympanix/automato/util"
 	"github.com/gorilla/mux"
@@ -85,7 +86,7 @@ func runTask(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	if err := task.Run(); err != nil {
+	if err := task.Run(state.New()); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 

@@ -37,23 +37,23 @@ func SaveTask(task *task.Task) error {
 
 // Load loads the saved tasks and registers them into the application
 func Load() (int, int) {
+	events, err := GetAllEvents()
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, e := range events {
+		err = event.AddEvent(e)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
 	tasks, err := GetAllTasks()
 	if err != nil {
 		log.Fatal(err)
 	}
 	for _, t := range tasks {
 		err = task.Register(t)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
-	events, err := GetAllEvents()
-	if err != nil {
-		log.Fatal(err)
-	}
-	for _, e := range events {
-		err := event.AddEvent(e)
 		if err != nil {
 			log.Fatal(err)
 		}

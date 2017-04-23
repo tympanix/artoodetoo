@@ -13,9 +13,15 @@ import (
 
 const fileMode = 0666
 
+type jsonCache struct {
+	Tasks  []*json.RawMessage `json:"tasks"`
+	Events []*json.RawMessage `json:"events"`
+}
+
 // JSONFile is a store implementation that saves tasks consistently to a json file
 type JSONFile struct {
 	path   string
+	cache  *jsonCache
 	Tasks  []*task.Task   `json:"tasks"`
 	Events []*event.Event `json:"events"`
 }
@@ -26,9 +32,24 @@ func NewJSONFile(filepath string) (j *JSONFile, err error) {
 		path: filepath,
 	}
 
-	var file *os.File
+	file, err := j.init()
+	if err != nil {
+		log.Fatal(err)
+	}
 	defer file.Close()
 
+	var cache *jsonCache
+	decoder := json.NewDecoder(file)
+	if err := decoder.Decode(&cache); err != nil {
+		if err != io.EOF {
+			log.Fatal(err)
+		}
+	}
+	j.cache = cache
+	return
+}
+
+func (j *JSONFile) init() (file *os.File, err error) {
 	if j.missing() {
 		log.Println("Creating new json file")
 		file, err = j.create()
@@ -39,13 +60,6 @@ func NewJSONFile(filepath string) (j *JSONFile, err error) {
 		file, err = j.open()
 		if err != nil {
 			return
-		}
-	}
-
-	decoder := json.NewDecoder(file)
-	if err := decoder.Decode(j); err != nil {
-		if err != io.EOF {
-			log.Fatal(err)
 		}
 	}
 	return
@@ -114,12 +128,32 @@ func (j *JSONFile) write() error {
 }
 
 // GetAllTasks returns all tasks loaded from the json file
-func (j *JSONFile) GetAllTasks() ([]*task.Task, error) {
+func (j *JSONFile) GetAllTasks() (tasks []*task.Task, err error) {
+	if j.Tasks == nil {
+		j.Tasks = make([]*task.Task, len(j.cache.Tasks))
+		for i, raw := range j.cache.Tasks {
+			var task *task.Task
+			if err = json.Unmarshal(*raw, &task); err != nil {
+				return
+			}
+			j.Tasks[i] = task
+		}
+	}
 	return j.Tasks, nil
 }
 
 // GetAllEvents returns all events loaded from the json file
-func (j *JSONFile) GetAllEvents() ([]*event.Event, error) {
+func (j *JSONFile) GetAllEvents() (events []*event.Event, err error) {
+	if j.Events == nil {
+		j.Events = make([]*event.Event, len(j.cache.Events))
+		for i, raw := range j.cache.Events {
+			var event *event.Event
+			if err = json.Unmarshal(*raw, &event); err != nil {
+				return
+			}
+			j.Events[i] = event
+		}
+	}
 	return j.Events, nil
 }
 

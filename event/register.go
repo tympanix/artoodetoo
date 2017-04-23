@@ -28,12 +28,10 @@ func AddEvent(event *Event) error {
 	if found {
 		return errors.New("Event with that id already exists")
 	}
+	log.Printf("Added event %s", event.ID())
 	Events[event.ID()] = event
 
-	err := event.Listen()
-	if err != nil {
-		log.Println(err)
-	}
+	go event.Listen()
 	return nil
 }
 

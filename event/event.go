@@ -16,21 +16,32 @@ import (
 // Trigger is an interfaces which describes the implementations needed for an event
 type Trigger interface {
 	types.IO
-	types.Eventable
+	types.Triggerable
 	Describe() string
 }
 
 // Event is a type which is used to trigger tasks
 type Event struct {
 	subject.Subject
-	trigger types.Eventable
-	UUID    string `json:"uuid"`
-	Desc    string `json:"description"`
+	trigger   Trigger
+	Observers []types.Runnable `json:"-"`
+	UUID      string           `json:"uuid"`
+	Desc      string           `json:"description"`
 }
 
 // Listen starts listening for events
 func (e *Event) Listen() error {
-	return e.trigger.Listen()
+	go e.trigger.Listen()
+	for goon := range e.Trigger() {
+		if goon {
+			log.Printf("Triggered %s\n", e)
+			e.Fire()
+		} else {
+			log.Println("Break event")
+			break
+		}
+	}
+	return nil
 }
 
 // ID returns the unique id of the event
@@ -38,21 +49,19 @@ func (e *Event) ID() string {
 	return e.UUID
 }
 
-// Base is a struct used for subtyping to implement different events
-// for the application
-type Base struct {
-	Identity  string           `json:"id"`
-	Observers []types.Runnable `json:"-"`
-	Event     string           `json:"event"`
+// Trigger returns the trigger for the event
+func (e *Event) Trigger() chan bool {
+	return e.trigger.Trigger()
 }
 
 // New takes an event and applies its type. The same event is returned.
 func New(trigger Trigger) *Event {
 	return &Event{
-		Subject: *subject.New(trigger),
-		trigger: trigger,
-		UUID:    generate.NewUUID(12),
-		Desc:    trigger.Describe(),
+		Subject:   *subject.New(trigger),
+		trigger:   trigger,
+		Observers: make([]types.Runnable, 0),
+		UUID:      generate.NewUUID(12),
+		Desc:      trigger.Describe(),
 	}
 }
 
@@ -105,26 +114,12 @@ func eventType(unit interface{}) string {
 	return t.String()
 }
 
-func (e *Base) setEvent(event string) {
-	e.Event = event
-}
-
-// Type returns the type of the event as a string representation
-func (e *Base) Type() string {
-	return e.Event
-}
-
 // Subscribe adds a new task to this event's observers
-func (e *Base) Subscribe(task types.Runnable) {
+func (e *Event) Subscribe(task types.Runnable) {
 	e.Observers = append(e.Observers, task)
 }
 
-// ID returns the unique id for the event
-func (e *Base) ID() string {
-	return e.Identity
-}
-
-func (e *Base) findObserverIndex(task types.Runnable) (int, error) {
+func (e *Event) findObserverIndex(task types.Runnable) (int, error) {
 	for i, t := range e.Observers {
 		if task == t {
 			return i, nil
@@ -133,20 +128,22 @@ func (e *Base) findObserverIndex(task types.Runnable) (int, error) {
 	return -1, errors.New("Observer not found")
 }
 
-func (e *Base) removeObserver(index int) {
+func (e *Event) removeObserver(index int) {
 	e.Observers = append(e.Observers[:index], e.Observers[index+1:]...)
 }
 
-// Trigger exectures all the subscribed tasks for this event
-func (e *Base) Trigger() {
-	log.Printf("Triggered event %s\n", e.Event)
+// Fire exectures all the subscribed tasks for this event
+func (e *Event) Fire() {
+	log.Printf("Triggered event %s\n", e.Type())
 	for _, task := range e.Observers {
-		task.Run()
+		state := state.New()
+		e.StoreOutput(state)
+		task.Run(state)
 	}
 }
 
 // Unsubscribe removes a task from this events observables
-func (e *Base) Unsubscribe(task types.Runnable) error {
+func (e *Event) Unsubscribe(task types.Runnable) error {
 	i, err := e.findObserverIndex(task)
 	if err != nil {
 		return err

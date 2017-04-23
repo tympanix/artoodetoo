@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/Tympanix/automato/event"
 	"github.com/Tympanix/automato/state"
 	"github.com/Tympanix/automato/unit"
 )
@@ -11,7 +12,7 @@ import (
 // Task is an object that processes data based on events, converters and actions
 type Task struct {
 	Name    string       `json:"name"`
-	Event   *unit.Unit   `json:"event"`
+	Event   *event.Proxy `json:"event"`
 	Actions []*unit.Unit `json:"actions"`
 }
 
@@ -28,9 +29,6 @@ func (t *Task) Describe() {
 
 // GetUnitByName retrieves a unit in the actions list and returns it
 func (t *Task) GetUnitByName(name string) (unit *unit.Unit, err error) {
-	if t.Event.Name == name {
-		return t.Event, nil
-	}
 	for _, u := range t.Actions {
 		if u.Name == name {
 			return u, nil
@@ -41,12 +39,9 @@ func (t *Task) GetUnitByName(name string) (unit *unit.Unit, err error) {
 }
 
 // Run starts the task
-func (t *Task) Run() error {
-	state := state.New()
-
+func (t *Task) Run(state state.State) error {
 	log.Printf("Running task %s\n", t.Name)
 
-	t.Event.Execute()
 	if err := t.Event.StoreOutput(state); err != nil {
 		return err
 	}
