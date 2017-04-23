@@ -141,7 +141,9 @@ func (e *Event) Fire() {
 	for _, task := range e.Observers {
 		state := state.New()
 		e.StoreOutput(state)
-		task.Run(state)
+		if err := task.Run(state); err != nil {
+			log.Println(err)
+		}
 	}
 }
 

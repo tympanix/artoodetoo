@@ -15,6 +15,7 @@ func AddTask(task *Task) error {
 		return errors.New("Task with that name already exists")
 	}
 	tasks[task.Name] = task
+	task.Subscribe()
 	return nil
 }
 
