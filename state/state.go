@@ -1,7 +1,9 @@
 package state
 
 import (
+	"errors"
 	"fmt"
+	"log"
 	"reflect"
 )
 
@@ -23,7 +25,15 @@ func (s State) GetValue(domain string, key string) (value reflect.Value, ok bool
 }
 
 // PutValue puts a new value into the state specified by the domain and key
-func (s State) PutValue(domain string, key string, value interface{}) error {
+func (s State) PutValue(domain string, key string, value reflect.Value) error {
+	if len(domain) == 0 {
+		return errors.New("Cannot put value in state with empty domain")
+	}
+
+	if len(key) == 0 {
+		return errors.New("Cannot put value in state with empty key")
+	}
+
 	_, ok := s.GetValue(domain, key)
 
 	if ok {
@@ -37,6 +47,7 @@ func (s State) PutValue(domain string, key string, value interface{}) error {
 		s[domain] = state
 	}
 
-	state[key] = reflect.ValueOf(value)
+	log.Printf("Putting key %s for domain %s", key, domain)
+	state[key] = value
 	return nil
 }

@@ -1,7 +1,6 @@
 package subject
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -18,8 +17,8 @@ const (
 
 // Subject is a type which can manipulate and analyze structs
 type Subject struct {
-	Resolver
 	subject  interface{}
+	Resolver `json:"-"`
 	Identity string    `json:"id"`
 	Name     string    `json:"name"`
 	In       []*Input  `json:"input"`
@@ -40,12 +39,16 @@ func New(io interface{}, resolver Resolver) *Subject {
 	subject := &Subject{
 		Resolver: resolver,
 		subject:  io,
-		Identity: structName(io),
-		In:       make([]*Input, 0),
-		Out:      make([]*Output, 0),
 	}
-	subject.analyseSubject()
+	subject.init()
 	return subject
+}
+
+func (s *Subject) init() {
+	s.In = make([]*Input, 0)
+	s.Out = make([]*Output, 0)
+	s.Identity = structName(s.subject)
+	s.analyseSubject()
 }
 
 // SetResolver sets the resolver used to identify objects
@@ -243,49 +246,39 @@ func (s *Subject) AddStatic(argument string, value interface{}) error {
 	return nil
 }
 
-// UnmarshalJSON creates an subject from JSON
-func (s *Subject) UnmarshalJSON(data []byte) error {
-	log.Println("Unmarshal subject")
-	if s.Resolver == nil {
-		return errors.New("Subject could not be serialized from json because it has no resolver")
-	}
+// RebuildSubject rebuilds the subject by resolving a new instance of the subject
+// using the subjec resolver. The recipe for every input is copied after the subject
+// has been analysed
+func (s *Subject) RebuildSubject(data []byte, resolver Resolver) error {
+	s.Resolver = resolver
 
-	type subjectFromJSON struct {
-		Identity string             `json:"id"`
-		Name     string             `json:"name"`
-		In       []*json.RawMessage `json:"input"`
-		Out      []*json.RawMessage `json:"output"`
-	}
-
-	jsonSubject := new(subjectFromJSON)
-
-	if err := json.Unmarshal(data, &jsonSubject); err != nil {
-		return err
-	}
-
-	subject, err := s.ResolveSubject(jsonSubject.Identity)
+	subject, err := s.ResolveSubject(s.Identity)
 
 	if err != nil {
 		return err
 	}
 
-	*s = *New(subject, s.Resolver)
+	s.subject = subject
+	copy := *s
+	s.init()
 
-	if len(s.In) != len(jsonSubject.In) {
-		return fmt.Errorf("Expected %d inputs got %d", len(s.In), len(jsonSubject.In))
+	if len(s.In) != len(copy.In) {
+		return fmt.Errorf("Expected %d inputs got %d", len(s.In), len(copy.In))
 	}
 
-	if len(s.Out) != len(jsonSubject.Out) {
-		return fmt.Errorf("Expected %d outputs got %d", len(s.Out), len(jsonSubject.Out))
+	if len(s.Out) != len(copy.Out) {
+		return fmt.Errorf("Expected %d outputs got %d", len(s.Out), len(copy.Out))
 	}
 
-	for i, input := range s.In {
-		if err := input.ParseRaw(jsonSubject.In[i]); err != nil {
+	for _, input := range s.In {
+		inn, err := copy.GetInputByName(input.Name)
+		if err != nil {
+			return err
+		}
+		if err := input.CopyRecipe(inn); err != nil {
 			return err
 		}
 	}
-
-	//TODO: Set recipe for inputs
 
 	return nil
 }

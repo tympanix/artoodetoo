@@ -65,7 +65,6 @@ func (e *Event) Trigger() chan bool {
 // UnmarshalJSON serialized an event fron json encoding
 func (e *Event) UnmarshalJSON(data []byte) error {
 	type event Event
-	e.SetResolver(new(eventResolver))
 	newEvent := event(*e)
 	if err := json.Unmarshal(data, &newEvent); err != nil {
 		return err
@@ -75,13 +74,16 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 
 	*e = Event(newEvent)
 
+	err := e.RebuildSubject(data, new(eventResolver))
+	if err != nil {
+		return err
+	}
+
 	log.Printf("Event subject is %v", e.GetSubject())
 	newTrigger, ok := e.GetSubject().(Trigger)
-
 	if !ok {
 		return fmt.Errorf("Internal error while parsing event")
 	}
-
 	e.trigger = newTrigger
 
 	// Try to assign input to state, this should fail if any variables are used

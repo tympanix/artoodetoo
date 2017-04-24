@@ -1,7 +1,6 @@
 package subject
 
 import (
-	"encoding/json"
 	"fmt"
 	"reflect"
 )
@@ -42,25 +41,17 @@ func NewInput(field reflect.StructField, value reflect.Value) *Input {
 	}
 }
 
-// ParseRaw assigns the recipe from raw json data
-func (i *Input) ParseRaw(raw *json.RawMessage) error {
-	type inputFromJSON struct {
-		Name    string        `json:"name"`
-		TypeStr string        `json:"type"`
-		Recipe  []*Ingredient `json:"recipe"`
+// CopyRecipe assigns the recipe from raw json data
+func (i *Input) CopyRecipe(input *Input) error {
+	if i.Name != input.Name {
+		return fmt.Errorf("Input name %s does not match %s", i.Name, input.Name)
 	}
 
-	jsonInput := new(inputFromJSON)
-
-	if err := json.Unmarshal(*raw, &jsonInput); err != nil {
-		return err
+	if i.TypeStr != input.TypeStr {
+		return fmt.Errorf("INput type %s does not match %s", i.TypeStr, input.TypeStr)
 	}
 
-	if i.Name != jsonInput.Name {
-		return fmt.Errorf("Input name %s does not match %s", i.Name, jsonInput.Name)
-	}
-
-	i.Recipe = jsonInput.Recipe
+	i.Recipe = input.Recipe
 
 	return nil
 }

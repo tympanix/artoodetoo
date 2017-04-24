@@ -23,8 +23,6 @@ func TestUnitConstructor(t *testing.T) {
 
 	assert.Equal(t, unit.Type(), expectedType)
 	assert.Equal(t, unit.Name, name)
-	assert.Equal(t, unit.Input(), event.Input())
-	assert.Equal(t, unit.Output(), event.Output())
 	assert.Equal(t, unit.String(), expectedType)
 }
 
@@ -54,7 +52,6 @@ func TestUnitAddStatic(t *testing.T) {
 	assert.True(t, ingredient.IsStatic())
 	assert.Equal(t, ingredient.Value, "My Message")
 	assert.Equal(t, ingredient.Source, "")
-	assert.Equal(t, ingredient.Type, unit.IngredientStatic)
 }
 
 func TestUnitAddVar(t *testing.T) {
@@ -162,9 +159,9 @@ func TestUnitInput(t *testing.T) {
 	err := u.AssignInput(state)
 	assert.NotError(t, err)
 
-	assert.Equal(t, email.Email.Message, "This is my message")
-	assert.Equal(t, email.Email.Subject, "This is my subject")
-	assert.Equal(t, email.Email.Receiver, "e@mail.com")
+	assert.Equal(t, email.Message, "This is my message")
+	assert.Equal(t, email.Subject, "This is my subject")
+	assert.Equal(t, email.Receiver, "e@mail.com")
 }
 
 func TestUnitNoInput(t *testing.T) {

@@ -1,11 +1,40 @@
 package subject_test
 
-// import (
-// 	"testing"
-//
-// 	"github.com/Tympanix/automato/assert"
-// 	"github.com/Tympanix/automato/subject"
-// )
+import (
+	"encoding/json"
+	"fmt"
+	"testing"
+
+	"github.com/Tympanix/automato/assert"
+	"github.com/Tympanix/automato/subject"
+)
+
+type Test struct {
+	Name    string `io:"input"`
+	Allowed bool   `io:"output"`
+}
+
+func (t *Test) ResolveSubject(typ string) (interface{}, error) {
+	return new(Test), nil
+}
+
+func TestSubjectJSON(t *testing.T) {
+
+	test := new(Test)
+	sub := subject.New(test, nil)
+
+	data, err := json.Marshal(sub)
+	assert.NotError(t, err)
+
+	fmt.Println(string(data))
+	copy := new(subject.Subject)
+	copy.SetResolver(new(Test))
+
+	err = json.Unmarshal(data, copy)
+	assert.NotError(t, err)
+	fmt.Printf("%+v\n", copy)
+}
+
 //
 // type test struct {
 // 	input struct {

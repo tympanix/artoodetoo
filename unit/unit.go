@@ -77,15 +77,27 @@ func (c *Unit) Action() *Action {
 }
 
 // UnmarshalJSON is used to transform json data into a units
-func (c *Unit) UnmarshalJSON(b []byte) error {
+func (c *Unit) UnmarshalJSON(data []byte) error {
 	type jsonUnit Unit
-	c.SetResolver(new(ActionResolver))
 	u := jsonUnit(*c)
-	if err := json.Unmarshal(b, &u); err != nil {
+	if err := json.Unmarshal(data, &u); err != nil {
 		return err
 	}
 
 	*c = Unit(u)
+
+	log.Printf("Processing unit with name: %s", c.Name)
+
+	err := c.RebuildSubject(data, new(ActionResolver))
+	if err != nil {
+		return err
+	}
+
+	newAction, ok := c.GetSubject().(Action)
+	if !ok {
+		return fmt.Errorf("Internal error while parsing unit")
+	}
+	c.action = newAction
 
 	return nil
 }
