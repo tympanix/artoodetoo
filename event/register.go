@@ -22,6 +22,9 @@ func Register(trigger Trigger) {
 
 // AddEvent adds an event to the application
 func AddEvent(event *Event) error {
+	if len(event.UUID) == 0 {
+		return errors.New("Cannot add event without UUID")
+	}
 	_, found := Events[event.ID()]
 	if found {
 		return errors.New("Event with that id already exists")

@@ -2,12 +2,14 @@ package event
 
 import (
 	"fmt"
+	"log"
 	"reflect"
 )
 
 type eventResolver struct{}
 
 func (e *eventResolver) ResolveSubject(typ string) (interface{}, error) {
+	log.Printf("Resolving event with id %s\n", typ)
 	eventTemplate, ok := Templates[typ]
 
 	if !ok {
@@ -26,5 +28,6 @@ func (e *eventResolver) ResolveSubject(typ string) (interface{}, error) {
 		return nil, fmt.Errorf("Internal error while parsing event")
 	}
 
+	log.Printf("Resolved event %s\n", typ)
 	return newTrigger, nil
 }

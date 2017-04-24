@@ -9,13 +9,10 @@ import (
 // StringConverter formats a string using variables
 type StringConverter struct {
 	unit.Base
-	input struct {
-		Format      string
-		Placeholder interface{}
-	}
-	out struct {
-		Formatted string
-	}
+	Format      string      `io:"input"`
+	Placeholder interface{} `io:"input"`
+
+	Formatted string `io:"output"`
 }
 
 func init() {
@@ -27,17 +24,7 @@ func (s *StringConverter) Describe() string {
 	return "An example converter which formats a string using a placeholder"
 }
 
-// Input is the input of the converter
-func (s *StringConverter) Input() interface{} {
-	return &s.input
-}
-
-// Output is the output of the converter
-func (s *StringConverter) Output() interface{} {
-	return &s.out
-}
-
 // Execute function converts the string using the input and parameters
 func (s *StringConverter) Execute() {
-	s.out.Formatted = fmt.Sprintf(s.input.Format, s.input.Placeholder)
+	s.Formatted = fmt.Sprintf(s.Format, s.Placeholder)
 }

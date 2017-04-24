@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"reflect"
 
 	"github.com/Tympanix/automato/subject"
@@ -33,6 +34,7 @@ func (a *ActionResolver) ResolveSubject(t string) (action interface{}, err error
 	if !ok {
 		err = fmt.Errorf("Could not resolve action with type %v", t)
 	}
+	log.Printf("Resolved action %v", unitName(action))
 	return
 }
 
@@ -76,14 +78,14 @@ func (c *Unit) Action() *Action {
 
 // UnmarshalJSON is used to transform json data into a units
 func (c *Unit) UnmarshalJSON(b []byte) error {
-	type jsonUnit *Unit
+	type jsonUnit Unit
 	c.SetResolver(new(ActionResolver))
-	u := jsonUnit(c)
+	u := jsonUnit(*c)
 	if err := json.Unmarshal(b, &u); err != nil {
 		return err
 	}
 
-	*c = Unit(*u)
+	*c = Unit(u)
 
 	return nil
 }

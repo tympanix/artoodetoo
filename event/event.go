@@ -15,7 +15,6 @@ import (
 
 // Trigger is an interfaces which describes the implementations needed for an event
 type Trigger interface {
-	types.IO
 	types.Triggerable
 	Describe() string
 }
@@ -65,15 +64,18 @@ func (e *Event) Trigger() chan bool {
 
 // UnmarshalJSON serialized an event fron json encoding
 func (e *Event) UnmarshalJSON(data []byte) error {
-	type event *Event
+	type event Event
 	e.SetResolver(new(eventResolver))
-	newEvent := event(e)
+	newEvent := event(*e)
 	if err := json.Unmarshal(data, &newEvent); err != nil {
 		return err
 	}
 
-	*e = Event(*newEvent)
+	log.Printf("Unmarshal event with id %s", newEvent.UUID)
 
+	*e = Event(newEvent)
+
+	log.Printf("Event subject is %v", e.GetSubject())
 	newTrigger, ok := e.GetSubject().(Trigger)
 
 	if !ok {

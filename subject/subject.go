@@ -44,7 +44,7 @@ func New(io interface{}, resolver Resolver) *Subject {
 		In:       make([]*Input, 0),
 		Out:      make([]*Output, 0),
 	}
-	subject.analyseIO()
+	subject.analyseSubject()
 	return subject
 }
 
@@ -66,18 +66,22 @@ func (s *Subject) addOutput(output *Output) {
 	s.Out = append(s.Out, output)
 }
 
-func (s *Subject) analyseIO() {
+func (s *Subject) analyseSubject() {
 	structValue := reflect.Indirect(reflect.ValueOf(s.subject))
 	structType := structValue.Type()
 
 	if structValue.Kind() != reflect.Struct {
-		log.Fatal("Subject must be struct type")
+		log.Fatal("Subject must be of type struct")
 	}
 
 	for i := 0; i < structType.NumField(); i++ {
 		fieldType := structType.Field(i)
 		fieldValue := structValue.Field(i)
-		fieldTag := fieldType.Tag.Get(ioTag)
+		fieldTag, ok := fieldType.Tag.Lookup(ioTag)
+
+		if !ok {
+			continue
+		}
 
 		if !fieldValue.IsValid() || !fieldValue.CanSet() {
 			log.Fatalf("Field %s of %s not assignable", fieldType.Name, s.Type())
@@ -87,6 +91,8 @@ func (s *Subject) analyseIO() {
 			s.addInput(NewInput(fieldType, fieldValue))
 		} else if fieldTag == outputTag {
 			s.addOutput(NewOutput(fieldType, fieldValue))
+		} else {
+			log.Fatalf("Unknown input/put %s for %s", fieldTag, s.Type())
 		}
 	}
 
@@ -176,7 +182,7 @@ func (s *Subject) AssignInput(state state.State) error {
 		}
 
 		if len(input.Recipe) == 0 {
-			return fmt.Errorf("Missing recipe for field ”%s” of ”%s”", input.Name, s.Name)
+			return fmt.Errorf("Missing recipe for field ”%s” of ”%s”", input.Name, s.Type())
 		}
 
 		ingredient := input.Recipe[0]
@@ -188,7 +194,7 @@ func (s *Subject) AssignInput(state state.State) error {
 		}
 
 		if !value.Type().AssignableTo(input.Type()) {
-			return fmt.Errorf("Field <%s> of value <%v> can't be assigned <%v>", input.Name, input.Value.Type(), value.Type())
+			return fmt.Errorf("Field ”%s” of value ”%v” can't be assigned ”%v”", input.Name, input.Value.Type(), value.Type())
 		}
 
 		input.Value.Set(value)
@@ -239,6 +245,7 @@ func (s *Subject) AddStatic(argument string, value interface{}) error {
 
 // UnmarshalJSON creates an subject from JSON
 func (s *Subject) UnmarshalJSON(data []byte) error {
+	log.Println("Unmarshal subject")
 	if s.Resolver == nil {
 		return errors.New("Subject could not be serialized from json because it has no resolver")
 	}
@@ -270,6 +277,12 @@ func (s *Subject) UnmarshalJSON(data []byte) error {
 
 	if len(s.Out) != len(jsonSubject.Out) {
 		return fmt.Errorf("Expected %d outputs got %d", len(s.Out), len(jsonSubject.Out))
+	}
+
+	for i, input := range s.In {
+		if err := input.ParseRaw(jsonSubject.In[i]); err != nil {
+			return err
+		}
 	}
 
 	//TODO: Set recipe for inputs
