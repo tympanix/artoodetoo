@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"reflect"
 
 	"github.com/Tympanix/automato/generate"
 	"github.com/Tympanix/automato/state"
@@ -70,8 +69,6 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	log.Printf("Unmarshal event with id %s", newEvent.UUID)
-
 	*e = Event(newEvent)
 
 	err := e.RebuildSubject(data, new(eventResolver))
@@ -79,7 +76,6 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	log.Printf("Event subject is %v", e.GetSubject())
 	newTrigger, ok := e.GetSubject().(Trigger)
 	if !ok {
 		return fmt.Errorf("Internal error while parsing event")
@@ -92,14 +88,6 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 	}
 
 	return nil
-}
-
-func eventType(unit interface{}) string {
-	t := reflect.TypeOf(unit)
-	if t.Kind() == reflect.Ptr {
-		t = t.Elem()
-	}
-	return t.String()
 }
 
 // Subscribe adds a new task to this event's observers

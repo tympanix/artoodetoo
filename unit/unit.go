@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
-	"reflect"
 
 	"github.com/Tympanix/automato/subject"
 )
@@ -34,18 +32,7 @@ func (a *ActionResolver) ResolveSubject(t string) (action interface{}, err error
 	if !ok {
 		err = fmt.Errorf("Could not resolve action with type %v", t)
 	}
-	log.Printf("Resolved action %v", unitName(action))
 	return
-}
-
-// UnitName returns a string representation of the unit
-// specified by the package name, a dot, followed by the name of the struct
-func unitName(unit interface{}) string {
-	t := reflect.TypeOf(unit)
-	if t.Kind() == reflect.Ptr {
-		t = t.Elem()
-	}
-	return t.String()
 }
 
 // Unit wraps the elements of the application and extends it's functionality.
@@ -59,9 +46,6 @@ type Unit struct {
 func (c *Unit) Validate() error {
 	if len(c.Name) == 0 {
 		return errors.New("Unit was not given a name")
-	}
-	if c.Type() != unitName(c.action) {
-		return fmt.Errorf("Unit with id '%s' is not valid", c.Type())
 	}
 	return c.Subject.Validate()
 }
@@ -85,8 +69,6 @@ func (c *Unit) UnmarshalJSON(data []byte) error {
 	}
 
 	*c = Unit(u)
-
-	log.Printf("Processing unit with name: %s", c.Name)
 
 	err := c.RebuildSubject(data, new(ActionResolver))
 	if err != nil {
