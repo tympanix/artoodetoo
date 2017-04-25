@@ -129,7 +129,7 @@ func (j *JSONFile) write() error {
 
 // GetAllTasks returns all tasks loaded from the json file
 func (j *JSONFile) GetAllTasks() (tasks []*task.Task, err error) {
-	if j.Tasks == nil {
+	if j.Tasks == nil && j.cache != nil {
 		j.Tasks = make([]*task.Task, len(j.cache.Tasks))
 		for i, raw := range j.cache.Tasks {
 			var task *task.Task
@@ -144,7 +144,7 @@ func (j *JSONFile) GetAllTasks() (tasks []*task.Task, err error) {
 
 // GetAllEvents returns all events loaded from the json file
 func (j *JSONFile) GetAllEvents() (events []*event.Event, err error) {
-	if j.Events == nil {
+	if j.Events == nil && j.cache != nil {
 		j.Events = make([]*event.Event, len(j.cache.Events))
 		for i, raw := range j.cache.Events {
 			var event *event.Event
