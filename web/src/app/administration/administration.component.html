@@ -12,7 +12,7 @@
             <a *ngIf="!task" class="btn btn-blue task-util-button" (click)="openTaskDialog()">Create Task</a>
 
             <!-- In editor mode -->
-            <a *ngIf="task && task.event" routerLink="/dashboard/" class="btn btn-red task-util-button" (click)="updateTask()">Save</a>
+            <a *ngIf="task" routerLink="/dashboard/" class="btn btn-red task-util-button" (click)="updateTask()">Save</a>
             <a *ngIf="task" routerLink="/administration/" class="btn btn-default task-util-button">Cancel</a>
           </div>
 
@@ -26,7 +26,7 @@
           -->
           <div class="event-container">
             <div class="row">
-              <div class="col-sm-12"><h3>Event</h3></div>
+              <div class="col-sm-12"><h3 >Event</h3></div>
             </div>
 
             <!-- Display if no Event is present -->
@@ -50,7 +50,7 @@
               <unit *ngIf="task.event" [task]="task" [unit]="task.event"></unit>
 
               <div class="center">
-                <a class="btn btn-blue" (click)="openUnitDialog('event')">Choose Event</a>
+                <a class="btn btn-blue">Choose Event</a>
               </div>
             </div>
 
@@ -65,20 +65,35 @@
             </div>
 
             <p *ngIf="!task.actions.length" class="center">
-              Your task need an event to kick it off the ground. <br/>
-              Choose from a vararity of basic events or unlock more advanced
-              events by unlocking services in the Service Overview
+              Pick an action below
             </p>
 
             <unit *ngFor="let unit of task.actions" [task]="task" [unit]="unit"></unit>
 
             <div class="center">
-              <a class="btn btn-blue" (click)="openUnitDialog('action')">Add Action</a>
+              <a class="btn btn-blue" (click)="openUnitDialog()">Add Action</a>
             </div>
 
           </div>
         </div>
 
+      </div>
+
+      <div class="well">
+        <div class="row">
+          <div class="col-sm-6">
+            <h1 class="heading">Event Editor</h1>
+          </div>
+          <div class="col-sm-6">
+              <!--  Not in editor mode -->
+              <a *ngIf="!task" class="btn btn-blue task-util-button" (click)="openEventDialog()">Create Event</a>
+
+              <!-- In editor mode -->
+              <a *ngIf="task && task.event" routerLink="/dashboard/" class="btn btn-red task-util-button">Save</a>
+              <a *ngIf="task" routerLink="/administration/" class="btn btn-default task-util-button">Cancel</a>
+
+          </div>
+        </div>
       </div>
     </main>
 
@@ -103,6 +118,7 @@
                 <a>Unclock</a>
               </div>
             </div>
+
             <div class="panel panel-primary">
               <div class="panel-heading">
                 <h3 class="panel-title">Dummy Units</h3>
@@ -111,6 +127,18 @@
                 <div *ngFor="let unit of units">
                   <strong>{{unit.id}}</strong>
                   <p>{{unit.description}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title">Template Events</h3>
+              </div>
+              <div class="panel-body">
+                <div *ngFor="let event of templateEvents">
+                  <strong>{{event.id}}</strong>
+                  <p>{{event.description}}</p>
                 </div>
               </div>
             </div>
@@ -138,6 +166,7 @@
             </div>
           </div>
         </aside>
+
 
       </div>
     </div>

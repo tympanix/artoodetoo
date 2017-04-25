@@ -20,6 +20,7 @@ import { DropdownComponent } from './dropdown/dropdown.component';
 import { IngredientComponent } from './ingredient/ingredient.component';
 import { UnitDialog } from './dialogs/unitdialog/unitdialog.component';
 import { TaskDialog } from './dialogs/taskdialog/taskdialog.component';
+import { EventDialog } from './dialogs/eventdialog/eventdialog.component';
 
 @NgModule({
   imports: [
@@ -39,11 +40,13 @@ import { TaskDialog } from './dialogs/taskdialog/taskdialog.component';
     DropdownComponent,
     IngredientComponent,
     UnitDialog,
-    TaskDialog
+    TaskDialog,
+    EventDialog
   ],
   entryComponents: [
     UnitDialog,
-    TaskDialog
+    TaskDialog,
+    EventDialog
   ],
   providers: [ApiService, TaskResolver],
   bootstrap: [AppComponent]

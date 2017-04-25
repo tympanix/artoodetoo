@@ -6,6 +6,7 @@ import { MdSnackBar } from '@angular/material';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { UnitDialog } from '../dialogs/unitdialog/unitdialog.component';
 import { TaskDialog } from '../dialogs/taskdialog/taskdialog.component';
+import { EventDialog} from '../dialogs/eventdialog/eventdialog.component';
 
 import { ActivatedRoute } from '@angular/router';
 
@@ -17,12 +18,18 @@ import { ActivatedRoute } from '@angular/router';
 export class AdministrationComponent implements OnInit {
   tasks: Task[]
   units: Unit[]
+  events: Event[]
+  templateEvents: Event[]
   task: Task
   event: Event
+
 
   constructor(private api: ApiService, private route: ActivatedRoute, public dialog: MdDialog, private snackBar: MdSnackBar) {
     api.units.subscribe((units) => this.units = units)
     api.tasks.subscribe((tasks) => this.tasks = tasks)
+    api.events.subscribe((events) => this.events = events)
+    api.templateEvents.subscribe((tevents) => this.templateEvents = tevents)
+
   }
 
   ngOnInit() {
@@ -63,23 +70,26 @@ export class AdministrationComponent implements OnInit {
     console.log(this.task)
   }
 
-  openUnitDialog(type: string) {
+  openUnitDialog() {
     let dialogRef = this.dialog.open(UnitDialog, {
       height: '500px',
       width: '750px',
     });
     dialogRef.afterClosed().subscribe(unit => {
       if (unit) {
-        console.log(type);
-        switch(type){
+          this.task.addAction(unit);
+      }
+    });
+  }
 
-          case "event" :
-            this.task.event = unit;
-            break;
-          case "action":
-            this.task.addAction(unit);
-            break;
-        }
+  openEventDialog() {
+    let dialogRef = this.dialog.open(EventDialog, {
+      height: '500px',
+      width: '750px',
+    });
+    dialogRef.afterClosed().subscribe(event => {
+      if (event) {
+        this.event = event;
       }
     });
   }

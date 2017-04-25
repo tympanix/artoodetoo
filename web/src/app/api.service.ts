@@ -7,13 +7,15 @@ import { MdSnackBar } from '@angular/material';
 
 import 'rxjs/add/operator/map'
 
-import { Task, Unit } from './model';
+import { Task, Unit, Event } from './model';
 
 @Injectable()
 export class ApiService {
 
   public tasks: ReplaySubject<Task[]> = new ReplaySubject<Task[]>(1)
   public units: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)
+  public templateEvents: ReplaySubject<Event[]> = new ReplaySubject<Event[]>(1)
+  public events: ReplaySubject<Event[]> = new ReplaySubject<Event[]>(1)
 
   private options: RequestOptions
 
@@ -23,6 +25,8 @@ export class ApiService {
 
     this.getTasks()
     this.getUnits()
+    this.getTemplateEvents()
+    this.getEvents()
   }
 
   private extractData<T>(): (res: Response) => T {
@@ -55,6 +59,26 @@ export class ApiService {
       .catch(this.handleError)
       .subscribe(tasks => this.tasks.next(tasks));
     return this.tasks
+  }
+
+  getTemplateEvents(): Observable<Event[]>{
+    this.http.get("/api/all_events")
+      .map(this.extractData<Event[]>())
+      .map(json => json.map(data => Event.fromJson(data)))
+      .catch(this.handleError)
+      .subscribe(events => this.templateEvents.next(events));
+      console.log("template")
+    return this.templateEvents
+  }
+
+  getEvents(): Observable<Event[]>{
+    this.http.get("/api/all_events")
+      .map(this.extractData<Event[]>())
+      .map(json => json.map(data => Event.fromJson(data)))
+      .catch(this.handleError)
+      .subscribe(events => this.events.next(events));
+      console.log("event")
+    return this.events
   }
 
   runTask(task: Task): Observable<boolean> {
