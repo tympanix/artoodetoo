@@ -48,7 +48,7 @@ func (i *Input) CopyRecipe(input *Input) error {
 	}
 
 	if i.TypeStr != input.TypeStr {
-		return fmt.Errorf("INput type %s does not match %s", i.TypeStr, input.TypeStr)
+		return fmt.Errorf("Input type %s does not match %s", i.TypeStr, input.TypeStr)
 	}
 
 	i.Recipe = input.Recipe
