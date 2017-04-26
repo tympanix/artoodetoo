@@ -13,7 +13,7 @@ import (
 // Photos listen for new photo uploads or tags on facebook
 type Photos struct {
 	event.Base
-	last     time.Time
+	LastSeen time.Time
 	Token    string  `io:"input"`
 	Interval float64 `io:"input"`
 
@@ -46,13 +46,13 @@ func (p *Photos) Listen() error {
 		photos, err := p.getPhotos()
 
 		if err != nil {
-			return nil
+			return err
 		}
 
 		log.Printf("Found %d photos", len(photos))
 
 		for _, photo := range photos {
-			if photo.Created.After(p.last) {
+			if photo.Created.After(p.LastSeen) {
 				details, err := p.getPhotoDeails(photo.ID)
 				if err != nil {
 					return err
@@ -83,12 +83,12 @@ func (p *photoInfo) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &photo); err != nil {
 		return err
 	}
+	*p = photoInfo(photo)
 	time, err := time.Parse(TIME, p.CreatedTime)
 	if err != nil {
 		return err
 	}
 	p.Created = time
-	*p = photoInfo(photo)
 	return nil
 }
 
@@ -98,15 +98,15 @@ func (p *Photos) updateLast() error {
 		return err
 	}
 	if len(photos) > 0 {
-		p.last = photos[0].Created
+		p.LastSeen = photos[0].Created
 	} else {
-		p.last = time.Now()
+		p.LastSeen = time.Now()
 	}
 	return nil
 }
 
 func (p *Photos) getPhotos() (photos []*photoInfo, err error) {
-	if _, err = getData("/me/photos", p.Token, &photos); err != nil {
+	if _, err = getData("/me/photos", p.Token, Options{}, &photos); err != nil {
 		return
 	}
 
@@ -125,7 +125,10 @@ type image struct {
 }
 
 func (p *Photos) getPhotoDeails(id string) (details photoDetails, err error) {
-	if err = getNode(id, p.Token, &details); err != nil {
+	options := Options{
+		Fields: "images",
+	}
+	if err = getNode(id, p.Token, options, &details); err != nil {
 		return
 	}
 	return

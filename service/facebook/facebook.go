@@ -20,17 +20,26 @@ const (
 	TIME = "2006-01-02T15:04:05-0700"
 )
 
-func getURL(path string, token string) (url *url.URL, err error) {
+func getURL(path string, token string, options Options) (url *url.URL, err error) {
 	url, err = url.Parse(URI)
 
 	q := url.Query()
 	q.Set("access_token", token)
+
+	if len(options.Fields) > 0 {
+		q.Add("fields", options.Fields)
+	}
 
 	url.RawQuery = q.Encode()
 
 	url.Path = fmt.Sprintf("/%s%s", VERSION, path)
 
 	return
+}
+
+// Options defines the options with which the api is called
+type Options struct {
+	Fields string
 }
 
 // Data is a json structure returned by the facebook api
@@ -51,12 +60,12 @@ type Cursor struct {
 	After  string `json:"after"`
 }
 
-func callAPI(path string, token string) (resp *http.Response, err error) {
+func callAPI(path string, token string, options Options) (resp *http.Response, err error) {
 	if !strings.HasPrefix(path, "/") {
 		path = fmt.Sprintf("/%s", path)
 	}
 
-	url, err := getURL(path, token)
+	url, err := getURL(path, token, options)
 	if err != nil {
 		return
 	}
@@ -72,8 +81,8 @@ func callAPI(path string, token string) (resp *http.Response, err error) {
 	return
 }
 
-func getData(path string, token string, v interface{}) (paging Pagination, err error) {
-	r, err := callAPI(path, token)
+func getData(path string, token string, options Options, v interface{}) (paging Pagination, err error) {
+	r, err := callAPI(path, token, options)
 	if err != nil {
 		return
 	}
@@ -92,8 +101,8 @@ func getData(path string, token string, v interface{}) (paging Pagination, err e
 	return
 }
 
-func getNode(path string, token string, v interface{}) (err error) {
-	r, err := callAPI(path, token)
+func getNode(path string, token string, options Options, v interface{}) (err error) {
+	r, err := callAPI(path, token, options)
 
 	if err != nil {
 		return
