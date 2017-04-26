@@ -41,8 +41,9 @@ func New(trigger Trigger) *Event {
 // Listen starts listening for events
 func (e *Event) Listen() error {
 	go func() {
-		err := e.trigger.Listen()
-		log.Println(err)
+		if err := e.trigger.Listen(); err != nil {
+			log.Println(err)
+		}
 	}()
 	for goon := range e.Trigger() {
 		if goon {

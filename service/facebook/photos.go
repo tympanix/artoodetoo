@@ -66,6 +66,7 @@ func (p *Photos) Listen() error {
 				}
 			}
 		}
+		p.LastSeen = photos[0].Created
 	}
 
 	return nil

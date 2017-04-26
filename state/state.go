@@ -3,7 +3,6 @@ package state
 import (
 	"errors"
 	"fmt"
-	"log"
 	"reflect"
 )
 
@@ -47,7 +46,6 @@ func (s State) PutValue(domain string, key string, value reflect.Value) error {
 		s[domain] = state
 	}
 
-	log.Printf("Putting key %s for domain %s", key, domain)
 	state[key] = value
 	return nil
 }
