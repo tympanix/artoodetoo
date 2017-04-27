@@ -14,7 +14,7 @@ import (
 type Photos struct {
 	event.Base
 	LastSeen time.Time
-	Token    string  `io:"input"`
+	Token    Token   `io:"input"`
 	Interval float64 `io:"input"`
 
 	ImgURL string `io:"output"`
