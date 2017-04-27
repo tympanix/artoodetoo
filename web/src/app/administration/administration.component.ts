@@ -8,7 +8,8 @@ import { UnitDialog } from '../dialogs/unitdialog/unitdialog.component';
 import { TaskDialog } from '../dialogs/taskdialog/taskdialog.component';
 import { EventDialog} from '../dialogs/eventdialog/eventdialog.component';
 
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import * as _ from "lodash";
 
 @Component({
   selector: 'app-administration',
@@ -23,12 +24,19 @@ export class AdministrationComponent implements OnInit {
   task: Task
   event: Event
 
+  editorState: boolean
+  eventActive: boolean
+  taskActive: boolean
 
-  constructor(private api: ApiService, private route: ActivatedRoute, public dialog: MdDialog, private snackBar: MdSnackBar) {
+  constructor(private api: ApiService, private route: ActivatedRoute, private router: Router, public dialog: MdDialog, private snackBar: MdSnackBar) {
     api.units.subscribe((units) => this.units = units)
     api.tasks.subscribe((tasks) => this.tasks = tasks)
     api.events.subscribe((events) => this.events = events)
     api.templateEvents.subscribe((tevents) => this.templateEvents = tevents)
+
+    this.eventActive = _.last(route.snapshot.url).path == 'event'
+    this.taskActive = _.last(route.snapshot.url).path == 'task'
+    this.editorState =  this.taskActive || this.eventActive
 
   }
 
@@ -39,7 +47,7 @@ export class AdministrationComponent implements OnInit {
       }
       console.log("Task", data.task)
     })
-    this.event = new Event();
+
   }
 
   // Return units with an input type mathcing the given argument

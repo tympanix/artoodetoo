@@ -12,7 +12,10 @@ const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
   { path: 'dashboard', component: DashboardComponent},
   { path: 'administration', component: AdministrationComponent},
-  { path: 'administration/:task', component: AdministrationComponent, resolve: { task: TaskResolver }},
+  { path: 'administration/task', component: AdministrationComponent},
+  { path: 'administration/event', component: AdministrationComponent},
+  { path: 'administration/task/:task', component: AdministrationComponent, resolve: { task: TaskResolver }},
+  // Add event resolver
   { path: 'statistics', component: StatisticsComponent}
 ];
 

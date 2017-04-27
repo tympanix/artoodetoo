@@ -1,11 +1,20 @@
 <main class="container dashboard">
 
+<!-- Tasks -->
 <div class="well">
   <div class="row">
     <div class="col-sm-12">
       <h1>Tasks</h1>
     </div>
   </div>
+
+  <!-- If no tasks -->
+  <div class="row">
+    <div class="col-sm-12">
+      <p>You do not have any tasks yet, head to the administration panel to create tasks</p>
+    </div>
+  </div>
+
   <!-- All panels -->
   <div *ngFor="let task of tasks" class="panel panel-primary">
     <div class="panel-heading">
@@ -29,6 +38,23 @@
         <a class="btn btn-default"><i class="type material-icons">computer</i>{{action.name}}</a>
       </template>
 
+    </div>
+  </div>
+</div>
+
+<!-- Events -->
+
+<div class="well">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Events</h1>
+    </div>
+  </div>
+
+  <!-- If no tasks -->
+  <div class="row">
+    <div class="col-sm-12">
+      <p>You do not have any events yet, head to the administration panel to create events</p>
     </div>
   </div>
 </div>

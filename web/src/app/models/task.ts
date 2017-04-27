@@ -68,6 +68,11 @@ export class Task implements ITask, Model {
     this.updateUnitList()
   }
 
+  deleteEvent(){
+    console.log("Deleting event")
+    this.event = null
+  }
+
   private swapActions(indexFrom: number, indexTo: number) {
     if (indexFrom < 0 || indexFrom >= this.actions.length) return
     if (indexTo < 0 || indexTo >= this.actions.length) return

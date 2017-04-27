@@ -11,7 +11,7 @@ import { Task, Unit } from '../model';
 })
 export class UnitComponent implements OnInit {
   @Input() task: Task
-  @Input() unit: Unit;
+  @Input() unit: Unit
 
   // Temporary placeholder when changing unit name
   unitname: string = ""
