@@ -11,8 +11,11 @@ import (
 type Cron struct {
 	event.Base
 	Cron *cron.Cron `json:"-"`
-	Time string     `io:"input"`
+	Time Time       `io:"input"`
 }
+
+// Time is a string which describes intervals using the cron spec
+type Time string
 
 func init() {
 	event.Register(&Cron{})
@@ -29,7 +32,7 @@ func (c *Cron) Listen() error {
 		return errors.New("No time specefied for crontab")
 	}
 	c.Cron = cron.New()
-	if err := c.Cron.AddFunc(c.Time, c.Fire); err != nil {
+	if err := c.Cron.AddFunc(string(c.Time), c.Fire); err != nil {
 		return err
 	}
 	c.Cron.Start()
