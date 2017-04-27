@@ -1,0 +1,64 @@
+<div class="panel panel-primary">
+
+  <div class="panel-heading">
+    <h3 class="panel-title">{{event.name}}</h3>
+  </div>
+
+  <div class="panel-body">
+    <div *ngIf="!event.name">
+      <form (ngSubmit)="changeEventName(eventname)">
+        <md-input-container class="full-width">
+          <input name="eventname" mdInput placeholder="Event Name" autocomplete="off" autofocus required
+             [(ngModel)]="eventname">
+        </md-input-container>
+      </form>
+    </div>
+    <div *ngIf="event.name">
+      <div class="row">
+        <div class="col-sm-12">
+          <h4 class="bold">Input</h4>
+        </div>
+        <div class="col-sm-12">
+          <!-- Event doesn't take input -->
+          <div *ngIf="!event.input.length">
+            <a class="btn btn-default btn-xs">No Input</a>
+          </div>
+
+          <!-- Event takes input  -->
+          <div *ngFor="let input of event.input">
+            <div class="row">
+
+              <div class="col-lg-2">
+                <a class="btn btn-xs btn-blue">{{input.name}}</a>
+              </div>
+
+              <!-- For each input field  -->
+              <div class="col-lg-10" *ngFor="let ingr of input.recipe">
+                <h4>input</h4>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <h4 class="bold">Output</h4>
+        </div>
+
+        <div class="col-sm-12">
+          <span *ngIf="!event.output.length">
+            <a class="btn btn-default btn-xs">No Output</a>
+          </span>
+
+          <span *ngFor="let output of event.output">
+            <a class="btn btn-xs btn-red">{{output.name}}</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
