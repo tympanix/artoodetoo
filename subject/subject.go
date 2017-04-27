@@ -95,7 +95,7 @@ func (s *Subject) analyseSubject() {
 		} else if fieldTag == outputTag {
 			s.addOutput(NewOutput(fieldType, fieldValue))
 		} else {
-			log.Fatalf("Unknown input/put %s for %s", fieldTag, s.Type())
+			log.Fatalf("Unknown input/output tag %s for %s", fieldTag, s.Type())
 		}
 	}
 
@@ -177,7 +177,14 @@ func (s *Subject) Validate() error {
 }
 
 // AssignInput finds all ingredients in the state given and assigns it as input
-func (s *Subject) AssignInput(state state.State) error {
+func (s *Subject) AssignInput(state state.State) (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			if err == nil {
+				err = fmt.Errorf("Could not assign input to %s", s.Type())
+			}
+		}
+	}()
 
 	for _, input := range s.In {
 		if !input.IsValid() || !input.CanSet() {
@@ -189,8 +196,13 @@ func (s *Subject) AssignInput(state state.State) error {
 		}
 
 		ingredient := input.Recipe[0]
-
 		value, err := ingredient.GetValue(state)
+
+		if err != nil {
+			return err
+		}
+
+		value, err = TryConvert(value, input.Type())
 
 		if err != nil {
 			return err
@@ -205,6 +217,18 @@ func (s *Subject) AssignInput(state state.State) error {
 	}
 
 	return nil
+}
+
+// TryConvert tries to convert the value to another type and returns an error
+// instead of panicking
+func TryConvert(v reflect.Value, t reflect.Type) (c reflect.Value, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("Could not convert type %s to type %s", v.Type(), t)
+		}
+	}()
+	c = v.Convert(t)
+	return
 }
 
 // StoreOutput saves the computed output in the state
