@@ -6,11 +6,11 @@
       <div class="well">
         <div class="row">
           <div class="col-sm-6">
-            <h1 class="heading">Task Editor</h1>
+            <h1 class="heading">Task</h1>
           </div>
 
           <div class="col-sm-6">
-            <a *ngIf="!task" routerLink="/administration/task" class="btn btn-blue task-util-button">Create Task</a>
+            <a *ngIf="!task" routerLink="/administration/task" class="btn btn-blue task-util-button">Open Task Editor</a>
           </div>
         </div>
       </div>
@@ -18,11 +18,11 @@
       <div class="well">
         <div class="row">
           <div class="col-sm-6">
-            <h1 class="heading">Task Editor</h1>
+            <h1 class="heading">Event</h1>
           </div>
 
           <div class="col-sm-6">
-            <a *ngIf="!task" routerLink="/administration/event" class="btn btn-blue task-util-button">Create Event</a>
+            <a *ngIf="!task" routerLink="/administration/event" class="btn btn-blue task-util-button">Open Event Editor</a>
           </div>
         </div>
       </div>
@@ -39,11 +39,13 @@
 
           <div class="col-sm-6">
             <!--  Not in editor mode -->
+            <a *ngIf="!task" routerLink="/administration/" class="btn btn-default task-util-button">Back</a>
             <a *ngIf="!task" class="btn btn-blue task-util-button" (click)="openTaskDialog()">New Task</a>
 
             <!-- In editor mode -->
-            <a *ngIf="task" routerLink="/dashboard/" class="btn btn-red task-util-button" (click)="updateTask()">Save</a>
             <a *ngIf="task" routerLink="/administration/" class="btn btn-default task-util-button">Cancel</a>
+            <a *ngIf="task" routerLink="/dashboard/" class="btn btn-red task-util-button" (click)="updateTask()">Save</a>
+
           </div>
 
         </div>
@@ -65,7 +67,7 @@
             </p>
 
             <div class="row">
-              <md-radio-group [(ngModel)]="task.event.type">
+              <md-radio-group [(ngModel)]="eventType">
                 <div class="center">
                   <md-radio-button value=0>Manual</md-radio-button>
                   <md-radio-button value=1>Event</md-radio-button>
@@ -74,7 +76,7 @@
             </div>
 
 
-            <div *ngIf="event.type==1">
+            <div *ngIf="eventType==1">
               <unit *ngIf="task.event" [task]="task" [unit]="task.event"></unit>
 
               <div class="center">
@@ -108,11 +110,13 @@
           </div>
           <div class="col-sm-6">
               <!--  Not in editor mode -->
+              <a *ngIf="!event" routerLink="/administration/" class="btn btn-default task-util-button">Back</a>
               <a *ngIf="!event" routerLink="/administration/event" class="btn btn-blue task-util-button" (click)="openEventDialog()">Create Event</a>
 
               <!-- In editor mode -->
-              <a *ngIf="event" routerLink="/dashboard/" class="btn btn-red task-util-button">Save</a>
               <a *ngIf="event" routerLink="/administration/" class="btn btn-default task-util-button">Cancel</a>
+              <a *ngIf="event" routerLink="/dashboard/" class="btn btn-red task-util-button">Save</a>
+
 
           </div>
         </div>
