@@ -70,6 +70,10 @@ export class AdministrationComponent implements OnInit {
     //this.snackBar.open(this.task.name + " has been saved", "", {duration: 4000, extraClasses: ["snackbar-success"]})
   }
 
+  saveEvent(){
+    this.api.saveEvent(this.event).subscribe()
+  }
+
   deleteTask(){
     this.api.deleteTask(this.task).subscribe()
   }

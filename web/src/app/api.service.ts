@@ -121,4 +121,13 @@ export class ApiService {
       .catch(this.handleError)
   }
 
+  saveEvent(event: Event): Observable<boolean>{
+    return this.http.post("api/events/" + event.toJson(), this.options)
+      .map(res => res.ok)
+      .do(bool => {
+          this.snackBar.open(event.name + " has been created!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
+      })
+      .catch(this.handleError)
+  }
+
 }
