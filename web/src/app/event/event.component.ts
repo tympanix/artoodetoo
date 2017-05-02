@@ -15,9 +15,7 @@ export class EventComponent implements OnInit {
   // Temporary placeholder when changing event name
   eventname: string = ""
 
-  constructor(private api: ApiService, private snackBar: MdSnackBar) {
-
-  }
+  constructor(private api: ApiService, private snackBar: MdSnackBar) {}
 
   ngOnInit() { }
 
@@ -27,9 +25,8 @@ export class EventComponent implements OnInit {
       return
     }
 
-      this.event.name = name
-      this.eventname = ""
-
+    this.event.name = name
+    this.eventname = ""
   }
 
 }
