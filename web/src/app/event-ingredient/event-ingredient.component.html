@@ -33,6 +33,32 @@
 
   </div>
 
+  <!--  Common types -->
+
+  <div *ngSwitchCase="'string'">
+      <md-input-container class="fluid">
+          <input mdInput [placeholder]="input.name" [(ngModel)]="ingr.value">
+      </md-input-container>
+  </div>
+
+  <div *ngSwitchCase="'int'">
+      <md-input-container class="fluid">
+          <input mdInput [placeholder]="input.name" type="number" [(ngModel)]="ingr.value">
+      </md-input-container>
+  </div>
+
+  <div *ngSwitchCase="'float64'">
+      <md-input-container class="fluid">
+          <input mdInput [placeholder]="input.name" type="number" [(ngModel)]="ingr.value">
+      </md-input-container>
+  </div>
+
+  <div *ngSwitchCase="'interface {}'">
+      <md-input-container class="fluid">
+          <input mdInput [placeholder]="input.name" type="text" [(ngModel)]="ingr.value">
+      </md-input-container>
+  </div>
+
 
   <!-- whatever -->
   <div *ngSwitchDefault>
