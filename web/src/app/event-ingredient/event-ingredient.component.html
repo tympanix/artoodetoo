@@ -1,0 +1,37 @@
+<div *ngIf="input.type == 'cron.Time'" class="row">
+
+  <div class="col-lg-8">
+
+    <div class="select-container">
+      <input type="hidden" [(ngModel)]="ingr.type" value="1">
+
+      <md-select placeholder="Every" [(ngModel)]="selectedType" (ngModelChange)="typeToNumber()">
+        <md-option [value]="0">Minute</md-option>
+        <md-option [value]="1">Hour</md-option>
+
+      </md-select>
+
+      <span [ngSwitch]="selectedType">
+          <!-- Define your variable input -->
+          <template ngSwitchCase="0">
+            <md-select placeholder="min" [(ngModel)]="selectedNumber" >
+                <md-option *ngFor="let int of minute" [value]="int">{{ int }}</md-option>
+            </md-select>
+          </template>
+
+          <template ngSwitchCase="1">
+            <md-select placeholder="hour" [(ngModel)]="selectedNumber">
+                <md-option *ngFor="let int of hour" [value]="int">{{ int }}</md-option>
+            </md-select>
+          </template>
+        </span>
+    </div>
+    <span>Fires @every {{selectedNumber}}</span>
+    <span *ngIf="selectedType==0">Minute</span>
+    <span *ngIf="selectedType==1">Hour</span>
+    <p>{{ingr.type}}
+    {{ingr.value}}</p>
+
+  </div>
+
+</div>

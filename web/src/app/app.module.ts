@@ -22,6 +22,7 @@ import { UnitDialog } from './dialogs/unitdialog/unitdialog.component';
 import { TaskDialog } from './dialogs/taskdialog/taskdialog.component';
 import { EventDialog } from './dialogs/eventdialog/eventdialog.component';
 import { EventComponent } from './event/event.component';
+import { EventIngredientComponent } from './event-ingredient/event-ingredient.component';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { EventComponent } from './event/event.component';
     UnitDialog,
     TaskDialog,
     EventDialog,
-    EventComponent
+    EventComponent,
+    EventIngredientComponent
   ],
   entryComponents: [
     UnitDialog,
