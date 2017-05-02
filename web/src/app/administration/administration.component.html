@@ -115,7 +115,7 @@
 
               <!-- In editor mode -->
               <a *ngIf="event" routerLink="/administration/" class="btn btn-default task-util-button">Cancel</a>
-              <a *ngIf="event" routerLink="/dashboard/" class="btn btn-red task-util-button">Save</a>
+              <a *ngIf="event" routerLink="/dashboard/" class="btn btn-red task-util-button" (click)="saveEvent()">Save</a>
 
 
           </div>

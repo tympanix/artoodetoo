@@ -14,23 +14,19 @@
       <span [ngSwitch]="selectedType">
           <!-- Define your variable input -->
           <template ngSwitchCase="0">
-            <md-select placeholder="min" [(ngModel)]="selectedNumber" >
+            <md-select placeholder="min" [(ngModel)]="selectedNumber" (ngModelChange)="updateIngrValue()">
                 <md-option *ngFor="let int of minute" [value]="int">{{ int }}</md-option>
             </md-select>
           </template>
 
           <template ngSwitchCase="1">
-            <md-select placeholder="hour" [(ngModel)]="selectedNumber">
+            <md-select placeholder="hour" [(ngModel)]="selectedNumber"  (ngModelChange)="updateIngrValue()">
                 <md-option *ngFor="let int of hour" [value]="int">{{ int }}</md-option>
             </md-select>
           </template>
         </span>
     </div>
-    <span>Fires @every {{selectedNumber}}</span>
-    <span *ngIf="selectedType==0">Minute</span>
-    <span *ngIf="selectedType==1">Hour</span>
-    <p>{{ingr.type}}
-    {{ingr.value}}</p>
+    <span>Fires @every {{ingr.value}}</span>
 
   </div>
 

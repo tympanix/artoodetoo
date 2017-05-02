@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Input as UnitInput } from '../model';
+import { Ingredient, Input as UnitInput } from '../model';
 
 @Component({
   selector: 'event-ingredient',
@@ -8,7 +8,7 @@ import { Input as UnitInput } from '../model';
 })
 export class EventIngredientComponent implements OnInit {
   @Input() input: UnitInput
-  @Input() ingr
+  @Input() ingr: Ingredient
 
   minute: number[]
   hour: number[]
@@ -25,6 +25,10 @@ export class EventIngredientComponent implements OnInit {
 
   typeToNumber() {
     this.selectedType = +this.selectedType
+  }
+
+  updateIngrValue(){
+    this.ingr.value = this.selectedNumber + (this.selectedType == 0 ? "m" : "h")
   }
 
 }
