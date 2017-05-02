@@ -28,7 +28,7 @@ export class EventIngredientComponent implements OnInit {
   }
 
   updateIngrValue(){
-    this.ingr.value = this.selectedNumber + (this.selectedType == 0 ? "m" : "h")
+    this.ingr.value = "@every" + this.selectedNumber + (this.selectedType == 0 ? "m" : "h")
   }
 
 }
