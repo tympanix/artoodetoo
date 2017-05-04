@@ -28,6 +28,9 @@ export class AdministrationComponent implements OnInit {
   eventActive: boolean
   taskActive: boolean
 
+  // Event selection
+  eventType: number
+
   constructor(private api: ApiService, private route: ActivatedRoute, private router: Router, public dialog: MdDialog, private snackBar: MdSnackBar) {
     api.units.subscribe((units) => this.units = units)
     api.tasks.subscribe((tasks) => this.tasks = tasks)
@@ -80,6 +83,14 @@ export class AdministrationComponent implements OnInit {
 
   test() {
     console.log(this.task)
+  }
+
+  eventTypeHandler(){
+    this.eventType = +this.eventType
+
+    if(this.eventType == 0){
+      this.task.event.name = ""
+    } 
   }
 
   openUnitDialog() {

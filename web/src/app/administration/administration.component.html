@@ -59,31 +59,29 @@
               <div class="col-sm-12"><h3 >Event</h3></div>
             </div>
 
-            <!-- Display if no Event is present -->
-            <p class="center">
-              Choose if you want to start your task manually, or if an Event should kick it off. <br/>
-              Choose from a vararity of basic events or unlock more advanced
-              events by unlocking services in the Service Overview
-            </p>
 
             <div class="row">
               <md-radio-group [(ngModel)]="eventType">
-                <div class="center">
+                <div class="col-lg-2">
                   <md-radio-button value=0>Manual</md-radio-button>
+                </div>
+                <div class="col-lg-2">
                   <md-radio-button value=1>Event</md-radio-button>
                 </div>
               </md-radio-group>
-            </div>
 
 
-            <div *ngIf="eventType==1">
-              <unit *ngIf="task.event" [task]="task" [unit]="task.event"></unit>
 
-              <div class="center">
-                <a class="btn btn-blue">Choose Event</a>
+              <div *ngIf="eventType==1">
+                <div class="col-lg-8">
+                  <div class="select-container">
+                    <md-select placeholder="Event" [(ngModel)]="task.event">
+                        <md-option *ngFor="let ev of events" [value]="ev.name">{{ ev.name }}</md-option>
+                    </md-select>
+                  </div>
+                </div>
               </div>
             </div>
-
           </div>
 
           <!-- Actions container -->
@@ -133,7 +131,7 @@
         <!-- Services -->
         <aside class="col-lg-12 col-md-6">
           <div class="well">
-            <h1 class="heading">Service Overview</h1>
+            <h2 class="heading">Service Overview</h2>
 
             <div mdTooltip="You must unlock in order to get advanced features" mdTooltipPosition="right" class="panel panel-primary">
               <div class="panel-heading">
@@ -177,20 +175,38 @@
         <!-- Tasks -->
         <aside class="col-lg-12 col-md-6">
           <div class="well">
-            <h1 class="heading">Existing tasks</h1>
+            <h2 class="heading">Existing tasks</h2>
 
-            <div *ngFor="let task of tasks" class="panel panel-primary">
+            <div *ngFor="let ta of tasks" class="panel panel-primary">
               <div class="panel-heading">
-                <h3 class="panel-title">{{task.name}}</h3>
+                <h3 class="panel-title">{{ta.name}}</h3>
                 <a mdTooltip="Edit {{task.name}}" mdTooltipPosition="above" routerLink="/administration/{{task.name}}"><i class="material-icons">settings</i></a>
               </div>
               <div class="panel-body">
-                <p>{{task.event.name}}
-                  <template ngFor let-action [ngForOf]="task.actions">
+                <p>{{ta.event.name}}
+                  <template ngFor let-action [ngForOf]="ta.actions">
                     <i class="next material-icons">arrow_forward</i>
                     {{action.name}}
                   </template>
                 </p>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Events -->
+        <aside class="col-lg-12 col-md-6">
+          <div class="well">
+            <h2 class="heading">Existing events</h2>
+
+            <div *ngFor="let ev of events" class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title">{{ev.name}}</h3>
+              </div>
+              <div class="panel-body">
+                <template ngFor let-input [ngForOf]="ev.input">
+                  <p><b>{{input.name}}</b> <span *ngFor="let ingr of input.recipe">{{ingr.value}}</span></p>
+                </template>
               </div>
             </div>
           </div>
