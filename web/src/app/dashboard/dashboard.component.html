@@ -9,7 +9,7 @@
   </div>
 
   <!-- If no tasks -->
-  <div class="row">
+  <div *ngIf="tasks == ''" class="row">
     <div class="col-sm-12">
       <p>You do not have any tasks yet, head to the administration panel to create tasks</p>
     </div>
@@ -20,7 +20,7 @@
     <div class="panel-heading">
       <div class="row">
         <div class="col-sm-12">
-          <h2>{{task.name}}<small *ngIf="task.running" class="text-success"> - Running</small></h2>
+          <h3 class="panel-title">{{task.name}}<small *ngIf="task.running" class="text-success"> - Running</small></h3>
           <a routerLink="/administration/{{task.name}}" mdTooltip="Edit {{task.name}}" mdTooltipPosition="above"><i class="material-icons">settings</i></a>
 
           <!-- Start / Stop task -->
@@ -53,10 +53,74 @@
 
   <!-- If no tasks -->
   <div class="row">
-    <div class="col-sm-12">
+    <div *ngIf="events == ''" class="col-sm-12">
       <p>You do not have any events yet, head to the administration panel to create events</p>
     </div>
   </div>
+
+  <div *ngFor="let event of events" class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-sm-12">
+          <h3 class="panel-title">{{event.name}}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-body">
+
+      <div class="row">
+        <div class="col-sm-12">
+          <h4 class="bold">Input</h4>
+        </div>
+        <div class="col-sm-12">
+          <!-- Event doesn't take input -->
+          <div *ngIf="!event.input.length">
+            <a class="btn btn-default btn-xs">No Input</a>
+          </div>
+
+          <!-- Event takes input  -->
+          <div *ngFor="let input of event.input">
+            <div class="row">
+
+              <div class="col-lg-2">
+                <a class="btn btn-xs btn-blue">{{input.name}}</a>
+              </div>
+
+              <!-- For each input field  -->
+              <div class="col-lg-10" *ngFor="let ingr of input.recipe">
+                <p>{{ingr.value}}</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <h4 class="bold">Output</h4>
+        </div>
+
+        <div class="col-sm-12">
+          <span *ngIf="!event.output.length">
+            <a class="btn btn-default btn-xs">No Output</a>
+          </span>
+
+          <span *ngFor="let output of event.output">
+            <a class="btn btn-xs btn-red">{{output.name}}</a>
+          </span>
+        </div>
+      </div>
+
+
+    </div>
+    <!-- panel body -->
+  </div>
+
+
 </div>
 
 </main>

@@ -67,12 +67,11 @@ export class ApiService {
       .map(json => json.map(data => Event.fromJson(data)))
       .catch(this.handleError)
       .subscribe(events => this.templateEvents.next(events));
-      console.log("template")
     return this.templateEvents
   }
 
   getEvents(): Observable<Event[]>{
-    this.http.get("/api/all_events")
+    this.http.get("/api/events")
       .map(this.extractData<Event[]>())
       .map(json => json.map(data => Event.fromJson(data)))
       .catch(this.handleError)

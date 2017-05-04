@@ -11,6 +11,7 @@ export class EventIngredientComponent implements OnInit {
   @Input() ingr: Ingredient
 
   // Cron variables
+  timeType: number = 0
   minute: number[]
   hour: number[]
   selectedType: number
@@ -27,13 +28,17 @@ export class EventIngredientComponent implements OnInit {
   ngOnInit() {
   }
 
-  typeToNumber() {
+  unitToNumber() {
     this.selectedType = +this.selectedType
+  }
+
+  typeToNumber(){
+    this.timeType = +this.timeType
   }
 
   // Cron functions
   updateIngrValue(){
-    this.ingr.value = "@every" + this.selectedNumber + (this.selectedType == 0 ? "m" : "h")
+    this.ingr.value = "@every " + this.selectedNumber + (this.selectedType == 0 ? "m" : "h")
   }
 
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Task } from '../model';
+import { Task, Event } from '../model';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -10,9 +10,11 @@ import { ApiService } from '../api.service';
 })
 export class DashboardComponent implements OnInit {
   tasks: Task[]
+  events: Event[]
 
   constructor(private api: ApiService) {
     api.tasks.subscribe((tasks) => this.tasks = tasks)
+    api.events.subscribe((events) => this.events = events)
   }
 
   ngOnInit() { }

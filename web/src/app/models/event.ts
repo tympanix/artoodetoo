@@ -33,10 +33,11 @@ export class Event implements IEvent, Model {
     this.input.forEach(input => input.bootstrap())
   }
 
+  // TODO: white this.uuid when fixed in backend
   toJson(): IEvent {
     return {
       id: this.id,
-      uuid: this.uuid,
+      uuid: "testuuid",
       name: this.name,
       description: this.description,
       input: this.input.map(i => i.toJson()),
