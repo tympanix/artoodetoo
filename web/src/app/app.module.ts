@@ -24,13 +24,16 @@ import { EventDialog } from './dialogs/eventdialog/eventdialog.component';
 import { EventComponent } from './event/event.component';
 import { EventIngredientComponent } from './event-ingredient/event-ingredient.component';
 
+import { FacebookModule } from 'ngx-facebook'
+
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    MaterialModule
+    MaterialModule,
+    FacebookModule.forRoot()
   ],
   declarations: [
     AppComponent,
