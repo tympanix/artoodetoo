@@ -93,6 +93,10 @@ export class AdministrationComponent implements OnInit {
     }
   }
 
+  eventChange(){
+    this.task.updateUnitList()
+  }
+
   openUnitDialog() {
     let dialogRef = this.dialog.open(UnitDialog, {
       height: '500px',

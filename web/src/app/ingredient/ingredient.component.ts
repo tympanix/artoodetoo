@@ -19,7 +19,6 @@ export class IngredientComponent implements OnInit {
 
   ngOnInit() {
     this.task.units.subscribe(units => this.sources = this.filterUnits(units))
-    this.sources.push(this.task.event)
     this.changeSource(this.model.source)
   }
 
