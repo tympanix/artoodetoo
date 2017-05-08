@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { ApiService } from '../../api.service'
-import { Event } from '../../model'
+import { Unit } from '../../model'
 
 @Component({
   selector: 'eventdialog',
@@ -10,8 +10,8 @@ import { Event } from '../../model'
 export class EventDialog implements OnInit {
 
   search: string = ""
-  events: Event[]
-  filtered: Event[]
+  events: Unit[]
+  filtered: Unit[]
 
   constructor(private api: ApiService, public dialogRef: MdDialogRef<EventDialog>) {}
 
@@ -26,7 +26,7 @@ export class EventDialog implements OnInit {
       u.id.toLowerCase().includes(event.toLowerCase()))
   }
 
-  addEvent(u: Event) {
+  addEvent(u: Unit) {
     let event
     let template = u || this.filtered[0]
     if (template) {
