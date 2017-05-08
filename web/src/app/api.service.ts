@@ -7,15 +7,15 @@ import { MdSnackBar } from '@angular/material';
 
 import 'rxjs/add/operator/map'
 
-import { Task, Unit, Event } from './model';
+import { Task, Unit} from './model';
 
 @Injectable()
 export class ApiService {
 
   public tasks: ReplaySubject<Task[]> = new ReplaySubject<Task[]>(1)
   public units: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)
-  public templateEvents: ReplaySubject<Event[]> = new ReplaySubject<Event[]>(1)
-  public events: ReplaySubject<Event[]> = new ReplaySubject<Event[]>(1)
+  public templateEvents: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)
+  public events: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)
 
   private options: RequestOptions
 
@@ -61,19 +61,19 @@ export class ApiService {
     return this.tasks
   }
 
-  getTemplateEvents(): Observable<Event[]>{
+  getTemplateEvents(): Observable<Unit[]>{
     this.http.get("/api/all_events")
-      .map(this.extractData<Event[]>())
-      .map(json => json.map(data => Event.fromJson(data)))
+      .map(this.extractData<Unit[]>())
+      .map(json => json.map(data => Unit.fromJson(data)))
       .catch(this.handleError)
       .subscribe(events => this.templateEvents.next(events));
     return this.templateEvents
   }
 
-  getEvents(): Observable<Event[]>{
+  getEvents(): Observable<Unit[]>{
     this.http.get("/api/events")
-      .map(this.extractData<Event[]>())
-      .map(json => json.map(data => Event.fromJson(data)))
+      .map(this.extractData<Unit[]>())
+      .map(json => json.map(data => Unit.fromJson(data)))
       .catch(this.handleError)
       .subscribe(events => this.events.next(events));
       console.log("event")
@@ -120,7 +120,7 @@ export class ApiService {
       .catch(this.handleError)
   }
 
-  saveEvent(event: Event): Observable<boolean>{
+  saveEvent(event: Unit): Observable<boolean>{
     return this.http.post("api/events", event.toJson(), this.options)
       .map(res => res.ok)
       .do(bool => {

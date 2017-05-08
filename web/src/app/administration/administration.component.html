@@ -75,8 +75,8 @@
               <div *ngIf="eventType==1">
                 <div class="col-lg-8">
                   <div class="select-container">
-                    <md-select placeholder="Event" [(ngModel)]="task.event">
-                        <md-option *ngFor="let ev of events" [value]="ev.name">{{ ev.name }}</md-option>
+                    <md-select placeholder="Event" [(ngModel)]="task.event" (change)="eventChange()">
+                        <md-option *ngFor="let ev of events" [value]="ev">{{ ev.name }}</md-option>
                     </md-select>
                   </div>
                 </div>

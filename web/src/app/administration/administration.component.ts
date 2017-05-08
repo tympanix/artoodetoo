@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Task, Unit, Event } from '../model';
+import { Task, Unit} from '../model';
 import { ApiService } from '../api.service';
 import { MdSnackBar } from '@angular/material';
 
@@ -19,10 +19,10 @@ import * as _ from "lodash";
 export class AdministrationComponent implements OnInit {
   tasks: Task[]
   units: Unit[]
-  events: Event[]
-  templateEvents: Event[]
+  events: Unit[]
+  templateEvents: Unit[]
   task: Task
-  event: Event
+  event: Unit
 
   editorState: boolean
   eventActive: boolean
@@ -90,7 +90,11 @@ export class AdministrationComponent implements OnInit {
 
     if(this.eventType == 0){
       this.task.event.name = ""
-    } 
+    }
+  }
+
+  eventChange(){
+    this.task.updateUnitList()
   }
 
   openUnitDialog() {

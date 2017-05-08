@@ -4,6 +4,7 @@ import * as _ from "lodash";
 
 export interface IUnit {
   id: string
+  uuid: string
   name: string
   description: string
   input: IInput[]
@@ -13,6 +14,7 @@ export interface IUnit {
 export class Unit implements IUnit, Model {
   // Model properties
   id: string
+  uuid: string = ""
   name: string
   description: string
   input: Input[]
@@ -38,6 +40,7 @@ export class Unit implements IUnit, Model {
   toJson(): IUnit {
     return {
       id: this.id,
+      uuid: this.uuid,
       name: this.name,
       description: this.description,
       input: this.input.map(i => i.toJson()),

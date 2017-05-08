@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Task, Event } from '../model';
+import { Task, Unit } from '../model';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { ApiService } from '../api.service';
 })
 export class DashboardComponent implements OnInit {
   tasks: Task[]
-  events: Event[]
+  events: Unit[]
 
   constructor(private api: ApiService) {
     api.tasks.subscribe((tasks) => this.tasks = tasks)
