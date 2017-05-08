@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
 
 import { ApiService } from '../api.service';
-import { Event } from '../model';
+import { Unit } from '../model';
 
 @Component({
   selector: 'app-event',
@@ -10,7 +10,7 @@ import { Event } from '../model';
   styles: []
 })
 export class EventComponent implements OnInit {
-  @Input() event: Event
+  @Input() event: Unit
 
   // Temporary placeholder when changing event name
   eventname: string = ""

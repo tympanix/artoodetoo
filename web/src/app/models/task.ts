@@ -1,11 +1,11 @@
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Subject } from 'rxjs/Subject';
-import { Event, IEvent, Unit, IUnit, Model} from '../model'
+import { Unit, IUnit, Model} from '../model'
 import * as _ from "lodash";
 
 interface ITask {
   name: string
-  event: IEvent
+  event: IUnit
   actions: IUnit[]
   // running: boolean
 }
@@ -13,7 +13,7 @@ interface ITask {
 export class Task implements ITask, Model {
   // Model properties
   name: string = ""
-  event: Event = null
+  event: Unit = null
   actions: Unit[] = []
   running: boolean = false
 
@@ -29,7 +29,7 @@ export class Task implements ITask, Model {
   static fromJson(model: ITask): Task {
     let task = new Task()
     Object.assign(task, model)
-    task.event = Event.fromJson(model.event)
+    task.event = Unit.fromJson(model.event)
     task.actions = model.actions.map(action => Unit.fromJson(action))
     task.updateUnitList()
     return task
