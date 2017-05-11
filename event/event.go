@@ -91,7 +91,13 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
+	e.generateUUDI()
+
 	return nil
+}
+
+func (e *Event) generateUUDI() {
+	e.UUID = generate.NewUUID(12)
 }
 
 // Subscribe adds a new task to this event's observers
