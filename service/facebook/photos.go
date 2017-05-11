@@ -14,7 +14,7 @@ import (
 type Photos struct {
 	event.Base
 	LastSeen time.Time
-	Token    Token   `io:"input"`
+	Token    string  `io:"input" type:"fb_token"`
 	Interval float64 `io:"input"`
 
 	ImgURL string `io:"output"`
@@ -66,7 +66,9 @@ func (p *Photos) Listen() error {
 				}
 			}
 		}
-		p.LastSeen = photos[0].Created
+		if len(photos) > 0 {
+			p.LastSeen = photos[0].Created
+		}
 	}
 
 	return nil
