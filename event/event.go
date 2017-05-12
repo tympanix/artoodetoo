@@ -91,12 +91,11 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	e.generateUUDI()
-
 	return nil
 }
 
-func (e *Event) generateUUDI() {
+// GenerateUUDI creates a new UUID for the event
+func (e *Event) GenerateUUDI() {
 	e.UUID = generate.NewUUID(12)
 }
 

@@ -33,6 +33,7 @@ func newEvent(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	event.GenerateUUDI()
 	if err := util.AddEvent(&event); err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
