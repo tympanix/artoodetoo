@@ -7,7 +7,7 @@ import { MdSnackBar } from '@angular/material';
 
 import 'rxjs/add/operator/map'
 
-import { Task, Unit} from './model';
+import { Task, Unit, Data } from './model';
 
 @Injectable()
 export class ApiService {
@@ -23,24 +23,31 @@ export class ApiService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: headers });
 
-    this.getTasks()
-    this.getUnits()
-    this.getTemplateEvents()
-    this.getEvents()
+    // this.getTasks()
+    // this.getUnits()
+    // this.getTemplateEvents()
+    // this.getEvents()
+
+    this.getAll()
   }
 
-  private extractData<T>(): (res: Response) => T {
+  private extractData<T>(self: this): (res: Response) => T {
     return function(res: Response): T {
+      if (res.status != 200) {
+        self.snackBar.open("Error", res.text(), {duration: 4000})
+        return {} as T
+      }
       let body:T = res.json();
       return body || {} as T;
     }
   }
 
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error); // for demo purposes only
-    console.log(this);
-    this.snackBar.open("Error", error.message || error, {duration: 4000})
-    return Promise.reject(error.message || error);
+  private handleError(self: this) {
+    return function(error: any): Promise<any> {
+      console.error('An error occurred', error); // for demo purposes only
+      self.snackBar.open("Error", error.message || error, {duration: 4000})
+      return Promise.reject(error.message || error);
+    }
   }
 
   createTask(task: Task): Observable<boolean> {
@@ -49,32 +56,45 @@ export class ApiService {
       .do(bool => {
           this.snackBar.open(task.name + " has been created!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
       })
-      .catch(this.handleError)
+      .catch(this.handleError(this))
   }
 
   getTasks(): Observable<Task[]> {
     this.http.get("/api/tasks")
-      .map(this.extractData<Task[]>())
+      .map(this.extractData<Task[]>(this))
       .map(json => json.map(data => Task.fromJson(data)))
-      .catch(this.handleError)
+      .catch(this.handleError(this))
       .subscribe(tasks => this.tasks.next(tasks));
     return this.tasks
   }
 
   getTemplateEvents(): Observable<Unit[]>{
     this.http.get("/api/all_events")
-      .map(this.extractData<Unit[]>())
+      .map(this.extractData<Unit[]>(this))
       .map(json => json.map(data => Unit.fromJson(data)))
-      .catch(this.handleError)
+      .catch(this.handleError(this))
       .subscribe(events => this.templateEvents.next(events));
     return this.templateEvents
   }
 
+  getAll() {
+    return this.http.get("/api/all")
+      .map(this.extractData<Data>(this))
+      .map(json => Data.fromJson(json))
+      .catch(this.handleError(this))
+      .subscribe(data => {
+        this.events.next(data.events)
+        this.tasks.next(data.tasks)
+        this.units.next(data.actions)
+        this.templateEvents.next(data.eventtemplates)
+      })
+  }
+
   getEvents(): Observable<Unit[]>{
     this.http.get("/api/events")
-      .map(this.extractData<Unit[]>())
+      .map(this.extractData<Unit[]>(this))
       .map(json => json.map(data => Unit.fromJson(data)))
-      .catch(this.handleError)
+      .catch(this.handleError(this))
       .subscribe(events => this.events.next(events));
       console.log("event")
     return this.events
@@ -86,7 +106,7 @@ export class ApiService {
       .do(bool => {
           this.snackBar.open(task.name + " has been deployed!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
       })
-      .catch(this.handleError)
+      .catch(this.handleError(this))
   }
 
   stopTask(task: Task){
@@ -99,14 +119,14 @@ export class ApiService {
       .do(bool => {
           this.snackBar.open(task.name + " has been updated!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
       })
-      .catch(this.handleError)
+      .catch(this.handleError(this))
   }
 
   getUnits(): Observable<Unit[]> {
     this.http.get("/api/units")
-      .map(this.extractData<Unit[]>())
+      .map(this.extractData<Unit[]>(this))
       .map(json => json.map(data => Unit.fromJson(data)))
-      .catch(this.handleError)
+      .catch(this.handleError(this))
       .subscribe(units => this.units.next(units))
     return this.units
   }
@@ -117,7 +137,7 @@ export class ApiService {
       .do(bool => {
           this.snackBar.open(task.name + " has been deleted!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
       })
-      .catch(this.handleError)
+      .catch(this.handleError(this))
   }
 
   saveEvent(event: Unit): Observable<boolean>{
@@ -126,7 +146,7 @@ export class ApiService {
       .do(bool => {
           this.snackBar.open(event.name + " has been created!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
       })
-      .catch(this.handleError)
+      .catch(this.handleError(this))
   }
 
 }

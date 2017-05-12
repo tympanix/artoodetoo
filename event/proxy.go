@@ -19,7 +19,11 @@ func (p *Proxy) MarshalJSON() ([]byte, error) {
 func (p *Proxy) UnmarshalJSON(data []byte) error {
 	var id string
 	if err := json.Unmarshal(data, &id); err != nil {
-		return err
+		var e Event
+		if err := json.Unmarshal(data, &e); err != nil {
+			return err
+		}
+		id = e.UUID
 	}
 	event, found := Events[id]
 	if !found {

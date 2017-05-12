@@ -1,9 +1,9 @@
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Subject } from 'rxjs/Subject';
-import { Unit, IUnit, Model} from '../model'
+import { Unit, IUnit, Model, Event } from '../model'
 import * as _ from "lodash";
 
-interface ITask {
+export interface ITask {
   name: string
   event: IUnit
   actions: IUnit[]
@@ -17,6 +17,8 @@ export class Task implements ITask, Model {
   actions: Unit[] = []
   running: boolean = false
 
+  private eventRef: string
+
   // State properties
   units: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)
 
@@ -29,10 +31,21 @@ export class Task implements ITask, Model {
   static fromJson(model: ITask): Task {
     let task = new Task()
     Object.assign(task, model)
-    task.event = Unit.fromJson(model.event)
+    task.eventRef = model.event as Object as string
+    //task.event = Unit.fromJson(model.event)
     task.actions = model.actions.map(action => Unit.fromJson(action))
     task.updateUnitList()
     return task
+  }
+
+  resolveEvent(events: Event[]) {
+    let event = events.find(e => e.uuid == this.eventRef)
+
+    if (!event) {
+      throw new Error(`Event ${this.eventRef} not found for ${this.name}`)
+    }
+
+    this.event = event
   }
 
   copy(): Task {
