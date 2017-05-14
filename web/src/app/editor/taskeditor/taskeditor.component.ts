@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Task, Unit } from '../../model'
 import { ApiService } from '../../api.service'
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
-import { UnitDialog, TaskDialog } from '../../dialogs'
+import { UnitDialog, TaskDialog, EventDialog } from '../../dialogs'
 
 @Component({
   selector: 'taskeditor',
@@ -77,12 +77,12 @@ export class TaskeditorComponent implements OnInit {
     })
   }
 
-  // openEventDialog(){
-  //   let dialogRef = this.dialog.open(EventDialog, {
-  //     width: '600px'
-  //   })
-  //
-  //   dialogRef.afterClosed().subscribe(event => this.task.event = event)
-  // }
+  openEventDialog(){
+    let dialogRef = this.dialog.open(EventDialog, {
+      width: '600px'
+    })
+
+    dialogRef.afterClosed().subscribe(event => this.task.event = event)
+  }
 
 }

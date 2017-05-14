@@ -1,0 +1,18 @@
+<h1 md-dialog-title>Add Event</h1>
+<div md-dialog-content>
+  <form (ngSubmit)="addEvent()">
+    <md-input-container class="full-width">
+      <input name="unitsearch" mdInput placeholder="Search" autocomplete="off" (ngModelChange)="doSearch($event)" [(ngModel)]="search">
+    </md-input-container>
+  </form>
+  <ul class="unitlist">
+    <li *ngFor="let event of filtered; let first = first" (click)="chooseEvent(event)" [ngClass]="{active: first && search}">
+      <h4 class="unititem-header">{{event.name}}</h4>
+      <div class="unititem-desc">{{event.description}}</div>
+    </li>
+  </ul>
+</div>
+<div md-dialog-actions>
+  <button md-button (click)="chooseEvent()">Choose Event</button>
+  <button md-button (click)="close()">Cancel</button>
+</div>

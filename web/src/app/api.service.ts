@@ -7,7 +7,7 @@ import { MdSnackBar } from '@angular/material';
 
 import 'rxjs/add/operator/map'
 
-import { Task, Unit, Data } from './model';
+import { Task, Unit, Data, Event } from './model';
 
 @Injectable()
 export class ApiService {
@@ -15,7 +15,7 @@ export class ApiService {
   public tasks: ReplaySubject<Task[]> = new ReplaySubject<Task[]>(1)
   public units: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)
   public templateEvents: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)
-  public events: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)
+  public events: ReplaySubject<Event[]> = new ReplaySubject<Event[]>(1)
 
   private options: RequestOptions
 
@@ -57,6 +57,7 @@ export class ApiService {
   createTask(task: Task): Observable<boolean> {
     return this.http.post("api/tasks", task.toJson(), this.options)
       .map(this.extractData<string>(this))
+      .do(() => this.getAll())
       .do(() => {
           this.snackBar.open(task.name + " has been created!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
       })

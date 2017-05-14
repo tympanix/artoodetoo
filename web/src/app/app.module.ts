@@ -25,7 +25,8 @@ import { EventIngredientComponent } from './event-ingredient/event-ingredient.co
 
 import { FacebookModule } from 'ngx-facebook';
 import { TaskeditorComponent } from './editor/taskeditor/taskeditor.component';
-import { EventeditorComponent } from './editor/eventeditor/eventeditor.component'
+import { EventeditorComponent } from './editor/eventeditor/eventeditor.component';
+import { EventDialog } from './dialogs/eventdialog/eventdialog.component'
 
 @NgModule({
   imports: [
@@ -50,12 +51,14 @@ import { EventeditorComponent } from './editor/eventeditor/eventeditor.component
     EventComponent,
     EventIngredientComponent,
     TaskeditorComponent,
-    EventeditorComponent
+    EventeditorComponent,
+    EventDialog
   ],
   entryComponents: [
     UnitDialog,
     TaskDialog,
-    EventTemplateDialog
+    EventTemplateDialog,
+    EventDialog
   ],
   providers: [ApiService, TaskResolver],
   bootstrap: [AppComponent]
