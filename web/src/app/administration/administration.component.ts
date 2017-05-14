@@ -4,9 +4,7 @@ import { ApiService } from '../api.service';
 import { MdSnackBar } from '@angular/material';
 
 import { MdDialog, MdDialogRef } from '@angular/material';
-import { UnitDialog } from '../dialogs/unitdialog/unitdialog.component';
-import { TaskDialog } from '../dialogs/taskdialog/taskdialog.component';
-import { EventDialog} from '../dialogs/eventdialog/eventdialog.component';
+import { UnitDialog, TaskDialog, EventTemplateDialog } from '../dialogs';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from "lodash";

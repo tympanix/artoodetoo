@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Task, Unit } from '../../model'
 import { ApiService } from '../../api.service'
 import { MdDialog, MdDialogRef } from '@angular/material';
-import { EventDialog } from '../../dialogs'
+import { EventTemplateDialog } from '../../dialogs'
 
 @Component({
   selector: 'eventeditor',
@@ -21,8 +21,8 @@ export class EventeditorComponent implements OnInit {
     this.api.saveEvent(this.event).subscribe()
   }
 
-  openEventDialog() {
-    let dialogRef = this.dialog.open(EventDialog, {
+  openEventTemplateDialog() {
+    let dialogRef = this.dialog.open(EventTemplateDialog, {
       height: '500px',
       width: '750px',
     });

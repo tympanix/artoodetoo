@@ -40,7 +40,7 @@ func (t *Task) Subscribe() error {
 // Unsubscribe removed this task as an observer for its event
 func (t *Task) Unsubscribe() error {
 	if t.Event == nil {
-		return fmt.Errorf("Task %s has no event to subscribe to", t.Name)
+		return fmt.Errorf("Task %s has no event", t.Name)
 	}
 	return t.Event.Unsubscribe(t)
 }

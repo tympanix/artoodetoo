@@ -38,7 +38,11 @@ export class ApiService {
         throw new Error(res.text())
       }
       let body:T = res.json();
-      return body || {} as T;
+      if (body) {
+        return body
+      } else {
+        throw new Error(res.text())
+      }
     }
   }
 

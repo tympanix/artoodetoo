@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { EventDialog } from './eventdialog.component';
+import { EventTemplateDialog } from './eventtemplatedialog.component';
 
-describe('EventdialogComponent', () => {
-  let component: EventDialog;
-  let fixture: ComponentFixture<EventDialog>;
+describe('EventTemplateDialogComponent', () => {
+  let component: EventTemplateDialog;
+  let fixture: ComponentFixture<EventTemplateDialog>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EventDialog ]
+      declarations: [ EventTemplateDialog ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EventDialog);
+    fixture = TestBed.createComponent(EventTemplateDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

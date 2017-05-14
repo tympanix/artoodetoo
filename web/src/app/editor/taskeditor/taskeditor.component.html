@@ -21,31 +21,22 @@
     <!-- Event container -->
     <div class="event-container">
       <div class="row">
-        <div class="col-sm-12"><h3 >Event</h3></div>
+        <div class="col-sm-12"><h3>Event</h3></div>
       </div>
 
 
-      <div class="row">
-        <md-radio-group [(ngModel)]="eventType">
-          <div class="col-lg-2">
-            <md-radio-button value=0>Manual</md-radio-button>
-          </div>
-          <div class="col-lg-2">
-            <md-radio-button value=1>Event</md-radio-button>
-          </div>
-        </md-radio-group>
-
-
-
-        <div *ngIf="eventType==1">
-          <div class="col-lg-8">
-            <div class="select-container">
-              <md-select placeholder="Event" [(ngModel)]="task.event" (change)="eventChange()">
-                  <md-option *ngFor="let ev of events" [value]="ev">{{ ev.name }}</md-option>
-              </md-select>
-            </div>
-          </div>
+      <div class="panel panel-primary" *ngIf="task.event">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{task.event.name}}</h3>
         </div>
+
+        <div class="panel-body">
+            {{task.event.description}}
+        </div>
+      </div>
+
+      <div class="center" *ngIf="!task.event">
+          <a class="btn btn-blue" (click)="openEventTemplateDialog()">Choose Event</a>
       </div>
     </div>
 

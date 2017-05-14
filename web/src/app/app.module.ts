@@ -20,7 +20,7 @@ import { DropdownComponent } from './dropdown/dropdown.component';
 import { IngredientComponent } from './ingredient/ingredient.component';
 import { UnitDialog } from './dialogs/unitdialog/unitdialog.component';
 import { TaskDialog } from './dialogs/taskdialog/taskdialog.component';
-import { EventDialog } from './dialogs/eventdialog/eventdialog.component';
+import { EventTemplateDialog } from './dialogs';
 import { EventComponent } from './event/event.component';
 import { EventIngredientComponent } from './event-ingredient/event-ingredient.component';
 
@@ -48,7 +48,7 @@ import { EventeditorComponent } from './editor/eventeditor/eventeditor.component
     IngredientComponent,
     UnitDialog,
     TaskDialog,
-    EventDialog,
+    EventTemplateDialog,
     EventComponent,
     EventIngredientComponent,
     TaskeditorComponent,
@@ -57,7 +57,7 @@ import { EventeditorComponent } from './editor/eventeditor/eventeditor.component
   entryComponents: [
     UnitDialog,
     TaskDialog,
-    EventDialog
+    EventTemplateDialog
   ],
   providers: [ApiService, TaskResolver],
   bootstrap: [AppComponent]

@@ -4,16 +4,16 @@ import { ApiService } from '../../api.service'
 import { Unit } from '../../model'
 
 @Component({
-  selector: 'eventdialog',
-  templateUrl: './eventdialog.component.html'
+  selector: 'eventtemplatedialog',
+  templateUrl: './eventtemplatedialog.component.html'
 })
-export class EventDialog implements OnInit {
+export class EventTemplateDialog implements OnInit {
 
   search: string = ""
   events: Unit[]
   filtered: Unit[]
 
-  constructor(private api: ApiService, public dialogRef: MdDialogRef<EventDialog>) {}
+  constructor(private api: ApiService, public dialogRef: MdDialogRef<EventTemplateDialog>) {}
 
   ngOnInit() {
     this.api.templateEvents.subscribe(u => this.events = u)

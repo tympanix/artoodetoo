@@ -6,7 +6,7 @@
     <div class="col-sm-6">
         <!--  Not in editor mode -->
         <a *ngIf="!event" routerLink="/administration/" class="btn btn-default task-util-button">Back</a>
-        <a *ngIf="!event" routerLink="/administration/event" class="btn btn-blue task-util-button" (click)="openEventDialog()">Create Event</a>
+        <a *ngIf="!event" routerLink="/administration/event" class="btn btn-blue task-util-button" (click)="openEventTemplateDialog()">Create Event</a>
 
         <!-- In editor mode -->
         <a *ngIf="event" routerLink="/administration/" class="btn btn-default task-util-button">Cancel</a>
