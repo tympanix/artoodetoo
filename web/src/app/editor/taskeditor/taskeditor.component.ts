@@ -79,7 +79,8 @@ export class TaskeditorComponent implements OnInit {
 
   openEventDialog(){
     let dialogRef = this.dialog.open(EventDialog, {
-      width: '600px'
+      height: '500px',
+      width: '750px',
     })
 
     dialogRef.afterClosed().subscribe(event => this.task.event = event)
