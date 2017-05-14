@@ -3,7 +3,6 @@ package state
 import (
 	"errors"
 	"fmt"
-	"log"
 	"reflect"
 	"sync"
 )
@@ -41,7 +40,7 @@ func (s *State) String() string {
 
 // Get blocks until the tuple with the corrosponding key is available
 func (s *State) Get(key interface{}, values ...interface{}) error {
-	log.Printf("Getting value %s %s\n", key, values)
+	//log.Printf("Getting value %s %s\n", key, values)
 	s.cond.L.Lock()
 	defer s.cond.L.Unlock()
 
@@ -55,7 +54,6 @@ func (s *State) Get(key interface{}, values ...interface{}) error {
 		if !ok {
 			s.cond.Wait()
 		} else {
-
 			break
 		}
 	}
@@ -159,7 +157,7 @@ func createTuple(values []interface{}) Tuple {
 
 // Put writes a new tuple to the tuple space
 func (s *State) Put(key interface{}, values ...interface{}) error {
-	log.Printf("Putting value %s %s\n", key, values)
+	//log.Printf("Putting value %s %s\n", key, values)
 	s.cond.L.Lock()
 	defer s.cond.L.Unlock()
 
@@ -174,7 +172,7 @@ func (s *State) Put(key interface{}, values ...interface{}) error {
 
 // Query blocks until a tuple matching the corrosponding key is returned without removing it
 func (s *State) Query(key interface{}, values ...interface{}) error {
-	log.Printf("Query value %s\n", key)
+	//log.Printf("Query value %s\n", key)
 	s.cond.L.Lock()
 	defer s.cond.L.Unlock()
 
@@ -188,7 +186,7 @@ func (s *State) Query(key interface{}, values ...interface{}) error {
 		if !ok {
 			s.cond.Wait()
 		} else {
-			log.Printf("Got value %s %s\n", key, template[0])
+			//log.Printf("Got value %s %s\n", key, template[0])
 			break
 		}
 	}
