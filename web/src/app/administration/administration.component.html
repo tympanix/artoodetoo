@@ -33,11 +33,11 @@
     <main *ngIf="editorState" class="col-lg-9 col-md-12">
 
       <!-- Task editor -->
-      <taskeditor *ngIf="!eventActive"></taskeditor>
+      <taskeditor *ngIf="!eventActive" [task]="task"></taskeditor>
 
       <!-- Event editor -->
-      <eventeditor *ngIf="!taskActive"></eventeditor>
-      
+      <eventeditor *ngIf="!taskActive" [event]="event"></eventeditor>
+
     </main>
 
 

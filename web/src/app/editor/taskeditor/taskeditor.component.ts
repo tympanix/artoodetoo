@@ -18,6 +18,7 @@ export class TaskeditorComponent implements OnInit {
 
   ngOnInit() {
     this.api.events.subscribe(e => this.events = e)
+    console.log("MY TASK IS", this.task)
   }
 
   eventChange(){
