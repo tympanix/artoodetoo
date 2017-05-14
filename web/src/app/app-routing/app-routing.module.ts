@@ -6,6 +6,7 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 import { StatisticsComponent } from '../statistics/statistics.component';
 
 import { TaskResolver } from '../resolvers/task-resolver.service';
+import { EventResolver } from '../resolvers/event-resolver.service';
 
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'administration/task', component: AdministrationComponent},
   { path: 'administration/event', component: AdministrationComponent},
   { path: 'administration/task/:task', component: AdministrationComponent, resolve: { task: TaskResolver }},
+  { path: 'administration/event/:event', component: AdministrationComponent, resolve: { task: EventResolver }},
   // Add event resolver
   { path: 'statistics', component: StatisticsComponent}
 ];
