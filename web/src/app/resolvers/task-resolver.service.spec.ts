@@ -1,16 +1,16 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async, inject } from '@angular/core/testing';
-import { TaskResolverService } from './task-resolver.service';
+import { TaskResolver } from './task-resolver.service';
 
-describe('TaskResolverService', () => {
+describe('TaskResolver', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TaskResolverService]
+      providers: [TaskResolver]
     });
   });
 
-  it('should ...', inject([TaskResolverService], (service: TaskResolverService) => {
+  it('should ...', inject([TaskResolver], (service: TaskResolver) => {
     expect(service).toBeTruthy();
   }));
 });
