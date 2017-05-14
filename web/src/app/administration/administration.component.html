@@ -177,14 +177,14 @@
           <div class="well">
             <h2 class="heading">Existing tasks</h2>
 
-            <div *ngFor="let ta of tasks" class="panel panel-primary">
+            <div *ngFor="let task of tasks" class="panel panel-primary">
               <div class="panel-heading">
-                <h3 class="panel-title">{{ta.name}}</h3>
-                <a mdTooltip="Edit {{task.name}}" mdTooltipPosition="above" routerLink="/administration/{{task.name}}"><i class="material-icons">settings</i></a>
+                <h3 class="panel-title">{{task.name}}</h3>
+                <a mdTooltip="Edit {{task.name}}" mdTooltipPosition="above" routerLink="/administration/task/{{task.name}}"><i class="material-icons">settings</i></a>
               </div>
               <div class="panel-body">
-                <p>{{ta.event.name}}
-                  <template ngFor let-action [ngForOf]="ta.actions">
+                <p>{{task.event.name}}
+                  <template ngFor let-action [ngForOf]="task.actions">
                     <i class="next material-icons">arrow_forward</i>
                     {{action.name}}
                   </template>

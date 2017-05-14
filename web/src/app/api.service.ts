@@ -34,8 +34,8 @@ export class ApiService {
   private extractData<T>(self: this): (res: Response) => T {
     return function(res: Response): T {
       if (res.status != 200) {
-        self.snackBar.open("Error", res.text(), {duration: 4000})
-        return {} as T
+        //self.snackBar.open("Error", res.text(), {duration: 4000})
+        throw new Error(res.text())
       }
       let body:T = res.json();
       return body || {} as T;
@@ -52,8 +52,8 @@ export class ApiService {
 
   createTask(task: Task): Observable<boolean> {
     return this.http.post("api/tasks", task.toJson(), this.options)
-      .map(res => res.ok)
-      .do(bool => {
+      .map(this.extractData<string>(this))
+      .do(() => {
           this.snackBar.open(task.name + " has been created!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
       })
       .catch(this.handleError(this))

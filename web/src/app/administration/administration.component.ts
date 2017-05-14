@@ -47,6 +47,8 @@ export class AdministrationComponent implements OnInit {
     this.route.data.subscribe((data: {task: Task}) => {
       if(data.task){
         this.task = data.task.copy()
+        this.taskActive = true
+        this.editorState = true
       }
       console.log("Task", data.task)
     })
