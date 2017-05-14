@@ -5,12 +5,14 @@ import (
 	"log"
 
 	"github.com/Tympanix/automato/event"
+	"github.com/Tympanix/automato/generate"
 	"github.com/Tympanix/automato/state"
 	"github.com/Tympanix/automato/unit"
 )
 
 // Task is an object that processes data based on events, converters and actions
 type Task struct {
+	UUID    string       `json:"uuid"`
 	Name    string       `json:"name"`
 	Event   *event.Proxy `json:"event"`
 	Actions []*unit.Unit `json:"actions"`
@@ -41,6 +43,10 @@ func (t *Task) Unsubscribe() error {
 		return fmt.Errorf("Task %s has no event to subscribe to", t.Name)
 	}
 	return t.Event.Unsubscribe(t)
+}
+
+func (t *Task) GenerateUUID() {
+	t.UUID = generate.NewUUID(12)
 }
 
 // GetUnitByName retrieves a unit in the actions list and returns it

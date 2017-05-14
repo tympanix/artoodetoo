@@ -27,6 +27,7 @@ func newTask(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	task.GenerateUUID()
 	if err := util.AddTask(&task); err != nil {
 		log.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -43,12 +44,12 @@ func listTasks(w http.ResponseWriter, r *http.Request) {
 
 func deleteTask(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	taskname, ok := vars["task"]
+	taskid, ok := vars["task"]
 	if !ok {
 		http.Error(w, "No task given", http.StatusInternalServerError)
 		return
 	}
-	t, err := task.GetTaskByName(taskname)
+	t, err := task.GetTaskByID(taskid)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -76,12 +77,12 @@ func updateTask(w http.ResponseWriter, r *http.Request) {
 
 func runTask(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	taskname, ok := vars["task"]
+	taskid, ok := vars["task"]
 	if !ok {
 		http.Error(w, "No task given", http.StatusInternalServerError)
 		return
 	}
-	task, err := task.GetTaskByName(taskname)
+	task, err := task.GetTaskByID(taskid)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

@@ -183,7 +183,7 @@ func (j *JSONFile) UpdateTask(t *task.Task) error {
 
 func (j *JSONFile) indexOfTask(task *task.Task) (int, error) {
 	for i, t := range j.Tasks {
-		if t.Name == task.Name {
+		if t.UUID == task.UUID {
 			return i, nil
 		}
 	}
@@ -205,7 +205,7 @@ func (j *JSONFile) appendTask(task *task.Task) {
 
 func (j *JSONFile) taskExists(task *task.Task) bool {
 	for _, t := range j.Tasks {
-		if t.Name == task.Name {
+		if t.UUID == task.UUID {
 			return true
 		}
 	}

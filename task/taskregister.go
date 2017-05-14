@@ -10,7 +10,10 @@ func init() {
 
 // AddTask registers a new task into the system
 func AddTask(task *Task) error {
-	found, _ := GetTaskByName(task.Name)
+	if len(task.UUID) == 0 {
+		return errors.New("Task has no UUID")
+	}
+	found, _ := GetTaskByID(task.UUID)
 	if found != nil {
 		return errors.New("Task with that name already exists")
 	}
@@ -21,7 +24,7 @@ func AddTask(task *Task) error {
 
 // RemoveTask removes a task from the application
 func RemoveTask(task *Task) error {
-	if _, err := GetTaskByName(task.Name); err != nil {
+	if _, err := GetTaskByID(task.UUID); err != nil {
 		return errors.New("Could not unregister task because it was not found")
 	}
 	delete(tasks, task.Name)
@@ -30,7 +33,7 @@ func RemoveTask(task *Task) error {
 
 // Update updates the task
 func Update(task *Task) error {
-	_, err := GetTaskByName(task.Name)
+	_, err := GetTaskByID(task.UUID)
 	if err != nil {
 		return errors.New("Could not update task because it was not found")
 	}
@@ -39,8 +42,8 @@ func Update(task *Task) error {
 }
 
 // GetTaskByName returns the task among the registered tasks where the name matches
-func GetTaskByName(name string) (*Task, error) {
-	task, ok := tasks[name]
+func GetTaskByID(id string) (*Task, error) {
+	task, ok := tasks[id]
 	if ok {
 		return task, nil
 	}
