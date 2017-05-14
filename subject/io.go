@@ -27,6 +27,10 @@ func (io *IO) Compatible(other Output) bool {
 	return io.Name == other.Name && io.TypeStr == other.TypeStr
 }
 
+func (io *IO) Key(name string) string {
+	return fmt.Sprintf("%s:%s", name, io.Name)
+}
+
 // Input describes the type of input and the ingredients used
 type Input struct {
 	IO

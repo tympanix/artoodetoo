@@ -1,7 +1,5 @@
 package types
 
-import "github.com/Tympanix/automato/state"
-
 // Triggerable is a type which returns a trigger and can listen on events
 type Triggerable interface {
 	Listen() error
@@ -22,11 +20,18 @@ type Eventable interface {
 
 // Runnable is a type which can run certain tasks
 type Runnable interface {
-	Run(state.State) error
+	Run(TupleSpace) error
 }
 
 // IO is a type which can offer output and accept input
 type IO interface {
 	Input() interface{}
 	Output() interface{}
+}
+
+// TupleSpace is used to store tuples per the LINDA communication language
+type TupleSpace interface {
+	Get(interface{}, ...interface{}) error
+	Put(interface{}, ...interface{}) error
+	Query(interface{}, ...interface{}) error
 }

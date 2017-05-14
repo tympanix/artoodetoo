@@ -6,7 +6,7 @@ import (
 	"log"
 	"reflect"
 
-	"github.com/Tympanix/automato/state"
+	"github.com/Tympanix/automato/types"
 )
 
 const (
@@ -177,67 +177,30 @@ func (s *Subject) Validate() error {
 }
 
 // AssignInput finds all ingredients in the state given and assigns it as input
-func (s *Subject) AssignInput(state state.State) (err error) {
-	defer func() {
-		if r := recover(); r != nil {
-			if err == nil {
-				err = fmt.Errorf("Could not assign input to %s", s.Type())
-			}
-		}
-	}()
+func (s *Subject) AssignInput(ts types.TupleSpace) (err error) {
 
 	for _, input := range s.In {
-		if !input.IsValid() || !input.CanSet() {
-			return fmt.Errorf("Could not set field ”%v” for ”%v”", input.Name, s.Name)
-		}
-
-		if len(input.Recipe) == 0 {
-			return fmt.Errorf("Missing recipe for field ”%s” of ”%s”", input.Name, s.Type())
-		}
-
 		ingredient := input.Recipe[0]
-		value, err := ingredient.GetValue(state)
-
-		if err != nil {
-			return err
+		if ingredient.IsStatic() {
+			ts.Put(input.Key(s.Name), ingredient.Value)
+			ts.Query(input.Key(s.Name), input.Value)
+		} else {
+			if err = ts.Query(ingredient.Key(), input.Value); err != nil {
+				return
+			}
 		}
-
-		value, err = TryConvert(value, input.Type())
-
-		if err != nil {
-			return err
-		}
-
-		if !value.Type().AssignableTo(input.Type()) {
-			return fmt.Errorf("Field ”%s” of value ”%v” can't be assigned ”%v”", input.Name, input.Value.Type(), value.Type())
-		}
-
-		input.Value.Set(value)
-
 	}
-
 	return nil
 }
 
-// TryConvert tries to convert the value to another type and returns an error
-// instead of panicking
-func TryConvert(v reflect.Value, t reflect.Type) (c reflect.Value, err error) {
-	defer func() {
-		if r := recover(); r != nil {
-			err = fmt.Errorf("Could not convert type %s to type %s", v.Type(), t)
-		}
-	}()
-	c = v.Convert(t)
-	return
-}
-
 // StoreOutput saves the computed output in the state
-func (s *Subject) StoreOutput(state state.State) error {
+func (s *Subject) StoreOutput(ts types.TupleSpace) error {
 	for _, output := range s.Out {
-		if err := state.PutValue(s.Name, output.Name, output.Value); err != nil {
+		if err := ts.Put(output.Key(s.Name), output.Value); err != nil {
 			return err
 		}
 	}
+	//fmt.Println(ts)
 	return nil
 }
 

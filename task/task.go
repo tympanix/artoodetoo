@@ -6,7 +6,7 @@ import (
 
 	"github.com/Tympanix/automato/event"
 	"github.com/Tympanix/automato/generate"
-	"github.com/Tympanix/automato/state"
+	"github.com/Tympanix/automato/types"
 	"github.com/Tympanix/automato/unit"
 )
 
@@ -61,19 +61,15 @@ func (t *Task) GetUnitByName(name string) (unit *unit.Unit, err error) {
 }
 
 // Run starts the task
-func (t *Task) Run(state state.State) error {
+func (t *Task) Run(ts types.TupleSpace) error {
 	log.Printf("Running task %s\n", t.Name)
 
-	if err := t.Event.StoreOutput(state); err != nil {
-		return err
-	}
-
 	for _, action := range t.Actions {
-		if err := action.AssignInput(state); err != nil {
+		if err := action.AssignInput(ts); err != nil {
 			return err
 		}
 		action.Execute()
-		if err := action.StoreOutput(state); err != nil {
+		if err := action.StoreOutput(ts); err != nil {
 			return err
 		}
 	}
