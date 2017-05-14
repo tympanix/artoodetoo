@@ -56,6 +56,7 @@ export class ApiService {
       .do(() => {
           this.snackBar.open(task.name + " has been created!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
       })
+      .do(() => task.isSaved = true)
       .catch(this.handleError(this))
   }
 

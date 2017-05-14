@@ -7,7 +7,6 @@ export interface ITask {
   name: string
   event: IUnit
   actions: IUnit[]
-  // running: boolean
 }
 
 export class Task implements ITask, Model {
@@ -21,6 +20,7 @@ export class Task implements ITask, Model {
 
   // State properties
   units: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)
+  isSaved: boolean = false
 
   constructor(fields?: {
     name?: string
@@ -33,6 +33,7 @@ export class Task implements ITask, Model {
     Object.assign(task, model)
     task.eventRef = model.event as Object as string
     //task.event = Unit.fromJson(model.event)
+    task.isSaved = true
     task.actions = model.actions.map(action => Unit.fromJson(action))
     task.updateUnitList()
     return task

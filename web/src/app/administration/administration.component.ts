@@ -62,31 +62,6 @@ export class AdministrationComponent implements OnInit {
     return typeUnits;
   }
 
-  createTask(): void {
-    this.api.createTask(this.task).subscribe()
-  }
-
-  runTask() {
-    this.api.runTask(this.task).subscribe()
-  }
-
-  updateTask() {
-    this.api.updateTask(this.task).subscribe()
-    this.snackBar.open(this.task.name + " has been saved", "", {duration: 4000, extraClasses: ["snackbar-success"]})
-  }
-
-  saveEvent(){
-    this.api.saveEvent(this.event).subscribe()
-  }
-
-  deleteTask(){
-    this.api.deleteTask(this.task).subscribe()
-  }
-
-  test() {
-    console.log(this.task)
-  }
-
   eventTypeHandler(){
     this.eventType = +this.eventType
 

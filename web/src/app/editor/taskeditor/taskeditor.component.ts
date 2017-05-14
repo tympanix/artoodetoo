@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Task, Unit } from '../../model'
 import { ApiService } from '../../api.service'
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import { UnitDialog, TaskDialog } from '../../dialogs'
 
 @Component({
@@ -14,15 +14,43 @@ export class TaskeditorComponent implements OnInit {
 
   events: Unit[]
 
-  constructor(private api: ApiService, public dialog: MdDialog) { }
+  constructor(private api: ApiService, public dialog: MdDialog, private snackBar: MdSnackBar) { }
 
   ngOnInit() {
     this.api.events.subscribe(e => this.events = e)
-    console.log("MY TASK IS", this.task)
   }
 
   eventChange(){
     this.task.updateUnitList()
+  }
+
+  createTask(): void {
+    this.api.createTask(this.task).subscribe(() => {
+      this.snackBar.open(this.task.name + " has been created", "", {duration: 4000, extraClasses: ["snackbar-success"]})
+    })
+  }
+
+  runTask() {
+    this.api.runTask(this.task).subscribe()
+  }
+
+  updateTask() {
+    this.api.updateTask(this.task).subscribe(() => {
+      this.snackBar.open(this.task.name + " has been saved", "", {duration: 4000, extraClasses: ["snackbar-success"]})
+    })
+
+  }
+
+  deleteTask(){
+    this.api.deleteTask(this.task).subscribe()
+  }
+
+  submitTask() {
+    if (this.task.isSaved) {
+      this.updateTask()
+    } else {
+      this.createTask()
+    }
   }
 
   openUnitDialog() {
