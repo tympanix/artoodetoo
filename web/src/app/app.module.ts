@@ -16,7 +16,6 @@ import { ApiService }           from './api.service';
 import { UnitComponent } from './unit/unit.component';
 
 import { TaskResolver } from './resolvers/task-resolver.service';
-import { DropdownComponent } from './dropdown/dropdown.component';
 import { IngredientComponent } from './ingredient/ingredient.component';
 import { UnitDialog } from './dialogs/unitdialog/unitdialog.component';
 import { TaskDialog } from './dialogs/taskdialog/taskdialog.component';
@@ -44,7 +43,6 @@ import { EventeditorComponent } from './editor/eventeditor/eventeditor.component
     AdministrationComponent,
     StatisticsComponent,
     UnitComponent,
-    DropdownComponent,
     IngredientComponent,
     UnitDialog,
     TaskDialog,
