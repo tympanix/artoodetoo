@@ -15,14 +15,14 @@ export class TaskResolver implements Resolve<Task> {
     let obs: ReplaySubject<Task> = new ReplaySubject<Task>(1)
     let name = route.params['task']
     this.api.tasks.subscribe((tasks) => {
-      obs.next(this.taskByName(name, tasks))
+      obs.next(this.taskByID(name, tasks))
       obs.complete()
     })
     return obs
   }
 
-  taskByName(name: string, tasks: Task[]): Task {
-    return tasks.find((task) => task.name == name)
+  taskByID(id: string, tasks: Task[]): Task {
+    return tasks.find((task) => task.uuid == id)
   }
 
 }

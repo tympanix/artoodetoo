@@ -21,7 +21,7 @@
       <div class="row">
         <div class="col-sm-12">
           <h3 class="panel-title">{{task.name}}<small *ngIf="task.running" class="text-success"> - Running</small></h3>
-          <a routerLink="/administration/task/{{task.name}}" mdTooltip="Edit {{task.name}}" mdTooltipPosition="above"><i class="material-icons">settings</i></a>
+          <a routerLink="/administration/task/{{task.uuid}}" mdTooltip="Edit {{task.name}}" mdTooltipPosition="above"><i class="material-icons">settings</i></a>
 
           <!-- Start / Stop task -->
           <a *ngIf="!task.running" (click)="runTask(task)" mdTooltip="Run Task" mdTooltipPosition="above"><i class="material-icons">play_arrow</i></a>

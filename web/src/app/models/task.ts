@@ -5,6 +5,7 @@ import * as _ from "lodash";
 
 export interface ITask {
   name: string
+  uuid: string
   event: IUnit
   actions: IUnit[]
 }
@@ -12,6 +13,7 @@ export interface ITask {
 export class Task implements ITask, Model {
   // Model properties
   name: string = ""
+  uuid: string = ""
   event: Unit = null
   actions: Unit[] = []
   running: boolean = false
@@ -57,6 +59,7 @@ export class Task implements ITask, Model {
   public toJson(): ITask {
     return {
       name: this.name,
+      uuid: this.uuid,
       event: this.event.toJson(),
       actions: this.actions.map(a => a.toJson())
     }
