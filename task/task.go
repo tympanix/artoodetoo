@@ -1,8 +1,10 @@
 package task
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	"sync"
 
 	"github.com/Tympanix/automato/event"
 	"github.com/Tympanix/automato/generate"
@@ -16,6 +18,7 @@ type Task struct {
 	Name    string       `json:"name"`
 	Event   *event.Proxy `json:"event"`
 	Actions []*unit.Unit `json:"actions"`
+	lock    *sync.Mutex  `json:"-"`
 }
 
 // Describe prints our information about the action to the console
@@ -64,14 +67,38 @@ func (t *Task) GetUnitByName(name string) (unit *unit.Unit, err error) {
 func (t *Task) Run(ts types.TupleSpace) error {
 	log.Printf("Running task %s\n", t.Name)
 
+	t.lock.Lock()
+	defer t.lock.Unlock()
+
+	waitgroup := new(sync.WaitGroup)
+	waitgroup.Add(len(t.Actions))
+
 	for _, action := range t.Actions {
-		if err := action.AssignInput(ts); err != nil {
-			return err
-		}
-		action.Execute()
-		if err := action.StoreOutput(ts); err != nil {
-			return err
-		}
+		go func(action *unit.Unit) {
+			if err := action.AssignInput(ts); err != nil {
+				log.Println(err)
+			}
+			action.Execute()
+			if err := action.StoreOutput(ts); err != nil {
+				log.Println(err)
+			}
+			waitgroup.Done()
+		}(action)
 	}
+
+	waitgroup.Wait()
+	log.Printf("Finished %s", t.Name)
+	return nil
+}
+
+func (t *Task) UnmarshalJSON(data []byte) error {
+	type task Task
+	var _task task
+	if err := json.Unmarshal(data, &_task); err != nil {
+		return err
+	}
+
+	_task.lock = new(sync.Mutex)
+	*t = Task(_task)
 	return nil
 }
