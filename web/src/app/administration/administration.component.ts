@@ -72,7 +72,7 @@ export class AdministrationComponent implements OnInit {
 
   updateTask() {
     this.api.updateTask(this.task).subscribe()
-    //this.snackBar.open(this.task.name + " has been saved", "", {duration: 4000, extraClasses: ["snackbar-success"]})
+    this.snackBar.open(this.task.name + " has been saved", "", {duration: 4000, extraClasses: ["snackbar-success"]})
   }
 
   saveEvent(){
@@ -97,42 +97,6 @@ export class AdministrationComponent implements OnInit {
 
   eventChange(){
     this.task.updateUnitList()
-  }
-
-  openUnitDialog() {
-    let dialogRef = this.dialog.open(UnitDialog, {
-      height: '500px',
-      width: '750px',
-    });
-    dialogRef.afterClosed().subscribe(unit => {
-      if (unit) {
-          this.task.addAction(unit);
-      }
-    });
-  }
-
-  openEventDialog() {
-    let dialogRef = this.dialog.open(EventDialog, {
-      height: '500px',
-      width: '750px',
-    });
-    dialogRef.afterClosed().subscribe(event => {
-      if (event) {
-        this.event = event;
-      }
-    });
-  }
-
-  openTaskDialog(){
-    let dialogRef = this.dialog.open(TaskDialog, {
-      width: '600px'
-    });
-
-    dialogRef.afterClosed().subscribe(name => {
-      if(name != undefined && name != ""){
-        this.task = new Task({name: name})
-      }
-    })
   }
 
 }

@@ -1,0 +1,21 @@
+<div class="well">
+  <div class="row">
+    <div class="col-sm-6">
+      <h1 class="heading">Event Editor</h1>
+    </div>
+    <div class="col-sm-6">
+        <!--  Not in editor mode -->
+        <a *ngIf="!event" routerLink="/administration/" class="btn btn-default task-util-button">Back</a>
+        <a *ngIf="!event" routerLink="/administration/event" class="btn btn-blue task-util-button" (click)="openEventDialog()">Create Event</a>
+
+        <!-- In editor mode -->
+        <a *ngIf="event" routerLink="/administration/" class="btn btn-default task-util-button">Cancel</a>
+        <a *ngIf="event" routerLink="/dashboard/" class="btn btn-red task-util-button" (click)="saveEvent()">Save</a>
+
+
+    </div>
+  </div>
+
+  <app-event *ngIf="event" [event]="event"></app-event>
+
+</div>
