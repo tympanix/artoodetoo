@@ -7,8 +7,8 @@ import { MdSnackBar, MdDialog } from '@angular/material';
 
 import 'rxjs/add/operator/map'
 
+import { ErrorDialog } from './dialogs/errordialog/errordialog.component'
 import { Task, Unit, Data, Event } from './model';
-import { ErrorDialog } from './dialogs'
 
 @Injectable()
 export class ApiService {
@@ -20,7 +20,7 @@ export class ApiService {
 
   private options: RequestOptions
 
-  constructor(private http: Http, private snackBar: MdSnackBar, private dialog: MdDialog) {
+  constructor(private http: Http, private snackBar: MdSnackBar, public dialog: MdDialog) {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: headers });
 
@@ -56,6 +56,16 @@ export class ApiService {
     }
   }
 
+  private openErrorDialog(self: this, res: Response) {
+    return function() {
+      let dialogRef = self.dialog.open(ErrorDialog, {
+        width: '750px',
+        data: res
+      });
+      dialogRef.afterClosed().subscribe();
+    }
+  }
+
   private handleError(self: this) {
     return function(error: any): Promise<any> {
       console.error('An error occurred', error); // for demo purposes only
@@ -65,20 +75,10 @@ export class ApiService {
       } else if (error instanceof Response) {
         message = error.text()
       }
-      var snackRef = self.snackBar.open(error.text(), "", {duration: 4000, extraClasses: ["snackbar-error"]})
-      snackRef.onAction().subscribe(() => {
-        this.openErrorDialog(error as Response)
-      });
-      return Promise.reject(message)
+      var snakcRef = self.snackBar.open(message as string, "Debug", {duration: 4000, extraClasses: ["snackbar-error"]})
+      snakcRef.onAction().subscribe(self.openErrorDialog(self, error));
+      return Promise.reject(error.message || error);
     }
-  }
-
-  private openErrorDialog(res: Response) {
-    let dialogRef = this.dialog.open(ErrorDialog, {
-      height: '500px',
-      width: '750px',
-      data: res
-    });
   }
 
   createTask(task: Task): Observable<boolean> {
