@@ -11,6 +11,7 @@ export class IngredientComponent implements OnInit {
   @Input() task: Task
   @Input() input: UnitInput
   @Input() model: Ingredient
+  @Input() unit: Unit
 
   sources: Unit[]
   source: Unit = new Unit()
@@ -24,7 +25,7 @@ export class IngredientComponent implements OnInit {
 
   private filterUnits(units: Unit[]): Unit[] {
     return units.filter(unit =>
-      unit.name && unit.name.length > 0
+      unit != this.unit && unit.name && unit.name.length > 0
     )
   }
 
