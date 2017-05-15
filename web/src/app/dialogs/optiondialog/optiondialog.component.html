@@ -1,0 +1,8 @@
+<h1 md-dialog-title>{{data.title}}</h1>
+<div md-dialog-content>
+  <p>{{data.message}}</p>
+</div>
+<div md-dialog-actions>
+  <button md-button md-button tabindex="1" (click)="confirm()">Confirm</button>
+  <button md-button md-button tabindex="2" (click)="close()" md-dialog-close>Cancel</button>
+</div>

@@ -46,17 +46,32 @@ export class ApiService {
     }
   }
 
+  private checkSuccess(self: this): (r: Response) => Response {
+    return function(res: Response): Response {
+      if (res.status != 200) {
+        throw new Error(res.text())
+      }
+      return res
+    }
+  }
+
   private handleError(self: this) {
     return function(error: any): Promise<any> {
       console.error('An error occurred', error); // for demo purposes only
-      self.snackBar.open("Error", error.message || error, {duration: 4000})
+      var message: String
+      if (error instanceof String) {
+        message = error
+      } else if (error instanceof Response) {
+        message = error.text()
+      }
+      self.snackBar.open("Error", message as string, {duration: 4000, extraClasses: ["snackbar-error"]})
       return Promise.reject(error.message || error);
     }
   }
 
   createTask(task: Task): Observable<boolean> {
     return this.http.post("api/tasks", task.toJson(), this.options)
-      .map(this.extractData<string>(this))
+      .map(this.checkSuccess(this))
       .do(() => this.getAll())
       .do(() => {
           this.snackBar.open(task.name + " has been created!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
@@ -139,10 +154,11 @@ export class ApiService {
 
   deleteTask(task: Task): Observable<boolean> {
     return this.http.delete("api/tasks/" + task.name, {})
-      .map(res => res.ok)
+      .map(this.checkSuccess(this))
       .do(bool => {
           this.snackBar.open(task.name + " has been deleted!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
       })
+      .do(() => this.getAll())
       .catch(this.handleError(this))
   }
 

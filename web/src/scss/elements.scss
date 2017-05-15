@@ -40,6 +40,10 @@ a:hover{
   background-color: $brand-success !important;
 }
 
+.snackbar-error {
+  background-color: $brand-danger !important;
+}
+
 hr{
   margin: 10px 0;
   border-color: $blue-dark;

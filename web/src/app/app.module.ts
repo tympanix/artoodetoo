@@ -26,7 +26,8 @@ import { EventIngredientComponent } from './event-ingredient/event-ingredient.co
 import { FacebookModule } from 'ngx-facebook';
 import { TaskeditorComponent } from './editor/taskeditor/taskeditor.component';
 import { EventeditorComponent } from './editor/eventeditor/eventeditor.component';
-import { EventDialog } from './dialogs/eventdialog/eventdialog.component'
+import { EventDialog } from './dialogs/eventdialog/eventdialog.component';
+import { OptionDialog } from './dialogs/optiondialog/optiondialog.component'
 
 @NgModule({
   imports: [
@@ -52,13 +53,15 @@ import { EventDialog } from './dialogs/eventdialog/eventdialog.component'
     EventIngredientComponent,
     TaskeditorComponent,
     EventeditorComponent,
-    EventDialog
+    EventDialog,
+    OptionDialog
   ],
   entryComponents: [
     UnitDialog,
     TaskDialog,
     EventTemplateDialog,
-    EventDialog
+    EventDialog,
+    OptionDialog
   ],
   providers: [ApiService, TaskResolver],
   bootstrap: [AppComponent]

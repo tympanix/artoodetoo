@@ -20,6 +20,13 @@
     position: absolute;
     top: 0;
     right: 0;
+
+    > a {
+      padding-top: 5px;
+      &:first-child {
+        margin-right: 12px;
+      }
+    }
   }
 
   a{
