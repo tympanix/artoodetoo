@@ -12,6 +12,18 @@ a:hover{
   color:white;
 }
 
+.btn-icon {
+  position: relative;
+  padding-left: 3em !important;
+
+  i {
+    position: absolute;
+    top: 50%;
+    left: 1em;
+    transform: translate(-50%, -50%);
+  }
+}
+
 .btn-xs{
   padding: 4px 15px;
 }
