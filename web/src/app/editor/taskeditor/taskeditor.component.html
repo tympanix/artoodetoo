@@ -35,8 +35,8 @@
         </div>
       </div>
 
-      <div class="center" *ngIf="!task.event">
-          <p class="description">You need to choose an event for your task. Your task will be executed when the event is fired.
+      <div class="center">
+          <p class="description" *ngIf="!task.event">You need to choose an event for your task. Your task will be executed when the event is fired.
           If you have no events yet head to the <a class="hint" routerLink="/administration/event/">event editor</a> to create new events</p>
           <a class="btn btn-blue" (click)="openEventDialog()">Choose Event</a>
       </div>
