@@ -83,7 +83,7 @@ export class TaskeditorComponent implements OnInit {
       width: '750px',
     })
 
-    dialogRef.afterClosed().subscribe(event => this.task.event = event)
+    dialogRef.afterClosed().subscribe(event => this.task.event = event || this.task.event)
   }
 
 }
