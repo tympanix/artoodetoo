@@ -64,7 +64,7 @@ export class ApiService {
       } else if (error instanceof Response) {
         message = error.text()
       }
-      self.snackBar.open("Error", message as string, {duration: 4000, extraClasses: ["snackbar-error"]})
+      self.snackBar.open(message as string, "", {duration: 4000, extraClasses: ["snackbar-error"]})
       return Promise.reject(error.message || error);
     }
   }
