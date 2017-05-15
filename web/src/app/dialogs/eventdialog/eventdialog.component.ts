@@ -4,7 +4,7 @@ import { ApiService } from '../../api.service'
 import { Unit, Event } from '../../model'
 
 @Component({
-  selector: 'app-eventdialog',
+  selector: 'eventdialog',
   templateUrl: './eventdialog.component.html',
   styles: []
 })

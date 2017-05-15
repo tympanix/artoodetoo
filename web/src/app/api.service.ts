@@ -3,11 +3,12 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http'
 
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Observable } from 'rxjs/Observable';
-import { MdSnackBar } from '@angular/material';
+import { MdSnackBar, MdDialog } from '@angular/material';
 
 import 'rxjs/add/operator/map'
 
 import { Task, Unit, Data, Event } from './model';
+import { ErrorDialog } from './dialogs'
 
 @Injectable()
 export class ApiService {
@@ -19,7 +20,7 @@ export class ApiService {
 
   private options: RequestOptions
 
-  constructor(private http: Http, private snackBar: MdSnackBar) {
+  constructor(private http: Http, private snackBar: MdSnackBar, private dialog: MdDialog) {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     this.options = new RequestOptions({ headers: headers });
 
@@ -64,9 +65,20 @@ export class ApiService {
       } else if (error instanceof Response) {
         message = error.text()
       }
-      self.snackBar.open(message as string, "", {duration: 4000, extraClasses: ["snackbar-error"]})
-      return Promise.reject(error.message || error);
+      var snackRef = self.snackBar.open(error.text(), "", {duration: 4000, extraClasses: ["snackbar-error"]})
+      snackRef.onAction().subscribe(() => {
+        this.openErrorDialog(error as Response)
+      });
+      return Promise.reject(message)
     }
+  }
+
+  private openErrorDialog(res: Response) {
+    let dialogRef = this.dialog.open(ErrorDialog, {
+      height: '500px',
+      width: '750px',
+      data: res
+    });
   }
 
   createTask(task: Task): Observable<boolean> {

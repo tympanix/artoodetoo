@@ -3,3 +3,4 @@ export { EventTemplateDialog } from './dialogs/eventtemplatedialog/eventtemplate
 export { EventDialog } from './dialogs/eventdialog/eventdialog.component'
 export { UnitDialog } from './dialogs/unitdialog/unitdialog.component'
 export { OptionDialog } from './dialogs/optiondialog/optiondialog.component'
+export { ErrorDialog } from './dialogs/errordialog/errordialog.component'
