@@ -37,7 +37,7 @@ export class Task implements ITask, Model {
     //task.event = Unit.fromJson(model.event)
     task.isSaved = true
     task.actions = model.actions.map(action => Unit.fromJson(action))
-    task.actions.forEach(a => a.bindToTask(task))
+    task.bootstrap()
     task.updateUnitList()
     return task
   }
@@ -64,6 +64,10 @@ export class Task implements ITask, Model {
       event: this.event.toJson(),
       actions: this.actions.map(a => a.toJson())
     }
+  }
+
+  bootstrap() {
+    this.actions.forEach(a => a.bootstrap(this))
   }
 
   addAction(unit: Unit) {
