@@ -37,6 +37,7 @@ export class Task implements ITask, Model {
     //task.event = Unit.fromJson(model.event)
     task.isSaved = true
     task.actions = model.actions.map(action => Unit.fromJson(action))
+    task.actions.forEach(a => a.bindToTask(task))
     task.updateUnitList()
     return task
   }

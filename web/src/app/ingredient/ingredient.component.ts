@@ -8,10 +8,11 @@ import { ApiService } from '../api.service'
   styles: []
 })
 export class IngredientComponent implements OnInit {
-  @Input() task: Task
-  @Input() input: UnitInput
   @Input() model: Ingredient
-  @Input() unit: Unit
+
+  task: Task
+  input: UnitInput
+  unit: Unit
 
   sources: Unit[]
   source: Unit = new Unit()
@@ -19,6 +20,10 @@ export class IngredientComponent implements OnInit {
   constructor(private api: ApiService) { }
 
   ngOnInit() {
+    this.input = this.model.input
+    this.unit = this.input.unit
+    this.task = this.unit.task
+    
     this.task.units.subscribe(units => this.sources = this.filterUnits(units))
     this.changeSource(this.model.source)
   }

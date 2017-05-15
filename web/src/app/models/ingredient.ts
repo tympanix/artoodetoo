@@ -1,4 +1,5 @@
 import { Model } from './model'
+import { Input } from './io'
 
 export interface IIngredient {
   type: number
@@ -12,6 +13,8 @@ export class Ingredient implements IIngredient, Model{
   source: string
   value: string
 
+  input: Input
+
   constructor() {
     this.type = 1
   }
@@ -20,6 +23,10 @@ export class Ingredient implements IIngredient, Model{
     let ingredient = new Ingredient()
     Object.assign(ingredient, model)
     return ingredient
+  }
+
+  bindToInput(input: Input) {
+    this.input = input
   }
 
   toJson(): IIngredient {
