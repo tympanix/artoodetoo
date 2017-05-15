@@ -65,6 +65,18 @@ func (e *Event) Trigger() chan bool {
 	return e.trigger.Trigger()
 }
 
+// Validate checks certain safety proper
+func (e *Event) Validate() error {
+	for _, input := range e.In {
+		for _, ingr := range input.Recipe {
+			if ingr.IsVariable() {
+				return errors.New("Events are not allowed to have variables as input")
+			}
+		}
+	}
+	return nil
+}
+
 // UnmarshalJSON serialized an event fron json encoding
 func (e *Event) UnmarshalJSON(data []byte) error {
 	type event Event
@@ -85,6 +97,10 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 		return fmt.Errorf("Internal error while parsing event")
 	}
 	e.trigger = newTrigger
+
+	if err := e.Validate(); err != nil {
+		return err
+	}
 
 	// Try to assign input to state, this should fail if any variables are used
 	if err := e.AssignInput(state.New()); err != nil {
