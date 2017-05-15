@@ -30,7 +30,6 @@ export class UnitDialog implements OnInit {
     let template = u || this.filtered[0]
     if (template) {
       unit = template.copy()
-      unit.bootstrap()
     }
     this.dialogRef.close(unit)
   }

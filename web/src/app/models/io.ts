@@ -35,10 +35,12 @@ export class Input implements IInput, Model {
     this.unit = unit
   }
 
-  bootstrap() {
+  bootstrap(unit?: Unit) {
+    unit && this.bindToUnit(unit)
     if (!this.recipe || !this.recipe.length) {
       this.recipe = [new Ingredient()]
     }
+    this.recipe.forEach(i => i.bootstrap(this))
   }
 
   public isArray(): boolean {
@@ -64,6 +66,10 @@ export class Output implements IOutput, Model {
 
   bindToUnit(unit: Unit) {
     this.unit = unit
+  }
+
+  bootstrap(unit?: Unit) {
+    unit && this.bindToUnit(unit)
   }
 
   toJson(): IOutput {

@@ -29,6 +29,10 @@ export class Ingredient implements IIngredient, Model{
     this.input = input
   }
 
+  bootstrap(input?: Input) {
+    input && this.bindToInput(input)
+  }
+
   toJson(): IIngredient {
     return {
       type: this.type,

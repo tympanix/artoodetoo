@@ -67,6 +67,7 @@ export class Task implements ITask, Model {
   }
 
   addAction(unit: Unit) {
+    unit.bootstrap(this)
     this.actions.push(unit)
     this.updateUnitList()
   }

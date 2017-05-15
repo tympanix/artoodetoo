@@ -41,11 +41,14 @@ export class Unit implements IUnit, Model {
 
   copy(): Unit {
     let copy = _.cloneDeep(this)
+    copy.bootstrap()
     return copy
   }
 
-  bootstrap() {
-    this.input.forEach(input => input.bootstrap())
+  bootstrap(task?: Task) {
+    task && this.bindToTask(task)
+    this.input.forEach(input => input.bootstrap(this))
+    this.output.forEach(output => output.bootstrap(this))
   }
 
   toJson(): IUnit {
