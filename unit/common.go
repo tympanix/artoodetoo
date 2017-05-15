@@ -26,7 +26,7 @@ func GetActionByID(id string) (action Action, ok bool) {
 	if !ok {
 		return
 	}
-	return *unit.Action(), ok
+	return *(unit.Action()), ok
 }
 
 // GetUnitByID retrieves the unit object associated with the given name

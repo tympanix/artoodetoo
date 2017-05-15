@@ -233,6 +233,16 @@ func (s *Subject) AddStatic(argument string, value interface{}) error {
 	return nil
 }
 
+func duplicateSubject(subject interface{}) interface{} {
+	value := reflect.ValueOf(subject)
+
+	for value.Kind() == reflect.Ptr {
+		value = value.Elem()
+	}
+
+	return reflect.New(value.Type()).Interface()
+}
+
 // RebuildSubject rebuilds the subject by resolving a new instance of the subject
 // using the subjec resolver. The recipe for every input is copied after the subject
 // has been analysed
@@ -245,7 +255,7 @@ func (s *Subject) RebuildSubject(data []byte, resolver Resolver) error {
 		return err
 	}
 
-	s.subject = subject
+	s.subject = duplicateSubject(subject)
 	copy := *s
 	s.init()
 
