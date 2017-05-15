@@ -61,6 +61,18 @@ func (s *Subject) GetSubject() interface{} {
 	return s.subject
 }
 
+func (s *Subject) NumVariables() int {
+	sum := 0
+	for _, input := range s.In {
+		for _, ingr := range input.Recipe {
+			if ingr.IsVariable() {
+				sum++
+			}
+		}
+	}
+	return sum
+}
+
 func (s *Subject) addInput(input *Input) {
 	s.In = append(s.In, input)
 }
