@@ -153,7 +153,7 @@ export class ApiService {
   }
 
   deleteTask(task: Task): Observable<boolean> {
-    return this.http.delete("api/tasks/" + task.name, {})
+    return this.http.delete("api/tasks/" + task.uuid, {})
       .map(this.checkSuccess(this))
       .do(bool => {
           this.snackBar.open(task.name + " has been deleted!", "", {duration: 4000, extraClasses: ["snackbar-success"]})

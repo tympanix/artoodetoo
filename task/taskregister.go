@@ -32,6 +32,7 @@ func RemoveTask(task *Task) error {
 	if _, err := GetTaskByID(task.UUID); err != nil {
 		return errors.New("Could not unregister task because it was not found")
 	}
+	task.Unsubscribe()
 	delete(tasks, task.UUID)
 	return nil
 }
