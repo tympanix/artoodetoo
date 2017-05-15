@@ -1,6 +1,7 @@
 package state_test
 
 import (
+	"strings"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -130,4 +131,21 @@ func TestStateBlock(t *testing.T) {
 			t.Error(err)
 		}
 	}, 32)
+}
+
+func TestStatePredicate(t *testing.T) {
+	s := state.New()
+
+	s.Put("string", "bbb")
+	s.Put("string", "aaa")
+
+	p := func(s string) bool {
+		return strings.Contains(s, "a")
+	}
+
+	timeTest(t, func() {
+		if err := s.Get("string", p); err != nil {
+			t.Error(err)
+		}
+	}, 100)
 }

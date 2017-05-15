@@ -87,10 +87,21 @@ func check(template Tuple, tuple Tuple) (ok bool, err error) {
 }
 
 func match(template Tuple, tuple Tuple) (ok bool) {
+	defer func() {
+		if r := recover(); r != nil {
+			ok = false
+		}
+	}()
+
 	for i := range template {
 		temVal := reflect.Indirect(template[i])
 		tupVal := tuple[i]
-		if !temVal.CanSet() {
+		if temVal.Kind() == reflect.Func {
+			args := []reflect.Value{tupVal}
+			if ok = temVal.Call(args)[0].Bool(); !ok {
+				return
+			}
+		} else if !temVal.CanSet() {
 			if ok = reflect.DeepEqual(temVal.Interface(), tupVal.Interface()); !ok {
 				return
 			}
