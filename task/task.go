@@ -32,6 +32,13 @@ func (t *Task) Describe() {
 	}
 }
 
+func (t *Task) Validate() error {
+	if err := t.detectCycles(); err != nil {
+		return err
+	}
+	return nil
+}
+
 // Subscribe subscribes the task to its event
 func (t *Task) Subscribe() error {
 	if t.Event == nil {
@@ -100,5 +107,10 @@ func (t *Task) UnmarshalJSON(data []byte) error {
 
 	_task.lock = new(sync.Mutex)
 	*t = Task(_task)
+
+	if err := t.Validate(); err != nil {
+		return err
+	}
+
 	return nil
 }

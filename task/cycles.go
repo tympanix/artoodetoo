@@ -1,17 +1,20 @@
 package task
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 func (t *Task) reduceEdgeCount(m map[string]int, key string) error {
 	for _, action := range t.Actions {
 		for _, input := range action.In {
 			for _, ingr := range input.Recipe {
-				if ingr.IsVariable() {
-					n, ok := m[ingr.Source]
+				if ingr.IsVariable() && ingr.Source == key {
+					n, ok := m[action.Name]
 					if !ok {
-						return fmt.Errorf("Invalid reference to %s", ingr.Source)
+						return fmt.Errorf("Invalid reference to %s", action.Name)
 					}
-					m[ingr.Source] = n - 1
+					m[action.Name] = n - 1
 				}
 			}
 		}
@@ -35,13 +38,14 @@ func (t *Task) detectCycles() error {
 CYCLE:
 	for len(m) > 0 {
 		for key, val := range m {
-			if val == 0 {
+			if val <= 0 {
 				delete(m, key)
 				if err := t.reduceEdgeCount(m, key); err != nil {
 					return err
 				}
 				continue CYCLE
 			}
+			return errors.New("Task has cycles")
 		}
 	}
 	return nil
