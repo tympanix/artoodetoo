@@ -16,7 +16,6 @@ export class Task implements ITask, Model {
   uuid: string = ""
   event: Unit = null
   actions: Unit[] = []
-  running: boolean = false
 
   private eventRef: string
 

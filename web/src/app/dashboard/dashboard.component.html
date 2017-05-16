@@ -18,14 +18,12 @@
   <!-- All panels -->
   <div *ngFor="let task of tasks" class="panel panel-primary">
     <div class="panel-heading">
-      <h3 class="panel-title">{{task.name}}<small *ngIf="task.running" class="text-success"> - Running</small></h3>
+      <h3 class="panel-title">{{task.name}}</h3>
       <div class="panel-actions">
-          <a routerLink="/administration/task/{{task.uuid}}" mdTooltip="Edit {{task.name}}" mdTooltipPosition="above"><i class="material-icons">settings</i></a>
 
-          <!-- Start / Stop task -->
-          <a *ngIf="!task.running" (click)="deleteTask(task)" mdTooltip="Delete {{task.name}}" mdTooltipPosition="above"><i class="material-icons">delete</i></a>
-          <a *ngIf="!task.running" (click)="runTask(task)" mdTooltip="Run Task" mdTooltipPosition="above"><i class="material-icons">play_arrow</i></a>
-          <a *ngIf="task.running" (click)="stopTask(task)" mdTooltip="Stop Task" mdTooltipPosition="above"><i class="material-icons">stop</i></a>
+          <a routerLink="/administration/task/{{task.uuid}}" mdTooltip="Edit {{task.name}}" mdTooltipPosition="above"><i class="material-icons">settings</i></a>
+          <a (click)="deleteTask(task)" mdTooltip="Delete {{task.name}}" mdTooltipPosition="above"><i class="material-icons">delete</i></a>
+
       </div>
     </div>
     <div class="panel-body">

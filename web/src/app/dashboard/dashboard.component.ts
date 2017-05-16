@@ -21,22 +21,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() { }
 
-  runTask(task: Task) {
-    console.log("Running", task.name)
-    this.api.runTask(task).subscribe()
-
-    console.log("Remove after refactor")
-    task.running = true
-  }
-
-  stopTask(task: Task){
-    console.log("Stopping", task.name)
-    this.api.stopTask(task)
-
-    console.log("Remove after refactor")
-    task.running = false
-  }
-
   deleteTask(task: Task) {
     let dialogRef = this.dialog.open(OptionDialog, {
       width: '550px',

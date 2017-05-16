@@ -30,10 +30,6 @@ export class TaskeditorComponent implements OnInit {
     })
   }
 
-  runTask() {
-    this.api.runTask(this.task).subscribe()
-  }
-
   updateTask() {
     this.api.updateTask(this.task).subscribe(() => {
       this.snackBar.open(this.task.name + " has been saved", "", {duration: 4000, extraClasses: ["snackbar-success"]})
