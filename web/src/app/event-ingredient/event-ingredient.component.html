@@ -60,7 +60,7 @@
 
   <!-- Facebook type -->
   <div *ngSwitchCase="'facebook.Token'">
-    <span>{{loginStatus}}</span><a *ngIf="loginStatus != 'connected'" class="btn btn-blue" (click)="loginWithFacebook()">login</a>
+    <p *ngIf="loginStatus == 'connected'" class="ingr-value">{{loginStatus}}</p><a *ngIf="loginStatus != 'connected'" class="btn btn-blue" (click)="loginWithFacebook()">login</a>
   </div>
 
   <!--  Common types -->
