@@ -49,13 +49,14 @@
     </div>
   </div>
 
-  <!-- If no tasks -->
+  <!-- If no events -->
   <div class="row">
     <div *ngIf="events == ''" class="col-sm-12">
       <p>You do not have any events yet, head to the administration panel to create events</p>
     </div>
   </div>
 
+  <!-- If events -->
   <div *ngFor="let event of events" class="panel panel-primary">
     <div class="panel-heading">
       <div class="row">
@@ -87,7 +88,7 @@
 
               <!-- For each input field  -->
               <div class="col-lg-10" *ngFor="let ingr of input.recipe">
-                <p>{{ingr.value}}</p>
+                <p class="ingr-value">{{ingr.value}}</p>
               </div>
 
             </div>
