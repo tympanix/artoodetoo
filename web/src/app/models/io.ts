@@ -1,26 +1,25 @@
 import { Model } from './model'
 import { Ingredient, IIngredient } from './ingredient'
 import { Unit } from './unit'
+import { Task } from './task'
 
-export interface IInput {
-  name: string;
-  type: string;
-  recipe: IIngredient[]
-}
-
-export class Input implements IInput, Model {
-  // Model properties
-  name: string;
-  type: string;
-  recipe: Ingredient[]
+export class IO {
+  name: string
+  type: string
 
   // State properties
   unit: Unit
 
-  constructor(model: IInput) {
-    Object.assign(this, model)
-    this.recipe = model.recipe ? model.recipe.map(r => Ingredient.fromJson(r)) : []
-    this.recipe.forEach(i => i.bindToInput(this))
+  bindToUnit(unit: Unit) {
+    this.unit = unit
+  }
+
+  getTask(): Task {
+    try {
+      return this.unit.task
+    } catch(e) {
+      return null
+    }
   }
 
   static findByName(name: string): (i: Input) => boolean {
@@ -29,16 +28,35 @@ export class Input implements IInput, Model {
     }
   }
 
+
+
+}
+
+export interface IInput {
+  name: string;
+  type: string;
+  recipe: IIngredient[]
+}
+
+export class Input extends IO implements IInput, Model {
+  // Model properties
+  name: string;
+  type: string;
+  recipe: Ingredient[]
+
+  constructor(model: IInput) {
+    super()
+    Object.assign(this, model)
+    this.recipe = model.recipe ? model.recipe.map(r => Ingredient.fromJson(r)) : []
+    this.recipe.forEach(i => i.bindToInput(this))
+  }
+
   toJson(): IInput {
     return {
       name: this.name,
       type: this.type,
       recipe: this.recipe.map(i => i.toJson())
     }
-  }
-
-  bindToUnit(unit: Unit) {
-    this.unit = unit
   }
 
   bootstrap(unit?: Unit) {
@@ -59,19 +77,13 @@ export interface IOutput {
   type: string;
 }
 
-export class Output implements IOutput, Model {
+export class Output extends IO implements IOutput, Model {
   name: string;
   type: string;
 
-  // State properties
-  unit: Unit
-
   constructor(model: IOutput) {
+    super()
     Object.assign(this, model)
-  }
-
-  bindToUnit(unit: Unit) {
-    this.unit = unit
   }
 
   bootstrap(unit?: Unit) {

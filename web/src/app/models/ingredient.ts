@@ -1,6 +1,7 @@
 import { Model } from './model'
 import { Input, Output } from './io'
 import { Unit } from './unit'
+import { Task } from './task'
 
 export interface IIngredient {
   type: number
@@ -34,6 +35,23 @@ export class Ingredient implements IIngredient, Model{
     var output = unit.output.find(Input.findByName(this.value))
     if (!output) console.error("Unknown ingredient variable", this)
     this.reference = output
+  }
+
+  setVariable(output: Output) {
+    if (output.getTask() !== this.getTask()) {
+      console.error("Setting invalid ingredient variable", output)
+    }
+    this.reference = output
+    this.source = output.unit.name
+    this.value = output.name
+  }
+
+  getTask(): Task {
+    try {
+      return this.input.unit.task
+    } catch(e) {
+      return null
+    }
   }
 
   isVariable(): boolean {
