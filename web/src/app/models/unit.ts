@@ -51,6 +51,12 @@ export class Unit implements IUnit, Model {
     this.output.forEach(output => output.bootstrap(this))
   }
 
+  static findByName(name: string): (u: Unit) => boolean {
+    return function(unit: Unit) {
+      return unit.name === name
+    }
+  }
+
   toJson(): IUnit {
     return {
       id: this.id,

@@ -52,6 +52,13 @@ export class Task implements ITask, Model {
     this.event = event
   }
 
+  private resolveIngredients(units: Unit[]) {
+    this.actions.forEach(
+      a => a.input.forEach(
+        i => i.recipe.forEach(
+          r => r.resolveReference(this.actions))))
+  }
+
   copy(): Task {
     let copy = _.cloneDeep(this)
     return copy
@@ -67,6 +74,7 @@ export class Task implements ITask, Model {
   }
 
   bootstrap() {
+    this.resolveIngredients(this.actions)
     this.actions.forEach(a => a.bootstrap(this))
   }
 

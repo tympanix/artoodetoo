@@ -23,6 +23,12 @@ export class Input implements IInput, Model {
     this.recipe.forEach(i => i.bindToInput(this))
   }
 
+  static findByName(name: string): (i: Input) => boolean {
+    return function(i: Input) {
+      return i.name === name
+    }
+  }
+
   toJson(): IInput {
     return {
       name: this.name,
