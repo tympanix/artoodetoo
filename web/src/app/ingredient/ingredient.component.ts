@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Task, Unit, Ingredient, Input as UnitInput, Output as UnitOutput } from '../model';
 import { ApiService } from '../api.service'
+import { MdSnackBar, MdDialog } from '@angular/material';
 
 @Component({
   selector: 'ingredient',
@@ -16,14 +17,15 @@ export class IngredientComponent implements OnInit {
 
   sources: Unit[]
   source: Unit = new Unit()
+  reference: UnitOutput
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService, private snackBar: MdSnackBar) { }
 
   ngOnInit() {
     this.input = this.model.input
     this.unit = this.input.unit
     this.task = this.unit.task
-    
+
     this.task.units.subscribe(units => this.sources = this.filterUnits(units))
     this.changeSource(this.model.source)
   }
@@ -35,7 +37,15 @@ export class IngredientComponent implements OnInit {
   }
 
   changeSourceEvent(event) {
-    this.changeSource(event.value)
+    //this.changeSource(event.value)
+  }
+
+  changeIngredientReference(event) {
+    var self = this
+    this.model.setVariable(event.value)
+    this.model.getTask().checkCycles().catch(function() {
+      self.snackBar.open("The is an cycle in your task!", "", {duration: 8000, extraClasses: ["snackbar-error"]})
+    })
   }
 
   changeSource(source: string) {

@@ -50,6 +50,65 @@ export class Task implements ITask, Model {
     }
 
     this.event = event
+    this.updateUnitList()
+  }
+
+  checkCycles(): Promise<boolean> {
+    var totalExplored: Set<Unit> = new Set<Unit>()
+
+    function hasCycleFromUnit(unit: Unit): boolean {
+      var explored: Set<Unit> = new Set<Unit>()
+      var queue: Unit[] = []
+
+      queue.push(unit)
+
+      while (queue.length > 0) {
+        var node: Unit = queue.pop()
+
+        explored.add(node)
+        totalExplored.add(node)
+
+        var expanded = reachableUnits(node)
+        for (let u of expanded) {
+          if (explored.has(u)) {
+            return true
+          }
+          if (queue.find(q => q == u)) {
+            continue
+          }
+          queue.push(u)
+        }
+      }
+      return false
+    }
+
+    function reachableUnits(unit: Unit): Unit[] {
+      var reachable: Unit[] = []
+      unit.input.forEach(i => {
+        i.recipe.forEach(r => {
+          if (!r.reference) return
+          var other: Unit = r.reference.unit
+          reachable.push(other)
+        })
+      })
+      return reachable
+    }
+
+    function getUnexploredAction(task: Task) {
+      return task.actions.find(a => !totalExplored.has(a))
+    }
+
+    return new Promise((resolve, reject) => {
+      var missing = getUnexploredAction(this)
+
+      while (missing) {
+        if (hasCycleFromUnit(missing)) {
+          reject(true)
+        }
+        missing = getUnexploredAction(this)
+      }
+      resolve(false)
+    })
   }
 
   private resolveIngredients(units: Unit[]) {
