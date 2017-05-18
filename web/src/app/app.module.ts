@@ -28,7 +28,8 @@ import { TaskeditorComponent } from './editor/taskeditor/taskeditor.component';
 import { EventeditorComponent } from './editor/eventeditor/eventeditor.component';
 import { EventDialog } from './dialogs/eventdialog/eventdialog.component';
 import { OptionDialog } from './dialogs/optiondialog/optiondialog.component';
-import { ErrorDialog } from './dialogs/errordialog/errordialog.component'
+import { ErrorDialog } from './dialogs/errordialog/errordialog.component';
+import { CycleDialog } from './dialogs/cycledialog/cycledialog.component'
 
 @NgModule({
   imports: [
@@ -56,7 +57,8 @@ import { ErrorDialog } from './dialogs/errordialog/errordialog.component'
     EventeditorComponent,
     EventDialog,
     OptionDialog,
-    ErrorDialog
+    ErrorDialog,
+    CycleDialog
   ],
   entryComponents: [
     UnitDialog,
@@ -64,7 +66,8 @@ import { ErrorDialog } from './dialogs/errordialog/errordialog.component'
     EventTemplateDialog,
     EventDialog,
     OptionDialog,
-    ErrorDialog
+    ErrorDialog,
+    CycleDialog
   ],
   providers: [ApiService, TaskResolver],
   bootstrap: [AppComponent]

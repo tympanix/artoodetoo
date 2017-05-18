@@ -52,10 +52,10 @@ export class Task implements ITask, Model {
     this.updateUnitList()
   }
 
-  checkCycles(): Promise<boolean> {
+  checkCycles(): Promise<Unit[]> {
     var totalExplored: Set<Unit> = new Set<Unit>()
 
-    function hasCycleFromUnit(unit: Unit): boolean {
+    function hasCycleFromUnit(unit: Unit): Unit[] {
       var explored: Set<Unit> = new Set<Unit>()
       var queue: Unit[] = []
 
@@ -70,7 +70,7 @@ export class Task implements ITask, Model {
         var expanded = reachableUnits(node)
         for (let u of expanded) {
           if (explored.has(u)) {
-            return true
+            return extractCycle(u)
           }
           if (queue.find(q => q == u)) {
             continue
@@ -78,7 +78,18 @@ export class Task implements ITask, Model {
           queue.push(u)
         }
       }
-      return false
+      return null
+    }
+
+    function extractCycle(u: Unit): Unit[] {
+      var cycle: Unit[] = [u]
+      var parent: Unit = u.parent
+      while (parent) {
+        if (parent === u) break
+        cycle.push(parent)
+        parent = parent.parent
+      }
+      return cycle
     }
 
     function reachableUnits(unit: Unit): Unit[] {
@@ -87,6 +98,7 @@ export class Task implements ITask, Model {
         i.recipe.forEach(r => {
           if (!r.reference) return
           var other: Unit = r.reference.unit
+          other.parent = unit
           reachable.push(other)
         })
       })
@@ -101,12 +113,11 @@ export class Task implements ITask, Model {
       var missing = getUnexploredAction(this)
 
       while (missing) {
-        if (hasCycleFromUnit(missing)) {
-          reject(true)
-        }
+        let cycle = hasCycleFromUnit(missing)
+        if (cycle) reject(cycle)
         missing = getUnexploredAction(this)
       }
-      resolve(false)
+      resolve(null)
     })
   }
 

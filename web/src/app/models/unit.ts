@@ -22,6 +22,7 @@ export class Unit implements IUnit, Model {
   output: Output[]
 
   // State properties
+  parent: Unit = null
   task: Task = null
 
   static fromJson(model: IUnit): Unit {

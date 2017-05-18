@@ -1,0 +1,10 @@
+<h1 md-dialog-title>Cycle Detection</h1>
+<div md-dialog-content>
+    <p>The following actions in your task has cyclic dependecies</p>
+    <div *ngFor="let action of cycle">
+        <a class="btn btn-default btn-icon"><i class="type material-icons">computer</i>{{action.name}}</a>
+    </div>
+</div>
+<div md-dialog-actions>
+  <button md-button md-button tabindex="2" (click)="close()" md-dialog-close>Ok</button>
+</div>

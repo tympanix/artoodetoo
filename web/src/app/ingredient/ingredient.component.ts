@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Task, Unit, Ingredient, Input as UnitInput, Output as UnitOutput } from '../model';
 import { ApiService } from '../api.service'
 import { MdSnackBar, MdDialog } from '@angular/material';
+import { CycleDialog } from '../dialogs'
 
 @Component({
   selector: 'ingredient',
@@ -19,7 +20,7 @@ export class IngredientComponent implements OnInit {
   source: Unit = new Unit()
   reference: UnitOutput
 
-  constructor(private api: ApiService, private snackBar: MdSnackBar) { }
+  constructor(private api: ApiService, private snackBar: MdSnackBar, public dialog: MdDialog) { }
 
   ngOnInit() {
     this.input = this.model.input
@@ -41,11 +42,31 @@ export class IngredientComponent implements OnInit {
   }
 
   changeIngredientReference(event) {
-    var self = this
     this.model.setVariable(event.value)
-    this.model.getTask().checkCycles().catch(function() {
-      self.snackBar.open("The is an cycle in your task!", "", {duration: 8000, extraClasses: ["snackbar-error"]})
+    this.checkCycles()
+  }
+
+  checkCycles() {
+    var self = this
+    if (!this.model) return
+    this.model.getTask().checkCycles().catch((cycle) => {
+      let cycleSnack = self.snackBar.open("The is an cycle in your task!", "View", {duration: 8000, extraClasses: ["snackbar-error"]})
+      cycleSnack.onAction().subscribe(() => self.openCycleDialog(self, self.task, cycle));
     })
+  }
+
+  openCycleDialog(self: this, task: Task, cycle: Unit[]) {
+    let dialogRef = self.dialog.open(CycleDialog, {
+      width: '750px',
+      data: {
+        task: task,
+        cycle: cycle
+      }
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      console.log("HEEEEEY!")
+      self.checkCycles()
+    });
   }
 
   changeSource(source: string) {
