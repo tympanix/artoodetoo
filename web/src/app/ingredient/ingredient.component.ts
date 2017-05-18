@@ -49,31 +49,13 @@ export class IngredientComponent implements OnInit {
   checkCycles() {
     var self = this
     if (!this.model) return
-    this.model.getTask().checkCycles().catch((cycle) => {
-      let cycleSnack = self.snackBar.open("The is an cycle in your task!", "View", {duration: 8000, extraClasses: ["snackbar-error"]})
-      cycleSnack.onAction().subscribe(() => self.openCycleDialog(self, self.task, cycle));
-    })
-  }
-
-  openCycleDialog(self: this, task: Task, cycle: Unit[]) {
-    let dialogRef = self.dialog.open(CycleDialog, {
-      width: '750px',
-      data: {
-        task: task,
-        cycle: cycle
-      }
-    });
-    dialogRef.afterClosed().subscribe(() => {
-      console.log("HEEEEEY!")
-      self.checkCycles()
-    });
+    CycleDialog.check(this.dialog, this.snackBar, this.model.getTask())
   }
 
   changeSource(source: string) {
     let src = source ? source : this.model.source
     let found = this.sources.find(u => u.name == src)
     if (found) this.source = found
-    console.log("Changed", this.source)
   }
 
   typeToNumber() {

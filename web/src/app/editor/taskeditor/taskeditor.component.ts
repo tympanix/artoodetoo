@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router'
 import { Task, Unit } from '../../model'
 import { ApiService } from '../../api.service'
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
-import { UnitDialog, TaskDialog, EventDialog } from '../../dialogs'
+import { UnitDialog, TaskDialog, EventDialog, CycleDialog } from '../../dialogs'
 
 @Component({
   selector: 'taskeditor',
@@ -14,7 +15,7 @@ export class TaskeditorComponent implements OnInit {
 
   events: Unit[]
 
-  constructor(private api: ApiService, public dialog: MdDialog, private snackBar: MdSnackBar) { }
+  constructor(private api: ApiService, public dialog: MdDialog, private snackBar: MdSnackBar, private router: Router) { }
 
   ngOnInit() {
     this.api.events.subscribe(e => this.events = e)
@@ -42,11 +43,14 @@ export class TaskeditorComponent implements OnInit {
   }
 
   submitTask() {
-    if (this.task.isSaved) {
-      this.updateTask()
-    } else {
-      this.createTask()
-    }
+    CycleDialog.check(this.dialog, this.snackBar, this.task).then(() => {
+      if (this.task.isSaved) {
+        this.updateTask()
+      } else {
+        this.createTask()
+      }
+      this.router.navigateByUrl("/dashboard/")
+    })
   }
 
   openUnitDialog() {

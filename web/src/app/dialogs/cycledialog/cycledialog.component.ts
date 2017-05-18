@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MD_DIALOG_DATA, MdDialog, MdDialogRef } from '@angular/material';
+import { MD_DIALOG_DATA, MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import { Response, Headers } from '@angular/http'
 import { Unit, Task } from '../../model'
 
@@ -27,4 +27,24 @@ export class CycleDialog implements OnInit {
     this.dialogRef.close(false)
   }
 
+  static check(dialog: MdDialog, snack: MdSnackBar, task: Task): Promise<void> {
+    var self = this
+    if (!task) return
+    return task.checkCycles().catch((cycle) => {
+      let cycleSnack = snack.open("The is an cycle in your task!", "View", {duration: 8000, extraClasses: ["snackbar-error"]})
+      cycleSnack.onAction().subscribe(() => CycleDialog.open(dialog, snack, task, cycle));
+      return Promise.reject(cycle)
+    })
+  }
+
+  static open(dialog: MdDialog, snack: MdSnackBar, task: Task, cycle: Unit[]) {
+    let dialogRef = dialog.open(CycleDialog, {
+      width: '750px',
+      data: {
+        task: task,
+        cycle: cycle
+      }
+    })
+    dialogRef.afterClosed().subscribe(() => CycleDialog.check(dialog, snack, task));
+  }
 }

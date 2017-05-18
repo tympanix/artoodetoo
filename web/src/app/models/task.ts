@@ -96,7 +96,7 @@ export class Task implements ITask, Model {
       var reachable: Unit[] = []
       unit.input.forEach(i => {
         i.recipe.forEach(r => {
-          if (!r.reference) return
+          if (!r.isVariable() || !r.reference) return
           var other: Unit = r.reference.unit
           other.parent = unit
           reachable.push(other)
