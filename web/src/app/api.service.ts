@@ -133,19 +133,6 @@ export class ApiService {
     return this.events
   }
 
-  runTask(task: Task): Observable<boolean> {
-    return this.http.post("/api/tasks/" + task.name, {})
-      .map(res => res.ok)
-      .do(bool => {
-          this.snackBar.open(task.name + " has been deployed!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
-      })
-      .catch(this.handleError(this))
-  }
-
-  stopTask(task: Task){
-    // To be filled
-  }
-
   updateTask(task: Task): Observable<boolean> {
     return this.http.put("/api/tasks", task.toJson(), this.options)
       .map(res => res.ok)

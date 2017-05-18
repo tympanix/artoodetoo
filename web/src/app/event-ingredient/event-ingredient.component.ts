@@ -37,16 +37,19 @@ export class EventIngredientComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fb.getLoginStatus()
-      .then((status:LoginStatus) => {
-        // Set login status
-        this.loginStatus = status.status
+    // if(this.input.type == 'facebook.Token'){
+    //   this.fb.getLoginStatus()
+    //     .then((status:LoginStatus) => {
+    //       // Set login status
+    //       this.loginStatus = status.status
+    //
+    //       // set ingr if connected
+    //       if (status.status =='connected') {
+    //         this.ingr.value = status.authResponse.accessToken
+    //       }
+    //     })
+    // }
 
-        // set ingr if connected
-        if (status.status =='connected') {
-          this.ingr.value = status.authResponse.accessToken
-        }
-      })
   }
 
   unitToNumber() {
@@ -66,8 +69,9 @@ export class EventIngredientComponent implements OnInit {
 
     this.fb.login()
       .then((response: LoginResponse) => {
-
+        this.loginStatus = response.status
         if(response.status == 'connected'){
+
           this.ingr.value = response.authResponse.accessToken
         } else{
           return new Error();
