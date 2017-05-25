@@ -4,7 +4,6 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/Tympanix/automato/auth"
 	"github.com/gorilla/mux"
 )
 
@@ -12,10 +11,8 @@ const (
 	queryTask = "task"
 )
 
-var api = mux.NewRouter()
-
 // API is the server mux for handling API calls
-var API = auth.Authenticate(api)
+var API = mux.NewRouter()
 
 // SetJSON sets the encoding in the http response to json
 func SetJSON(w http.ResponseWriter) {

@@ -1,4 +1,4 @@
-package auth
+package api
 
 import (
 	"encoding/json"
@@ -8,22 +8,18 @@ import (
 
 	"github.com/Tympanix/automato/config"
 	jwt "github.com/dgrijalva/jwt-go"
-	"github.com/gorilla/mux"
 )
 
-// AUTH is a router for the authentication endpoints
-var AUTH = mux.NewRouter()
-
 // Authenticate is a middleware used to authentication requests
-func Authenticate(next http.Handler) http.Handler {
+func auth(fn func(w http.ResponseWriter, r *http.Request)) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Handle Authentication")
-		next.ServeHTTP(w, r)
+		fn(w, r)
 	})
 }
 
 func init() {
-	AUTH.HandleFunc("/login", login).Methods("POST")
+	API.HandleFunc("/login", login).Methods("POST")
 }
 
 func login(w http.ResponseWriter, r *http.Request) {

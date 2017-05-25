@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	api.HandleFunc("/all", all).Methods("GET")
+	API.Handle("/all", auth(all)).Methods("GET")
 }
 
 // All is a struct which contains all information in the application

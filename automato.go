@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	"github.com/Tympanix/automato/api"
-	"github.com/Tympanix/automato/auth"
 	"github.com/Tympanix/automato/config"
 	"github.com/Tympanix/automato/storage"
 
@@ -29,7 +28,6 @@ func main() {
 
 	// Set up api handler
 	http.Handle(apiroot+"/", http.StripPrefix(apiroot, api.API))
-	http.Handle(authroot+"/", http.StripPrefix(authroot, auth.AUTH))
 
 	// Set up file server for static files
 	fs := http.FileServer(http.Dir("web/dist"))
