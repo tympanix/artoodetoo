@@ -19,9 +19,13 @@ export class ApiService {
   public events: ReplaySubject<Event[]> = new ReplaySubject<Event[]>(1)
 
   private options: RequestOptions
+  private token: string
 
   constructor(private http: Http, private snackBar: MdSnackBar, public dialog: MdDialog) {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let headers = new Headers({
+      'Content-Type': 'application/json',
+      'Authentication': this.token
+    });
     this.options = new RequestOptions({ headers: headers });
 
     // this.getTasks()
@@ -79,6 +83,13 @@ export class ApiService {
       snakcRef.onAction().subscribe(self.openErrorDialog(self, error));
       return Promise.reject(error.message || error);
     }
+  }
+
+  login(password: string): Observable<string> {
+    return this.http.post("auth/login", {"password": password}, this.options)
+      .map(this.checkSuccess(this))
+      .map((resp: Response) => resp.text())
+      .do((token: string) => this.token = token)
   }
 
   createTask(task: Task): Observable<boolean> {

@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdministrationComponent } from '../administration/administration.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { StatisticsComponent } from '../statistics/statistics.component';
+import { LoginComponent } from '../login/login.component';
 
 import { TaskResolver } from '../resolvers/task-resolver.service';
 import { EventResolver } from '../resolvers/event-resolver.service';
@@ -12,6 +13,7 @@ import { EventResolver } from '../resolvers/event-resolver.service';
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
   { path: 'dashboard', component: DashboardComponent},
+  { path: 'login', component: LoginComponent},
   { path: 'administration', component: AdministrationComponent},
   { path: 'administration/task', component: AdministrationComponent},
   { path: 'administration/event', component: AdministrationComponent},

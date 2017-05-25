@@ -29,7 +29,8 @@ import { EventeditorComponent } from './editor/eventeditor/eventeditor.component
 import { EventDialog } from './dialogs/eventdialog/eventdialog.component';
 import { OptionDialog } from './dialogs/optiondialog/optiondialog.component';
 import { ErrorDialog } from './dialogs/errordialog/errordialog.component';
-import { CycleDialog } from './dialogs/cycledialog/cycledialog.component'
+import { CycleDialog } from './dialogs/cycledialog/cycledialog.component';
+import { LoginComponent } from './login/login.component'
 
 @NgModule({
   imports: [
@@ -58,7 +59,8 @@ import { CycleDialog } from './dialogs/cycledialog/cycledialog.component'
     EventDialog,
     OptionDialog,
     ErrorDialog,
-    CycleDialog
+    CycleDialog,
+    LoginComponent
   ],
   entryComponents: [
     UnitDialog,
