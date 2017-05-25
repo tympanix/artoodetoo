@@ -86,7 +86,7 @@ export class ApiService {
   }
 
   login(password: string): Observable<string> {
-    return this.http.post("auth/login", {"password": password}, this.options)
+    return this.http.post("api/login", {"password": password}, this.options)
       .map(this.checkSuccess(this))
       .map((resp: Response) => resp.text())
       .do((token: string) => this.token = token)
