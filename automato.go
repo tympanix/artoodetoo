@@ -6,6 +6,8 @@ import (
 	"strconv"
 
 	"github.com/Tympanix/automato/api"
+	"github.com/Tympanix/automato/auth"
+	"github.com/Tympanix/automato/config"
 	"github.com/Tympanix/automato/storage"
 
 	_ "github.com/Tympanix/automato/example"
@@ -14,28 +16,32 @@ import (
 )
 
 const (
-	apiroot = "/api"
-	port    = 2800
+	apiroot  = "/api"
+	authroot = "/auth"
 )
 
 func main() {
+	// Parse application configuration
+	config.Parse()
+
 	// Set up storage driver
 	initStorage()
 
 	// Set up api handler
 	http.Handle(apiroot+"/", http.StripPrefix(apiroot, api.API))
+	http.Handle(authroot+"/", http.StripPrefix(authroot, auth.AUTH))
 
 	// Set up file server for static files
 	fs := http.FileServer(http.Dir("web/dist"))
 	http.Handle("/", fs)
 
 	// Serve the web server
-	log.Printf("Listening on port %d\n", port)
+	log.Printf("Listening on port %d\n", config.Port)
 	log.Fatal(http.ListenAndServe(addr(), nil))
 }
 
 func addr() string {
-	return ":" + strconv.Itoa(port)
+	return ":" + strconv.Itoa(config.Port)
 }
 
 func initStorage() {

@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	API.HandleFunc("/units", listUnits).Methods("GET")
+	api.HandleFunc("/units", listUnits).Methods("GET")
 }
 
 func listUnits(w http.ResponseWriter, r *http.Request) {

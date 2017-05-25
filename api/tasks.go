@@ -12,11 +12,11 @@ import (
 )
 
 func init() {
-	API.HandleFunc("/tasks", listTasks).Methods("GET")
-	API.HandleFunc("/tasks", newTask).Methods("POST")
-	API.HandleFunc("/tasks", updateTask).Methods("PUT")
-	API.HandleFunc("/tasks/{task}", deleteTask).Methods("DELETE")
-	API.HandleFunc("/tasks/{task}", runTask).Methods("POST")
+	api.HandleFunc("/tasks", listTasks).Methods("GET")
+	api.HandleFunc("/tasks", newTask).Methods("POST")
+	api.HandleFunc("/tasks", updateTask).Methods("PUT")
+	api.HandleFunc("/tasks/{task}", deleteTask).Methods("DELETE")
+	api.HandleFunc("/tasks/{task}", runTask).Methods("POST")
 }
 
 func newTask(w http.ResponseWriter, r *http.Request) {

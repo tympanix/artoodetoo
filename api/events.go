@@ -10,9 +10,9 @@ import (
 )
 
 func init() {
-	API.HandleFunc("/all_events", listEventTemplates).Methods("GET")
-	API.HandleFunc("/events", listEvents).Methods("GET")
-	API.HandleFunc("/events", newEvent).Methods("POST")
+	api.HandleFunc("/all_events", listEventTemplates).Methods("GET")
+	api.HandleFunc("/events", listEvents).Methods("GET")
+	api.HandleFunc("/events", newEvent).Methods("POST")
 }
 
 func listEventTemplates(w http.ResponseWriter, r *http.Request) {
