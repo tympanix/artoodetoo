@@ -43,7 +43,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"exp": time.Now().Unix(),
+		"exp": time.Now().Add(24 * time.Hour).Unix(),
 	})
 
 	// Sign and get the complete encoded token as a string using the secret
