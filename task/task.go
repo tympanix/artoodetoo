@@ -81,16 +81,7 @@ func (t *Task) Run(ts types.TupleSpace) error {
 	waitgroup.Add(len(t.Actions))
 
 	for _, action := range t.Actions {
-		go func(action *unit.Unit) {
-			if err := action.AssignInput(ts); err != nil {
-				log.Println(err)
-			}
-			action.Execute()
-			if err := action.StoreOutput(ts); err != nil {
-				log.Println(err)
-			}
-			waitgroup.Done()
-		}(action)
+		action.RunAsync(waitgroup, ts)
 	}
 
 	waitgroup.Wait()

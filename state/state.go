@@ -17,6 +17,14 @@ type Tuple []reflect.Value
 type State struct {
 	Tuples map[interface{}][]Tuple
 	cond   *sync.Cond
+	closed bool
+}
+
+// Closed is an error which is thrown upon closing the tuple space
+type Closed struct{}
+
+func (c *Closed) Error() string {
+	return "Tuple space has been closed"
 }
 
 // New returns a new state
@@ -24,6 +32,7 @@ func New() *State {
 	return &State{
 		Tuples: make(map[interface{}][]Tuple),
 		cond:   sync.NewCond(new(sync.Mutex)),
+		closed: false,
 	}
 }
 
@@ -38,6 +47,14 @@ func (s *State) String() string {
 	return out
 }
 
+// Close closes the tuple space and releases all waiting goroutines
+func (s *State) Close() {
+	s.cond.L.Lock()
+	defer s.cond.L.Unlock()
+	s.closed = true
+	s.cond.Broadcast()
+}
+
 // Get blocks until the tuple with the corrosponding key is available
 func (s *State) Get(key interface{}, values ...interface{}) error {
 	//log.Printf("Getting value %s %s\n", key, values)
@@ -47,6 +64,9 @@ func (s *State) Get(key interface{}, values ...interface{}) error {
 	template := createTuple(values)
 
 	for {
+		if s.closed {
+			return new(Closed)
+		}
 		ok, err := s.get(key, template)
 		if err != nil {
 			return err
@@ -190,6 +210,9 @@ func (s *State) Query(key interface{}, values ...interface{}) error {
 	template := createTuple(values)
 
 	for {
+		if s.closed {
+			return new(Closed)
+		}
 		ok, err := s.query(key, template)
 		if err != nil {
 			return err

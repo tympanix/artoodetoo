@@ -31,6 +31,7 @@ type IO interface {
 
 // TupleSpace is used to store tuples per the LINDA communication language
 type TupleSpace interface {
+	Close()
 	Get(interface{}, ...interface{}) error
 	Put(interface{}, ...interface{}) error
 	Query(interface{}, ...interface{}) error

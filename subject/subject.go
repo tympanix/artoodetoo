@@ -189,16 +189,18 @@ func (s *Subject) Validate() error {
 }
 
 // AssignInput finds all ingredients in the state given and assigns it as input
-func (s *Subject) AssignInput(ts types.TupleSpace) (err error) {
+func (s *Subject) AssignInput(ts types.TupleSpace) error {
 
 	for _, input := range s.In {
 		ingredient := input.Recipe[0]
 		if ingredient.IsStatic() {
 			ts.Put(input.Key(s.Name), ingredient.Value)
-			ts.Query(input.Key(s.Name), input.Value)
+			if err := ts.Query(input.Key(s.Name), input.Value); err != nil {
+				return err
+			}
 		} else {
-			if err = ts.Query(ingredient.Key(), input.Value); err != nil {
-				return
+			if err := ts.Query(ingredient.Key(), input.Value); err != nil {
+				return err
 			}
 		}
 	}

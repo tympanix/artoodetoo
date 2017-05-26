@@ -4,8 +4,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
+	"sync"
 
+	"github.com/Tympanix/automato/state"
 	"github.com/Tympanix/automato/subject"
+	"github.com/Tympanix/automato/types"
 )
 
 const (
@@ -58,6 +62,25 @@ func (c *Unit) Execute() {
 // Action returns the underlying action represented by the unit
 func (c *Unit) Action() *Action {
 	return &c.action
+}
+
+func (c *Unit) RunAsync(waitgroup *sync.WaitGroup, ts types.TupleSpace) {
+	go func() {
+		defer waitgroup.Done()
+		if err := c.AssignInput(ts); err != nil {
+			if _, ok := err.(*state.Closed); ok {
+				log.Printf("Exiting action %s", c.Name)
+			} else {
+				log.Println(err)
+				ts.Close()
+			}
+			return
+		}
+		c.Execute()
+		if err := c.StoreOutput(ts); err != nil {
+			log.Println(err)
+		}
+	}()
 }
 
 // UnmarshalJSON is used to transform json data into a units
