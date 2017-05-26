@@ -117,7 +117,7 @@ export class ApiService {
   createTask(task: Task): Observable<boolean> {
     return this.http.post("api/tasks", task.toJson(), this.options)
       .map(this.checkSuccess(this))
-      .do(() => this.getAll())
+      .do(() => this.getTasks())
       .do(() => this.success(this, task.name + " has been created!"))
       .do(() => task.isSaved = true)
       .catch(this.handleError(this))
@@ -191,6 +191,7 @@ export class ApiService {
   saveEvent(event: Unit): Observable<boolean>{
     return this.http.post("api/events", event.toJson(), this.options)
       .map(res => res.ok)
+      .do(() => this.getEvents())
       .do(bool => this.success(this, event.name + " has been created!"))
       .catch(this.handleError(this))
   }
