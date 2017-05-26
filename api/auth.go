@@ -2,7 +2,7 @@ package api
 
 import (
 	"encoding/json"
-	"log"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -13,9 +13,25 @@ import (
 // Authenticate is a middleware used to authentication requests
 func auth(fn func(w http.ResponseWriter, r *http.Request)) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Println("Handle Authentication")
+
+		authentication := r.Header.Get("Authentication")
+
+		token, err := jwt.Parse(authentication, getSecret)
+
+		if err != nil || !token.Valid {
+			http.Error(w, "Wrong token", http.StatusUnauthorized)
+			return
+		}
+
 		fn(w, r)
 	})
+}
+
+func getSecret(token *jwt.Token) (interface{}, error) {
+	if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+		return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+	}
+	return []byte(config.Secret), nil
 }
 
 func init() {
@@ -38,9 +54,11 @@ func login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"exp": time.Now().Add(24 * time.Hour).Unix(),
-	})
+	claims := &jwt.StandardClaims{
+		ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	// Sign and get the complete encoded token as a string using the secret
 	tokenString, err := token.SignedString([]byte(config.Secret))

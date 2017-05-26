@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Http, Response, Headers, RequestOptions } from '@angular/http'
 
 import { ReplaySubject } from 'rxjs/ReplaySubject';
@@ -21,27 +22,27 @@ export class ApiService {
   private options: RequestOptions
   private token: string
 
-  constructor(private http: Http, private snackBar: MdSnackBar, public dialog: MdDialog) {
+  constructor(private http: Http, private router: Router, private snackBar: MdSnackBar, public dialog: MdDialog) {
+    this.createHeaders()
+    this.getAll()
+  }
+
+  private createHeaders() {
     let headers = new Headers({
       'Content-Type': 'application/json',
       'Authentication': this.token
     });
     this.options = new RequestOptions({ headers: headers });
+  }
 
-    // this.getTasks()
-    // this.getUnits()
-    // this.getTemplateEvents()
-    // this.getEvents()
-
-    this.getAll()
+  private setToken(token: string) {
+    this.token = token
+    this.createHeaders()
   }
 
   private extractData<T>(self: this): (res: Response) => T {
     return function(res: Response): T {
-      if (res.status != 200) {
-        //self.snackBar.open("Error", res.text(), {duration: 4000})
-        throw new Error(res.text())
-      }
+      self.checkSuccess(self)(res)
       let body:T = res.json();
       if (body) {
         return body
@@ -77,6 +78,9 @@ export class ApiService {
       if (error instanceof String) {
         message = error
       } else if (error instanceof Response) {
+        if (error.status == 401) {
+          self.router.navigateByUrl("/login")
+        }
         message = error.text()
       }
       var snakcRef = self.snackBar.open(message as string, "Debug", {duration: 4000, extraClasses: ["snackbar-error"]})
@@ -89,7 +93,8 @@ export class ApiService {
     return this.http.post("api/login", {"password": password}, this.options)
       .map(this.checkSuccess(this))
       .map((resp: Response) => resp.text())
-      .do((token: string) => this.token = token)
+      .do((token: string) => this.setToken(token))
+      .do(() => this.snackBar.open("Login successful", "", {duration: 4000, extraClasses: ["snackbar-success"]}))
   }
 
   createTask(task: Task): Observable<boolean> {
@@ -104,7 +109,7 @@ export class ApiService {
   }
 
   getTasks(): Observable<Task[]> {
-    this.http.get("/api/tasks")
+    this.http.get("/api/tasks", this.options)
       .map(this.extractData<Task[]>(this))
       .map(json => json.map(data => Task.fromJson(data)))
       .catch(this.handleError(this))
@@ -113,7 +118,7 @@ export class ApiService {
   }
 
   getTemplateEvents(): Observable<Unit[]>{
-    this.http.get("/api/all_events")
+    this.http.get("/api/all_events", this.options)
       .map(this.extractData<Unit[]>(this))
       .map(json => json.map(data => Unit.fromJson(data)))
       .catch(this.handleError(this))
@@ -122,7 +127,7 @@ export class ApiService {
   }
 
   getAll() {
-    return this.http.get("/api/all")
+    return this.http.get("/api/all", this.options)
       .map(this.extractData<Data>(this))
       .map(json => Data.fromJson(json))
       .catch(this.handleError(this))
@@ -135,7 +140,7 @@ export class ApiService {
   }
 
   getEvents(): Observable<Unit[]>{
-    this.http.get("/api/events")
+    this.http.get("/api/events", this.options)
       .map(this.extractData<Unit[]>(this))
       .map(json => json.map(data => Unit.fromJson(data)))
       .catch(this.handleError(this))
@@ -154,7 +159,7 @@ export class ApiService {
   }
 
   getUnits(): Observable<Unit[]> {
-    this.http.get("/api/units")
+    this.http.get("/api/units", this.options)
       .map(this.extractData<Unit[]>(this))
       .map(json => json.map(data => Unit.fromJson(data)))
       .catch(this.handleError(this))
@@ -163,7 +168,7 @@ export class ApiService {
   }
 
   deleteTask(task: Task): Observable<boolean> {
-    return this.http.delete("api/tasks/" + task.uuid, {})
+    return this.http.delete("api/tasks/" + task.uuid, this.options)
       .map(this.checkSuccess(this))
       .do(bool => {
           this.snackBar.open(task.name + " has been deleted!", "", {duration: 4000, extraClasses: ["snackbar-success"]})

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -9,15 +10,28 @@ import { ApiService } from '../api.service';
 export class LoginComponent implements OnInit {
 
   private password: string
+  private error: string
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService, private router: Router) { }
 
   ngOnInit() {
   }
 
+  private loginSuccess() {
+    this.api.getAll()
+    this.router.navigateByUrl('/')
+  }
+
+  private loginError() {
+    this.error = "Invalid credentials"
+  }
+
   login() {
-    this.api.login(this.password).subscribe()
-    console.log("LOGIN")
+    let self = this
+    this.api.login(this.password).subscribe(
+      () => self.loginSuccess(),
+      () => self.loginError()
+    )
   }
 
 }
