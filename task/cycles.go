@@ -2,19 +2,37 @@ package task
 
 import (
 	"errors"
-	"fmt"
+
+	"github.com/Tympanix/automato/unit"
 )
 
-func (t *Task) reduceEdgeCount(m map[string]int, key string) error {
-	for _, action := range t.Actions {
-		for _, input := range action.In {
-			for _, ingr := range input.Recipe {
-				if ingr.IsVariable() && ingr.Source == key {
-					n, ok := m[action.Name]
-					if !ok {
-						return fmt.Errorf("Invalid reference to %s", action.Name)
+type dag struct {
+	task  *Task
+	edges map[*unit.Unit]int
+}
+
+func (c *dag) PutAction(action *unit.Unit) {
+	c.edges[action] = action.NumVariables()
+}
+
+func (c *dag) Next() (*unit.Unit, error) {
+	for unit, value := range c.edges {
+		if value <= 0 {
+			delete(c.edges, unit)
+			return unit, nil
+		}
+	}
+	return nil, errors.New("Task has cyclic dependency")
+}
+
+func (c *dag) ReduceEdges(name string) error {
+	for key, _ := range c.edges {
+		for _, in := range key.In {
+			for _, r := range in.Recipe {
+				if r.IsVariable() {
+					if r.Source == name {
+						c.edges[key] = c.edges[key] - 1
 					}
-					m[action.Name] = n - 1
 				}
 			}
 		}
@@ -23,30 +41,24 @@ func (t *Task) reduceEdgeCount(m map[string]int, key string) error {
 }
 
 func (t *Task) detectCycles() error {
-	m := make(map[string]int)
-
-	if err := t.Event.Validate(); err != nil {
-		return err
+	dag := &dag{
+		task:  t,
+		edges: make(map[*unit.Unit]int),
 	}
-
-	m[t.Event.Name] = 0
 
 	for _, action := range t.Actions {
-		m[action.Name] = action.NumVariables()
+		dag.PutAction(action)
 	}
 
-CYCLE:
-	for len(m) > 0 {
-		for key, val := range m {
-			if val <= 0 {
-				delete(m, key)
-				if err := t.reduceEdgeCount(m, key); err != nil {
-					return err
-				}
-				continue CYCLE
-			}
-			return errors.New("Task has cycles")
+	dag.ReduceEdges(t.Event.Name)
+
+	for len(dag.edges) > 0 {
+		next, err := dag.Next()
+		if err != nil {
+			return err
 		}
+		dag.ReduceEdges(next.Name)
 	}
+
 	return nil
 }
