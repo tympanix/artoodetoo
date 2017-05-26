@@ -13,46 +13,32 @@ import (
 )
 
 // Trigger is an interfaces which describes the implementations needed for an event
-type Trigger interface {
+type Core interface {
 	types.Triggerable
+	Bind(e types.Eventable)
 	Describe() string
 }
 
 // Event is a type which is used to trigger tasks
 type Event struct {
 	subject.Subject
-	trigger   Trigger
+	Core
 	Observers []types.Runnable `json:"-"`
 	UUID      string           `json:"uuid"`
 	Desc      string           `json:"description"`
 }
 
 // New takes an event and applies its type. The same event is returned.
-func New(trigger Trigger) *Event {
-	return &Event{
+func New(trigger Core) *Event {
+	e := &Event{
 		Subject:   *subject.New(trigger, new(eventResolver)),
-		trigger:   trigger,
+		Core:      trigger,
 		Observers: make([]types.Runnable, 0),
 		UUID:      generate.NewUUID(12),
 		Desc:      trigger.Describe(),
 	}
-}
-
-// Listen starts listening for events
-func (e *Event) Listen() error {
-	go func() {
-		if err := e.trigger.Listen(); err != nil {
-			log.Println(err)
-		}
-	}()
-	for goon := range e.Trigger() {
-		if goon {
-			e.Fire()
-		} else {
-			break
-		}
-	}
-	return nil
+	e.Bind(e)
+	return e
 }
 
 // ID returns the unique id of the event
@@ -61,8 +47,15 @@ func (e *Event) ID() string {
 }
 
 // Trigger returns the trigger for the event
-func (e *Event) Trigger() chan bool {
-	return e.trigger.Trigger()
+func (e *Event) Trigger() {
+	log.Printf("Triggered event %s\n", e.Type())
+	for _, task := range e.Observers {
+		state := state.New()
+		e.StoreOutput(state)
+		if err := task.Run(state); err != nil {
+			log.Println(err)
+		}
+	}
 }
 
 // Validate checks certain safety proper
@@ -92,11 +85,12 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	newTrigger, ok := e.GetSubject().(Trigger)
+	newTrigger, ok := e.GetSubject().(Core)
 	if !ok {
 		return fmt.Errorf("Internal error while parsing event")
 	}
-	e.trigger = newTrigger
+	e.Core = newTrigger
+	e.Bind(e)
 
 	if err := e.Validate(); err != nil {
 		return err
@@ -136,18 +130,6 @@ func (e *Event) findObserverIndex(task types.Runnable) (int, error) {
 
 func (e *Event) removeObserver(index int) {
 	e.Observers = append(e.Observers[:index], e.Observers[index+1:]...)
-}
-
-// Fire exectures all the subscribed tasks for this event
-func (e *Event) Fire() {
-	log.Printf("Triggered event %s\n", e.Type())
-	for _, task := range e.Observers {
-		state := state.New()
-		e.StoreOutput(state)
-		if err := task.Run(state); err != nil {
-			log.Println(err)
-		}
-	}
 }
 
 // Unsubscribe removes a task from this events observables

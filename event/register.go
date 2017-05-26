@@ -14,7 +14,7 @@ func init() {
 }
 
 // Register registers events as templates for the user
-func Register(trigger Trigger) {
+func Register(trigger Core) {
 	newEvent := New(trigger)
 	newEvent.UUID = ""
 	Templates[newEvent.Type()] = newEvent

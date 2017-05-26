@@ -32,7 +32,7 @@ func (c *Cron) Listen() error {
 		return errors.New("No time specefied for crontab")
 	}
 	c.Cron = cron.New()
-	if err := c.Cron.AddFunc(string(c.Time), c.Fire); err != nil {
+	if err := c.Cron.AddFunc(string(c.Time), c.Trigger); err != nil {
 		return err
 	}
 	c.Cron.Start()

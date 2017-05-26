@@ -11,5 +11,5 @@ func (e *eventResolver) ResolveSubject(typ string) (interface{}, error) {
 		return nil, fmt.Errorf("Event ”%s” is not a registered event type", typ)
 	}
 
-	return eventTemplate.trigger, nil
+	return eventTemplate.Core, nil
 }

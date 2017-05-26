@@ -3,7 +3,7 @@ package types
 // Triggerable is a type which returns a trigger and can listen on events
 type Triggerable interface {
 	Listen() error
-	Trigger() chan bool
+	Trigger()
 }
 
 // Observable is a type which you can subscribe and unsunscibe to

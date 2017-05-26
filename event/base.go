@@ -1,20 +1,14 @@
 package event
 
+import "github.com/Tympanix/automato/types"
+
 // Base is a struct used for subtyping to implement different events
 // for the application
 type Base struct {
-	trigger chan bool
+	types.Triggerable
 }
 
-// Trigger returns the trigger channel
-func (b *Base) Trigger() chan bool {
-	if b.trigger == nil {
-		b.trigger = make(chan bool)
-	}
-	return b.trigger
-}
-
-// Fire fires of the event
-func (b *Base) Fire() {
-	b.trigger <- true
+// Bind bind the trigger to the eventable
+func (b *Base) Bind(event types.Eventable) {
+	b.Triggerable = event
 }
