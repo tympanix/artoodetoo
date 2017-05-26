@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../api.service'
 
 @Component({
   selector: 'app-site-header',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SiteHeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private api: ApiService) { }
 
   ngOnInit() {
+  }
+
+  logout() {
+    this.api.logout()
   }
 
 }

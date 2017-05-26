@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
+import { MdSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginComponent implements OnInit {
   private password: string
   private error: string
 
-  constructor(private api: ApiService, private router: Router) { }
+  constructor(private api: ApiService, private router: Router, private snackBar: MdSnackBar) { }
 
   ngOnInit() {
   }
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
   }
 
   private loginError() {
+    this.snackBar.open("Invalid credentials", "", {duration: 2000, extraClasses: ["snackbar-error"]})
     this.error = "Invalid credentials"
   }
 

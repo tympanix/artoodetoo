@@ -4,7 +4,7 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http'
 
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Observable } from 'rxjs/Observable';
-import { MdSnackBar, MdDialog } from '@angular/material';
+import { MdSnackBar, MdDialog, MdSnackBarRef, SimpleSnackBar } from '@angular/material';
 
 import 'rxjs/add/operator/map'
 
@@ -23,6 +23,7 @@ export class ApiService {
   private token: string
 
   constructor(private http: Http, private router: Router, private snackBar: MdSnackBar, public dialog: MdDialog) {
+    this.token = localStorage.getItem("Token")
     this.createHeaders()
     this.getAll()
   }
@@ -37,6 +38,7 @@ export class ApiService {
 
   private setToken(token: string) {
     this.token = token
+    localStorage.setItem("Token", token)
     this.createHeaders()
   }
 
@@ -71,6 +73,14 @@ export class ApiService {
     }
   }
 
+  private success(self: this, message: string): MdSnackBarRef<SimpleSnackBar> {
+    return self.snackBar.open(message, "", {duration: 4000, extraClasses: ["snackbar-success"]})
+  }
+
+  private error(self: this, message: string): MdSnackBarRef<SimpleSnackBar> {
+    return self.snackBar.open(message, "", {duration: 4000, extraClasses: ["snackbar-error"]})
+  }
+
   private handleError(self: this) {
     return function(error: any): Promise<any> {
       console.error('An error occurred', error); // for demo purposes only
@@ -94,16 +104,21 @@ export class ApiService {
       .map(this.checkSuccess(this))
       .map((resp: Response) => resp.text())
       .do((token: string) => this.setToken(token))
-      .do(() => this.snackBar.open("Login successful", "", {duration: 4000, extraClasses: ["snackbar-success"]}))
+      .do(() => this.success(this, "Login successful" ))
+  }
+
+  logout() {
+    localStorage.removeItem("Token")
+    this.token = ""
+    this.createHeaders()
+    this.router.navigateByUrl("/login")
   }
 
   createTask(task: Task): Observable<boolean> {
     return this.http.post("api/tasks", task.toJson(), this.options)
       .map(this.checkSuccess(this))
       .do(() => this.getAll())
-      .do(() => {
-          this.snackBar.open(task.name + " has been created!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
-      })
+      .do(() => this.success(this, task.name + " has been created!"))
       .do(() => task.isSaved = true)
       .catch(this.handleError(this))
   }
@@ -152,9 +167,7 @@ export class ApiService {
   updateTask(task: Task): Observable<boolean> {
     return this.http.put("/api/tasks", task.toJson(), this.options)
       .map(res => res.ok)
-      .do(bool => {
-          this.snackBar.open(task.name + " has been updated!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
-      })
+      .do(bool => this.success(this, task.name + " has been updated!"))
       .catch(this.handleError(this))
   }
 
@@ -170,9 +183,7 @@ export class ApiService {
   deleteTask(task: Task): Observable<boolean> {
     return this.http.delete("api/tasks/" + task.uuid, this.options)
       .map(this.checkSuccess(this))
-      .do(bool => {
-          this.snackBar.open(task.name + " has been deleted!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
-      })
+      .do(bool => this.success(this, task.name + " has been deleted!"))
       .do(() => this.getAll())
       .catch(this.handleError(this))
   }
@@ -180,9 +191,7 @@ export class ApiService {
   saveEvent(event: Unit): Observable<boolean>{
     return this.http.post("api/events", event.toJson(), this.options)
       .map(res => res.ok)
-      .do(bool => {
-          this.snackBar.open(event.name + " has been created!", "", {duration: 4000, extraClasses: ["snackbar-success"]})
-      })
+      .do(bool => this.success(this, event.name + " has been created!"))
       .catch(this.handleError(this))
   }
 
