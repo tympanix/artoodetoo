@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <div class="row" *ngIf="model != undefined">
 
-    <!-- Choose variable or static input -->
-    <md-radio-group [(ngModel)]="model.type" (ngModelChange)="typeToNumber()">
-        <div class="col-lg-2">
-            <md-radio-button value=0>
-                Variable
-            </md-radio-button>
-        </div>
-        <div class="col-lg-2">
-            <md-radio-button value=1>
-                Static
-            </md-radio-button>
-        </div>
-    </md-radio-group>
+  <!-- Choose variable or static input -->
+  <md-radio-group [(ngModel)]="model.type" (ngModelChange)="typeToNumber()">
+    <div class="col-lg-2">
+      <md-radio-button value=0>
+        Variable
+      </md-radio-button>
+    </div>
+    <div class="col-lg-2">
+      <md-radio-button value=1>
+        Static
+      </md-radio-button>
+    </div>
+  </md-radio-group>
 
-    <div class="col-lg-8">
-        <span [ngSwitch]="model.type">
+  <div class="col-lg-8">
+    <span [ngSwitch]="model.type">
             <!-- Define your variable input -->
             <template ngSwitchCase="0">
               <div class="select-container">
@@ -26,6 +26,9 @@
                 <md-select placeholder="Variable" [(ngModel)]="model.reference" (change)="changeIngredientReference($event)">
                     <md-option *ngFor="let output of source.output" [value]="output">{{ output.name }}</md-option>
                 </md-select>
+                <a class="ingredient-warning" *ngIf="warning" mdTooltip="{{warning.error}}" mdTooltipPosition="above">
+                        <i class="material-icons">warning</i>
+                </a>
               </div>
             </template>
 
@@ -53,9 +56,9 @@
 
                     <template ngSwitchDefault>Unknown input</template>
                 </span>
-            </template>
+    </template>
 
-        </span>
-    </div>
+    </span>
+  </div>
 
 </div>

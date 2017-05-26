@@ -12,7 +12,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdministrationComponent } from './administration/administration.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 
-import { ApiService }           from './api.service';
+import { ApiService } from './api.service';
+import { ErrorService } from './error.service'
 import { UnitComponent } from './unit/unit.component';
 
 import { TaskResolver } from './resolvers/task-resolver.service';
@@ -71,7 +72,7 @@ import { LoginComponent } from './login/login.component'
     ErrorDialog,
     CycleDialog
   ],
-  providers: [ApiService, TaskResolver],
+  providers: [ApiService, TaskResolver, ErrorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

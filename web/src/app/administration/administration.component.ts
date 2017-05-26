@@ -6,6 +6,9 @@ import { MdSnackBar } from '@angular/material';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { UnitDialog, TaskDialog, EventTemplateDialog } from '../dialogs';
 
+import { ErrorService } from '../error.service'
+import { SourceWarning, EditorError } from '../model'
+
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from "lodash";
 
@@ -29,7 +32,9 @@ export class AdministrationComponent implements OnInit {
   // Event selection
   eventType: number
 
-  constructor(private api: ApiService, private route: ActivatedRoute, private router: Router, public dialog: MdDialog, private snackBar: MdSnackBar) {
+  warnings: EditorError[] = []
+
+  constructor(private api: ApiService, private route: ActivatedRoute, private errhub: ErrorService) {
     api.units.subscribe((units) => this.units = units)
     api.tasks.subscribe((tasks) => this.tasks = tasks)
     api.events.subscribe((events) => this.events = events)
@@ -39,6 +44,10 @@ export class AdministrationComponent implements OnInit {
     this.taskActive = _.last(route.snapshot.url).path == 'task'
     this.editorState =  this.taskActive || this.eventActive
 
+    this.errhub.errors
+      .filter((e) => e instanceof EditorError)
+      .map((e) => e as EditorError)
+      .subscribe((e) => this.warnings.push(e))
   }
 
   ngOnInit() {

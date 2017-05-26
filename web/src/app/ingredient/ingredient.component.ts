@@ -3,6 +3,8 @@ import { Task, Unit, Ingredient, Input as UnitInput, Output as UnitOutput } from
 import { ApiService } from '../api.service'
 import { MdSnackBar, MdDialog } from '@angular/material';
 import { CycleDialog } from '../dialogs'
+import { SourceWarning } from '../model'
+import { ErrorService } from '../error.service'
 
 @Component({
   selector: 'ingredient',
@@ -20,7 +22,9 @@ export class IngredientComponent implements OnInit {
   source: Unit = new Unit()
   reference: UnitOutput
 
-  constructor(private api: ApiService, private snackBar: MdSnackBar, public dialog: MdDialog) { }
+  warning: SourceWarning
+
+  constructor(private api: ApiService, private errhub: ErrorService, private snackBar: MdSnackBar, public dialog: MdDialog) { }
 
   ngOnInit() {
     this.input = this.model.input
@@ -29,6 +33,11 @@ export class IngredientComponent implements OnInit {
 
     this.task.units.subscribe(units => this.sources = this.filterUnits(units))
     this.changeSource(this.model.source)
+
+    this.errhub.errors
+      .filter(e => e instanceof SourceWarning)
+      .map(w => w as SourceWarning)
+      .do(w => this.warning = w)
   }
 
   private filterUnits(units: Unit[]): Unit[] {
@@ -44,6 +53,13 @@ export class IngredientComponent implements OnInit {
   changeIngredientReference(event) {
     this.model.setVariable(event.value)
     this.checkCycles()
+
+    if (!event.value.assignableTo(this.input)) {
+      this.warning = new SourceWarning(this.input, event.value)
+      this.errhub.push(this.warning)
+    } else {
+      this.warning = null
+    }
   }
 
   checkCycles() {

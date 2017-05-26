@@ -3,6 +3,10 @@ import { Ingredient, IIngredient } from './ingredient'
 import { Unit } from './unit'
 import { Task } from './task'
 
+function hasPrefix(prefix: string, ...str: string[]) {
+  return str.every((s) => s.startsWith(prefix))
+}
+
 export class IO {
   name: string
   type: string
@@ -12,6 +16,20 @@ export class IO {
 
   bindToUnit(unit: Unit) {
     this.unit = unit
+  }
+
+  assignableTo(other: IO): boolean {
+    if (this.type == other.type) {
+      return true;
+    } else if (this.type == "interface{}") {
+      return true;
+    } else if (hasPrefix("int", this.type, other.type)) {
+      return true;
+    } else if (hasPrefix("float", this.type, other.type)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   getTask(): Task {

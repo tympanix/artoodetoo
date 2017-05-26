@@ -56,6 +56,10 @@ a:hover{
   background-color: $brand-danger !important;
 }
 
+.snackbar-warning {
+  background-color: $brand-warning !important;
+}
+
 hr{
   margin: 10px 0;
   border-color: $blue-dark;
@@ -75,4 +79,12 @@ hr{
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.ingredient-warning {
+  padding-left: 1rem;
+
+  i {
+    font-size: 22px !important;
+  }
 }
