@@ -86,7 +86,8 @@
 
               <!-- For each input field  -->
               <div class="col-lg-10" *ngFor="let ingr of input.recipe">
-                <p class="ingr-value">{{ingr.value}}</p>
+                <p *ngIf="input.type != 'facebook.Token'" class="ingr-value">{{ingr.value}}</p>
+                <p *ngIf="input.type == 'facebook.Token'" class="ingr-value">Valid</p>
               </div>
 
             </div>

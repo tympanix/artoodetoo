@@ -21,12 +21,15 @@ export class EventIngredientComponent implements OnInit {
   // Facebook variables
   facebookToken: string
   loginStatus: string
+  options: LoginOptions
+
+  // login with options
 
   constructor(private fb: FacebookService) {
     this.minute = [0,5,10,15,20,25,30,35,40,45,50,55]
     this.hour = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
 
-    // Hardcore to static type
+    // Hardcode to static type
     let initParams: InitParams = {
       appId: '1890556247880818',
       xfbml: true,
@@ -34,22 +37,16 @@ export class EventIngredientComponent implements OnInit {
     }
 
     fb.init(initParams)
+
+    this.options = {
+      scope: 'public_profile,user_friends,email,pages_show_list',
+      return_scopes: true,
+      enable_profile_selector: true
+    };
+
   }
 
   ngOnInit() {
-    // if(this.input.type == 'facebook.Token'){
-    //   this.fb.getLoginStatus()
-    //     .then((status:LoginStatus) => {
-    //       // Set login status
-    //       this.loginStatus = status.status
-    //
-    //       // set ingr if connected
-    //       if (status.status =='connected') {
-    //         this.ingr.value = status.authResponse.accessToken
-    //       }
-    //     })
-    // }
-
   }
 
   unitToNumber() {
@@ -65,9 +62,13 @@ export class EventIngredientComponent implements OnInit {
     this.ingr.value = "@every " + this.selectedNumber + (this.selectedType == 0 ? "m" : "h")
   }
 
+
+  // Facebook functions
+
   loginWithFacebook(): void {
 
-    this.fb.login()
+    // login with options
+    this.fb.login(this.options)
       .then((response: LoginResponse) => {
         this.loginStatus = response.status
         if(response.status == 'connected'){
@@ -79,6 +80,14 @@ export class EventIngredientComponent implements OnInit {
       })
       .catch((error: any) => console.error(error))
 
+  }
+
+  logoutWithFacebook(): void {
+    this.fb.logout()
+      .then(() => {
+        this.loginStatus = "disconnected"
+        this.ingr.value = null
+      })
   }
 
 }
