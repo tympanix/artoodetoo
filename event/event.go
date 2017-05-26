@@ -12,7 +12,7 @@ import (
 	"github.com/Tympanix/automato/types"
 )
 
-// Trigger is an interfaces which describes the implementations needed for an event
+// Core is an interfaces which is the trigger mechanism for an event
 type Core interface {
 	types.Triggerable
 	Bind(e types.Eventable)
