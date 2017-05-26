@@ -14,11 +14,19 @@ import (
 
 // Task is an object that processes data based on events, converters and actions
 type Task struct {
-	UUID    string       `json:"uuid"`
-	Name    string       `json:"name"`
-	Event   *event.Proxy `json:"event"`
-	Actions []*unit.Unit `json:"actions"`
-	lock    *sync.Mutex  `json:"-"`
+	UUID    string                `json:"uuid"`
+	Name    string                `json:"name"`
+	Event   *event.Proxy          `json:"event"`
+	Actions []*unit.Unit          `json:"actions"`
+	Queue   chan types.TupleSpace `json:"-"`
+	running *sync.Mutex           `json:"-"`
+	once    *sync.Once            `json:"-"`
+}
+
+func (t *Task) init() {
+	t.Queue = make(chan types.TupleSpace, 1<<12)
+	t.running = new(sync.Mutex)
+	t.once = new(sync.Once)
 }
 
 // Describe prints our information about the action to the console
@@ -72,10 +80,24 @@ func (t *Task) GetUnitByName(name string) (unit *unit.Unit, err error) {
 
 // Run starts the task
 func (t *Task) Run(ts types.TupleSpace) error {
+	t.Queue <- ts
+	t.once.Do(t.startWorker)
+	return nil
+}
+
+func (t *Task) startWorker() {
+	go func() {
+		for ts := range t.Queue {
+			t.run(ts)
+		}
+	}()
+}
+
+func (t *Task) run(ts types.TupleSpace) {
 	log.Printf("Running task %s\n", t.Name)
 
-	t.lock.Lock()
-	defer t.lock.Unlock()
+	t.running.Lock()
+	defer t.running.Unlock()
 
 	waitgroup := new(sync.WaitGroup)
 	waitgroup.Add(len(t.Actions))
@@ -86,7 +108,6 @@ func (t *Task) Run(ts types.TupleSpace) error {
 
 	waitgroup.Wait()
 	log.Printf("Finished %s", t.Name)
-	return nil
 }
 
 func (t *Task) UnmarshalJSON(data []byte) error {
@@ -96,8 +117,8 @@ func (t *Task) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	_task.lock = new(sync.Mutex)
 	*t = Task(_task)
+	t.init()
 
 	if err := t.Validate(); err != nil {
 		return err

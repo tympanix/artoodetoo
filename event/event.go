@@ -22,7 +22,7 @@ type Core interface {
 // Event is a type which is used to trigger tasks
 type Event struct {
 	subject.Subject
-	Core
+	Core      `json:"-"`
 	Observers []types.Runnable `json:"-"`
 	UUID      string           `json:"uuid"`
 	Desc      string           `json:"description"`

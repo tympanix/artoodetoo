@@ -5,7 +5,7 @@ import "github.com/Tympanix/automato/types"
 // Base is a struct used for subtyping to implement different events
 // for the application
 type Base struct {
-	types.Triggerable
+	types.Triggerable `json:"-"`
 }
 
 // Bind bind the trigger to the eventable
