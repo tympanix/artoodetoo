@@ -4,6 +4,4 @@ package unit
 type Action interface {
 	Execute()
 	Describe() string
-	Input() interface{}
-	Output() interface{}
 }

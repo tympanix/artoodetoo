@@ -8,7 +8,6 @@ import (
 
 // EmailAction mimcs sending an email as an action
 type EmailAction struct {
-	unit.Base
 	Receiver string `io:"input"`
 	Subject  string `io:"input"`
 	Message  string `io:"input"`

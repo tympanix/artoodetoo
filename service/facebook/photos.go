@@ -14,7 +14,7 @@ import (
 type Photos struct {
 	event.Base
 	LastSeen time.Time
-	Token    Token   `io:"input" type:"fb_token"`
+	Token    Token   `io:"input"`
 	Interval float64 `io:"input"`
 
 	ImgURL string `io:"output"`

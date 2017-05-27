@@ -4,7 +4,6 @@ import "github.com/Tympanix/automato/unit"
 
 // PersonEvent event to test the application
 type PersonEvent struct {
-	unit.Base
 	Name    string  `io:"output"`
 	Age     int     `io:"output"`
 	Height  float32 `io:"output"`

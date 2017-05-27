@@ -8,7 +8,6 @@ import (
 
 // StringConverter formats a string using variables
 type StringConverter struct {
-	unit.Base
 	Format      string      `io:"input"`
 	Placeholder interface{} `io:"input"`
 
