@@ -31,7 +31,21 @@
         </div>
 
         <div class="panel-body">
-            {{task.event.description}}
+          <div class="row">
+            <div class="col-sm-12">
+              <h4 class="bold">Output</h4>
+            </div>
+
+            <div class="col-sm-12">
+              <span *ngIf="!task.event.output">
+                <a class="btn btn-default btn-xs">No Output</a>
+              </span>
+
+              <span *ngFor="let output of task.event.output">
+                <a class="btn btn-xs btn-red">{{output.name}}</a>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
