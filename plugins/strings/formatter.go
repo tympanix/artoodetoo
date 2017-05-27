@@ -6,8 +6,8 @@ import (
 	"github.com/Tympanix/automato/unit"
 )
 
-// StringFormatter formats a string using variables
-type StringFormatter struct {
+// Formatter formats a string using variables
+type Formatter struct {
 	Format      string      `io:"input"`
 	Placeholder interface{} `io:"input"`
 
@@ -15,15 +15,15 @@ type StringFormatter struct {
 }
 
 func init() {
-	unit.Register(&StringFormatter{})
+	unit.Register(&Formatter{})
 }
 
-// Describe describes what a StringFormatter does
-func (s *StringFormatter) Describe() string {
+// Describe describes what a Formatter does
+func (s *Formatter) Describe() string {
 	return "Formats a string using a placeholder"
 }
 
 // Execute function converts the string using the input and parameters
-func (s *StringFormatter) Execute() {
+func (s *Formatter) Execute() {
 	s.Formatted = fmt.Sprintf(s.Format, s.Placeholder)
 }
