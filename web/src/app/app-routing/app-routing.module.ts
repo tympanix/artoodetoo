@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AdministrationComponent } from '../administration/administration.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
-import { StatisticsComponent } from '../statistics/statistics.component';
 import { LoginComponent } from '../login/login.component';
 
 import { TaskResolver } from '../resolvers/task-resolver.service';
