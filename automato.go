@@ -8,10 +8,6 @@ import (
 	"github.com/Tympanix/automato/api"
 	"github.com/Tympanix/automato/config"
 	"github.com/Tympanix/automato/storage"
-
-	_ "github.com/Tympanix/automato/example"
-	_ "github.com/Tympanix/automato/service/cron"
-	_ "github.com/Tympanix/automato/service/facebook"
 )
 
 const (
