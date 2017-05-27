@@ -19,8 +19,6 @@ const routes: Routes = [
   { path: 'administration/event', component: AdministrationComponent},
   { path: 'administration/task/:task', component: AdministrationComponent, resolve: { task: TaskResolver }},
   { path: 'administration/event/:event', component: AdministrationComponent, resolve: { task: EventResolver }},
-  // Add event resolver
-  { path: 'statistics', component: StatisticsComponent}
 ];
 
 @NgModule({

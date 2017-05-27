@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { SiteHeaderComponent } from './site-header/site-header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdministrationComponent } from './administration/administration.component';
-import { StatisticsComponent } from './statistics/statistics.component';
 
 import { ApiService } from './api.service';
 import { ErrorService } from './error.service'
@@ -47,7 +46,6 @@ import { LoginComponent } from './login/login.component'
     SiteHeaderComponent,
     DashboardComponent,
     AdministrationComponent,
-    StatisticsComponent,
     UnitComponent,
     IngredientComponent,
     UnitDialog,
