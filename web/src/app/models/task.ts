@@ -21,6 +21,7 @@ export class Task implements ITask, Model {
 
   // State properties
   units: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)
+  _sources: Unit[] = []
   isSaved: boolean = false
 
   constructor(fields?: {
@@ -37,7 +38,6 @@ export class Task implements ITask, Model {
     task.isSaved = true
     task.actions = model.actions.map(action => Unit.fromJson(action))
     task.bootstrap()
-    task.updateUnitList()
     return task
   }
 
@@ -50,6 +50,7 @@ export class Task implements ITask, Model {
 
     this.event = event
     this.updateUnitList()
+    this.resolveIngredients()
   }
 
   checkCycles(): Promise<Unit[]> {
@@ -121,11 +122,11 @@ export class Task implements ITask, Model {
     })
   }
 
-  private resolveIngredients(units: Unit[]) {
+  private resolveIngredients() {
     this.actions.forEach(
       a => a.input.forEach(
         i => i.recipe.forEach(
-          r => r.resolveReference(this.actions))))
+          r => r.resolveReference(this._sources))))
   }
 
   copy(): Task {
@@ -143,7 +144,7 @@ export class Task implements ITask, Model {
   }
 
   bootstrap() {
-    this.resolveIngredients(this.actions)
+    this.updateUnitList()
     this.actions.forEach(a => a.bootstrap(this))
   }
 
@@ -159,6 +160,7 @@ export class Task implements ITask, Model {
     this.actions.forEach(action => {
       action && units.push(action)
     })
+    this._sources = units
     this.units.next(units)
   }
 
