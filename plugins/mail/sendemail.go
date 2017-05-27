@@ -2,6 +2,7 @@ package mail
 
 import (
 	"log"
+	"net/smtp"
 
 	"github.com/Tympanix/automato/unit"
 )
@@ -24,5 +25,23 @@ func (a *SendEmail) Describe() string {
 
 // Execute sends the email
 func (a *SendEmail) Execute() {
+	auth := smtp.PlainAuth(
+		"iAutomaton",
+		"iautomaton1@gmail.com",
+		"iautomaton",
+		"smtp.gmail.com",
+	)
+	// Connect to the server, authenticate, set the sender and recipient,
+	// and send the email all in one step.
+	to := []string{a.Receiver}
+	msg := []byte(
+		"Subject: " + a.Subject + "\r\n" +
+			"\r\n" +
+			a.Message + "\r\n")
+
+	err := smtp.SendMail("smtp.gmail.com:25", auth, "hmm", to, msg)
+	if err != nil {
+		log.Fatal(err)
+	}
 	log.Printf("New Mail:\nTo: <%s>\nSubject: %s\nMessage: %s\n", a.Receiver, a.Subject, a.Message)
 }
