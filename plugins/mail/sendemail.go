@@ -39,9 +39,8 @@ func (a *SendEmail) Execute() {
 			"\r\n" +
 			a.Message + "\r\n")
 
-	err := smtp.SendMail("smtp.gmail.com:25", auth, "hmm", to, msg)
-	if err != nil {
+	if err := smtp.SendMail("smtp.gmail.com:25", auth, "hmm", to, msg); err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("New Mail:\nTo: <%s>\nSubject: %s\nMessage: %s\n", a.Receiver, a.Subject, a.Message)
+
 }
