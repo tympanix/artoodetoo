@@ -56,8 +56,8 @@ export class AdministrationComponent implements OnInit {
         this.task = data.task.copy()
         this.taskActive = true
         this.editorState = true
+        console.log("Task", data.task)
       }
-      console.log("Task", data.task)
     })
 
   }
