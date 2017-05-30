@@ -4,10 +4,10 @@ import "github.com/Tympanix/automato/unit"
 
 // Addition event to test the application
 type Addition struct {
-	NumberA int `io:"input"`
-	NumberB int `io:"input"`
+	NumberA float64 `io:"input"`
+	NumberB float64 `io:"input"`
 
-	Result int `io:"output"`
+	Result float64 `io:"output"`
 }
 
 func init() {

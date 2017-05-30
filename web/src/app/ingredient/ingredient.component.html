@@ -54,6 +54,12 @@
                         </md-input-container>
                     </template>
 
+                    <template ngSwitchCase="float64">
+                        <md-input-container class="fluid">
+                            <input mdInput [placeholder]="input.name" [(ngModel)]="model.value" (change)="stringToFloat()">
+                        </md-input-container>
+                    </template>
+
                     <template ngSwitchDefault>Unknown input</template>
                 </span>
     </template>

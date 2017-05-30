@@ -78,4 +78,8 @@ export class IngredientComponent implements OnInit {
     this.model.type = +this.model.type
   }
 
+  stringToFloat(){
+    this.model.value = parseFloat(this.model.value.toString())
+  }
+
 }

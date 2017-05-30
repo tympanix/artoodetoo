@@ -7,14 +7,14 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 export interface IIngredient {
   type: number
   source: string
-  value: string
+  value: Object
 }
 
 export class Ingredient implements IIngredient, Model{
   // Model properties
   type: number
   source: string
-  value: string
+  value: Object
 
   input: Input
   reference: Output
@@ -33,7 +33,7 @@ export class Ingredient implements IIngredient, Model{
     if (this.isStatic()) return
     var unit = units.find(Unit.findByName(this.source))
     if (!unit) console.error("Unknown ingredient source", this)
-    var output = unit.output.find(Input.findByName(this.value))
+    var output = unit.output.find(Input.findByName(this.value.toString()))
     if (!output) console.error("Unknown ingredient variable", this)
     this.reference = output
   }
