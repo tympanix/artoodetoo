@@ -1,8 +1,12 @@
 <div class="login-wrapper">
     <form class="login-form" (submit)="login()">
-        <h3>Please enter the password</h3>
+        <h3>Login</h3>
+        <md-input-container class="fluid">
+            <input type="text" name="username" [(ngModel)]="username" mdInput placeholder="Username">
+        </md-input-container>
         <md-input-container class="fluid">
             <input type="password" name="password" [(ngModel)]="password" mdInput placeholder="Password">
         </md-input-container>
+        <button class="fluid" type="submit" md-raised-button>Login</button>
     </form>
 </div>

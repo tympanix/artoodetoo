@@ -8,7 +8,13 @@ import (
 
 	"github.com/Tympanix/automato/config"
 	jwt "github.com/dgrijalva/jwt-go"
+	"golang.org/x/crypto/bcrypt"
 )
+
+type credentials struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
 
 // Authenticate is a middleware used to authentication requests
 func auth(fn func(w http.ResponseWriter, r *http.Request)) http.Handler {
@@ -39,18 +45,23 @@ func init() {
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
-	m := make(map[string]string)
+	cred := new(credentials)
 
 	dec := json.NewDecoder(r.Body)
-	if err := dec.Decode(&m); err != nil {
+	if err := dec.Decode(cred); err != nil {
 		http.Error(w, "Missing credentials", http.StatusInternalServerError)
 		return
 	}
 
-	password, ok := m["password"]
+	hash, ok := config.Passwords[cred.Username]
 
-	if !ok || password != config.Password {
-		http.Error(w, "Wrong credentials", http.StatusUnauthorized)
+	if !ok {
+		unauthorize(w)
+		return
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(cred.Password)); err != nil {
+		unauthorize(w)
 		return
 	}
 
@@ -69,4 +80,8 @@ func login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write([]byte(tokenString))
+}
+
+func unauthorize(w http.ResponseWriter) {
+	http.Error(w, "Wrong credentials", http.StatusUnauthorized)
 }

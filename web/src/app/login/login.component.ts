@@ -11,6 +11,7 @@ import { MdSnackBar } from '@angular/material';
 export class LoginComponent implements OnInit {
 
   private password: string
+  private username: string
   private error: string
 
   constructor(private api: ApiService, private router: Router, private snackBar: MdSnackBar) { }
@@ -29,8 +30,9 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    console.info("Login")
     let self = this
-    this.api.login(this.password).subscribe(
+    this.api.login(this.username, this.password).subscribe(
       () => self.loginSuccess(),
       () => self.loginError()
     )

@@ -99,8 +99,8 @@ export class ApiService {
     }
   }
 
-  login(password: string): Observable<string> {
-    return this.http.post("api/login", {"password": password}, this.options)
+  login(username: string, password: string): Observable<string> {
+    return this.http.post("api/login", {"username": username, "password": password}, this.options)
       .map(this.checkSuccess(this))
       .map((resp: Response) => resp.text())
       .do((token: string) => this.setToken(token))

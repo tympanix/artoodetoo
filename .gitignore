@@ -87,6 +87,7 @@ typings/
 dist/
 
 # Development files
+.htpasswd
 store.json
 config.json
 automato
