@@ -49,6 +49,8 @@ func (t *Task) Validate() error {
 
 // Subscribe subscribes the task to its event
 func (t *Task) Subscribe() error {
+	t.Queue = make(chan types.TupleSpace, 1<<12)
+	t.once = new(sync.Once)
 	if t.Event == nil {
 		return fmt.Errorf("Task %s has no event to subscribe to", t.Name)
 	}
@@ -60,7 +62,11 @@ func (t *Task) Unsubscribe() error {
 	if t.Event == nil {
 		return fmt.Errorf("Task %s has no event", t.Name)
 	}
-	return t.Event.Unsubscribe(t)
+	if err := t.Event.Unsubscribe(t); err != nil {
+		return err
+	}
+	close(t.Queue)
+	return nil
 }
 
 func (t *Task) GenerateUUID() {
