@@ -9,6 +9,6 @@ type Base struct {
 }
 
 // Bind bind the trigger to the eventable
-func (b *Base) Bind(event types.Eventable) {
+func (b *Base) Bind(event types.Triggerable) {
 	b.Triggerable = event
 }

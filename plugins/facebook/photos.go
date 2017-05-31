@@ -30,7 +30,7 @@ func (p *Photos) Describe() string {
 }
 
 // Listen starts listening for new photo uploads and tags on facebook
-func (p *Photos) Listen() error {
+func (p *Photos) Listen(stop <-chan struct{}) error {
 	if p.Interval < 1000 {
 		return errors.New("Interval must be above 1 second")
 	}
@@ -42,35 +42,46 @@ func (p *Photos) Listen() error {
 	}
 
 	ticker := time.NewTicker(time.Duration(p.Interval) * time.Millisecond)
-	for range ticker.C {
-		photos, err := p.getPhotos()
 
-		if err != nil {
-			return err
-		}
-
-		log.Printf("Found %d photos", len(photos))
-
-		for _, photo := range photos {
-			if photo.Created.After(p.LastSeen) {
-				details, err := p.getPhotoDeails(photo.ID)
-				if err != nil {
-					return err
-				}
-				if len(details.Images) > 0 {
-					p.ImgURL = details.Images[0].Source
-					fmt.Println(details.Images[0].Source)
-					p.Trigger()
-				} else {
-					return errors.New("No images found")
-				}
+	for {
+		select {
+		case <-ticker.C:
+			if err := p.checkNew(); err != nil {
+				return err
 			}
-		}
-		if len(photos) > 0 {
-			p.LastSeen = photos[0].Created
+		case <-stop:
+			return nil
 		}
 	}
+}
 
+func (p *Photos) checkNew() error {
+	photos, err := p.getPhotos()
+
+	if err != nil {
+		return err
+	}
+
+	log.Printf("Found %d photos", len(photos))
+
+	for _, photo := range photos {
+		if photo.Created.After(p.LastSeen) {
+			details, err := p.getPhotoDeails(photo.ID)
+			if err != nil {
+				return err
+			}
+			if len(details.Images) > 0 {
+				p.ImgURL = details.Images[0].Source
+				fmt.Println(details.Images[0].Source)
+				p.Trigger()
+			} else {
+				return errors.New("No images found")
+			}
+		}
+	}
+	if len(photos) > 0 {
+		p.LastSeen = photos[0].Created
+	}
 	return nil
 }
 

@@ -2,8 +2,14 @@ package types
 
 // Triggerable is a type which returns a trigger and can listen on events
 type Triggerable interface {
-	Listen() error
+	Listen(<-chan struct{}) error
 	Trigger()
+}
+
+// Startable is a type which can be started and stopped
+type Startable interface {
+	Start()
+	Stop()
 }
 
 // Observable is a type which you can subscribe and unsunscibe to
@@ -14,7 +20,7 @@ type Observable interface {
 
 // Eventable is a type which can be subsribed to and can trigger events
 type Eventable interface {
-	Triggerable
+	Startable
 	Observable
 }
 

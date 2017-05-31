@@ -15,7 +15,7 @@ import (
 // Core is an interfaces which is the trigger mechanism for an event
 type Core interface {
 	types.Triggerable
-	Bind(e types.Eventable)
+	Bind(e types.Triggerable)
 	Describe() string
 }
 
@@ -26,6 +26,8 @@ type Event struct {
 	Observers []types.Runnable `json:"-"`
 	UUID      string           `json:"uuid"`
 	Desc      string           `json:"description"`
+	stop      chan struct{}    `json:"-"`
+	running   bool             `json:"-"`
 }
 
 // New takes an event and applies its type. The same event is returned.
@@ -37,13 +39,18 @@ func New(trigger Core) *Event {
 		UUID:      generate.NewUUID(12),
 		Desc:      trigger.Describe(),
 	}
-	e.Bind(e)
+	e.init()
 	return e
 }
 
 // ID returns the unique id of the event
 func (e *Event) ID() string {
 	return e.UUID
+}
+
+func (e *Event) init() {
+	e.Bind(e)
+	e.stop = make(chan struct{})
 }
 
 // Trigger returns the trigger for the event
@@ -56,6 +63,22 @@ func (e *Event) Trigger() {
 			log.Println(err)
 		}
 	}
+}
+
+func (e *Event) Start() {
+	if e.running {
+		return
+	}
+	go e.Listen(e.stop)
+	e.running = true
+}
+
+func (e *Event) Stop() {
+	if !e.running {
+		return
+	}
+	e.stop <- struct{}{}
+	e.running = false
 }
 
 // Validate checks certain safety proper
@@ -90,7 +113,7 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 		return fmt.Errorf("Internal error while parsing event")
 	}
 	e.Core = newTrigger
-	e.Bind(e)
+	e.init()
 
 	if err := e.Validate(); err != nil {
 		return err

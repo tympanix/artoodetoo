@@ -21,7 +21,7 @@ export class IO {
   assignableTo(other: IO): boolean {
     if (this.type == other.type) {
       return true;
-    } else if (this.type == "interface{}") {
+    } else if (other.isInterface()) {
       return true;
     } else if (hasPrefix("int", this.type, other.type)) {
       return true;
@@ -30,6 +30,10 @@ export class IO {
     } else {
       return false;
     }
+  }
+
+  isInterface(): boolean {
+    return this.type == "interface {}"
   }
 
   getTask(): Task {

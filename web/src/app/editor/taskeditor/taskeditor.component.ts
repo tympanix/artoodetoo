@@ -49,7 +49,7 @@ export class TaskeditorComponent implements OnInit {
       } else {
         this.createTask()
       }
-      this.router.navigateByUrl("/dashboard/")
+      this.router.navigateByUrl("/dashboard")
     })
   }
 

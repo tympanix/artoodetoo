@@ -30,7 +30,7 @@ func AddEvent(event *Event) error {
 		return errors.New("Event with that id already exists")
 	}
 	Events[event.ID()] = event
-	go event.Listen()
+	event.Start()
 	return nil
 }
 
