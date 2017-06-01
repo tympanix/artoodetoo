@@ -12,6 +12,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdministrationComponent } from './administration/administration.component';
 
 import { ApiService } from './api.service';
+import { TypeService } from './type.service'
 import { ErrorService } from './error.service'
 import { UnitComponent } from './unit/unit.component';
 
@@ -30,7 +31,13 @@ import { EventDialog } from './dialogs/eventdialog/eventdialog.component';
 import { OptionDialog } from './dialogs/optiondialog/optiondialog.component';
 import { ErrorDialog } from './dialogs/errordialog/errordialog.component';
 import { CycleDialog } from './dialogs/cycledialog/cycledialog.component';
-import { LoginComponent } from './login/login.component'
+import { LoginComponent } from './login/login.component';
+import { IntegerTypeComponent } from './types/integer-type/integer-type.component';
+import { TypeDirective } from './types/type.directive';
+import { StringTypeComponent } from './types/string-type/string-type.component';
+import { TypesComponent } from './types/types.component';
+import { BoolTypeComponent } from './types/bool-type/bool-type.component'
+import { IngredientType } from './types/ingredient-type'
 
 @NgModule({
   imports: [
@@ -59,7 +66,11 @@ import { LoginComponent } from './login/login.component'
     OptionDialog,
     ErrorDialog,
     CycleDialog,
-    LoginComponent
+    LoginComponent,
+    IntegerTypeComponent,
+    TypeDirective,
+    StringTypeComponent,
+    BoolTypeComponent
   ],
   entryComponents: [
     UnitDialog,
@@ -68,9 +79,12 @@ import { LoginComponent } from './login/login.component'
     EventDialog,
     OptionDialog,
     ErrorDialog,
-    CycleDialog
+    CycleDialog,
+    IntegerTypeComponent,
+    StringTypeComponent,
+    BoolTypeComponent,
   ],
-  providers: [ApiService, TaskResolver, ErrorService],
+  providers: [ApiService, TaskResolver, ErrorService, TypeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

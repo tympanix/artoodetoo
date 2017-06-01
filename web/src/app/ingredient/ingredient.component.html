@@ -34,39 +34,8 @@
 
             <!-- Define your static input -->
             <template ngSwitchCase="1">
-                <span [ngSwitch]="input.type">
-
-                    <template ngSwitchCase="string">
-                        <md-input-container class="fluid">
-                            <input mdInput [placeholder]="input.name" [(ngModel)]="model.value">
-                        </md-input-container>
-                    </template>
-
-                    <template ngSwitchCase="int">
-                        <md-input-container class="fluid">
-                            <input mdInput [placeholder]="input.name" type="number" [(ngModel)]="model.value">
-                        </md-input-container>
-                    </template>
-
-                    <template ngSwitchCase="interface {}">
-                        <md-input-container class="fluid">
-                            <input mdInput [placeholder]="input.name" type="text" [(ngModel)]="model.value">
-                        </md-input-container>
-                    </template>
-
-                    <template ngSwitchCase="float64">
-                        <md-input-container class="fluid">
-                            <input mdInput [placeholder]="input.name" [(ngModel)]="model.value" (change)="stringToFloat()">
-                        </md-input-container>
-                    </template>
-
-                    <template ngSwitchCase="bool">
-                        <md-slide-toggle [(ngModel)]="model.value">{{model.value}}</md-slide-toggle>
-                    </template>
-
-                    <template ngSwitchDefault>Unknown input</template>
-                </span>
-    </template>
+                <template type-host></template>
+            </template>
 
     </span>
   </div>
