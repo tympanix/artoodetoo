@@ -149,3 +149,10 @@ func TestStatePredicate(t *testing.T) {
 		}
 	}, 100)
 }
+
+func TestNilValues(t *testing.T) {
+	s := state.New()
+
+	err := s.Put("nil", nil)
+	assert.Error(t, err)
+}

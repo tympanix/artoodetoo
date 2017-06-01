@@ -30,6 +30,13 @@ func (i *Ingredient) IsVariable() bool {
 	return i.Type == IngredientVar
 }
 
+func (i *Ingredient) Validate() error {
+	// if i.Value == nil {
+	// 	return errors.New("Ingredient does not allow nil values")
+	// }
+	return nil
+}
+
 func (i *Ingredient) Key() string {
 	if !i.IsVariable() {
 		panic("Ingredient is not a variable")

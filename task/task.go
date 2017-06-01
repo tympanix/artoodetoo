@@ -44,6 +44,11 @@ func (t *Task) Validate() error {
 	if err := t.detectCycles(); err != nil {
 		return err
 	}
+	for _, action := range t.Actions {
+		if err := action.Validate(); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

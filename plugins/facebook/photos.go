@@ -7,6 +7,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/Tympanix/automato/data"
 	"github.com/Tympanix/automato/event"
 )
 
@@ -17,7 +18,8 @@ type Photos struct {
 	Token    Token   `io:"input"`
 	Interval float64 `io:"input"`
 
-	ImgURL string `io:"output"`
+	URL   string      `io:"output"`
+	Image data.Stream `io:"output"`
 }
 
 func init() {
@@ -71,7 +73,8 @@ func (p *Photos) checkNew() error {
 				return err
 			}
 			if len(details.Images) > 0 {
-				p.ImgURL = details.Images[0].Source
+				p.URL = details.Images[0].Source
+				p.Image = data.FromURL(p.URL)
 				fmt.Println(details.Images[0].Source)
 				p.Trigger()
 			} else {

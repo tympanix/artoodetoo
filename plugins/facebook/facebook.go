@@ -73,7 +73,9 @@ func callAPI(path string, token Token, options Options) (resp *http.Response, er
 		return
 	}
 
-	resp, err = http.Get(url.String())
+	if resp, err = http.Get(url.String()); err != nil {
+		return
+	}
 
 	if resp.StatusCode != 200 {
 		io.Copy(os.Stdout, resp.Body)

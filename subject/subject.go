@@ -194,7 +194,10 @@ func (s *Subject) AssignInput(ts types.TupleSpace) error {
 	for _, input := range s.In {
 		ingredient := input.Recipe[0]
 		if ingredient.IsStatic() {
-			ts.Put(input.Key(s.Name), ingredient.Value)
+			if err := ts.Put(input.Key(s.Name), ingredient.Value); err != nil {
+				log.Printf("Failed on input %v for %v\n", input.Name, s.Name)
+				return err
+			}
 			if err := ts.Query(input.Key(s.Name), input.Value); err != nil {
 				return err
 			}

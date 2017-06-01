@@ -186,11 +186,24 @@ func createTuple(values []interface{}) Tuple {
 	return tuple
 }
 
+func hasNilValues(v []interface{}) bool {
+	for _, e := range v {
+		if e == nil {
+			return true
+		}
+	}
+	return false
+}
+
 // Put writes a new tuple to the tuple space
 func (s *State) Put(key interface{}, values ...interface{}) error {
 	//log.Printf("Putting value %s %s\n", key, values)
 	s.cond.L.Lock()
 	defer s.cond.L.Unlock()
+
+	if key == nil || hasNilValues(values) {
+		return errors.New("No nil values allowed")
+	}
 
 	tuple := createTuple(values)
 

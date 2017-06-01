@@ -66,9 +66,14 @@ func (i *Input) AddIngredient(ingr *Ingredient) {
 }
 
 // Validate makes sure that ingredients are given
-func (i Input) Validate() error {
+func (i *Input) Validate() error {
 	if len(i.Recipe) == 0 {
 		return fmt.Errorf("Missing ingredient for input '%s'", i.Name)
+	}
+	for _, ingr := range i.Recipe {
+		if err := ingr.Validate(); err != nil {
+			return err
+		}
 	}
 	return nil
 }
