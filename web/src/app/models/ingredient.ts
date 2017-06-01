@@ -19,8 +19,9 @@ export class Ingredient implements IIngredient, Model{
   input: Input
   reference: Output
 
-  constructor() {
+  constructor(value?: Object) {
     this.type = 1
+    this.value = value
   }
 
   static fromJson(model: IIngredient): Ingredient {

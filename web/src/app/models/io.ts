@@ -23,9 +23,7 @@ export class IO {
       return true;
     } else if (other.isInterface()) {
       return true;
-    } else if (hasPrefix("int", this.type, other.type)) {
-      return true;
-    } else if (hasPrefix("float", this.type, other.type)) {
+    } else if (this.isNumber() && other.isNumber()) {
       return true;
     } else {
       return false;
@@ -34,6 +32,26 @@ export class IO {
 
   isInterface(): boolean {
     return this.type == "interface {}"
+  }
+
+  isBool(): boolean {
+    return this.type == "bool"
+  }
+
+  isNumber(): boolean {
+    return this.isInteger() || this.isFloat()
+  }
+
+  isString(): boolean {
+    return this.type == "string"
+  }
+
+  isInteger(): boolean {
+    return this.type == "int32" || this.type == "int64"
+  }
+
+  isFloat(): boolean {
+    return this.type == "float32" || this.type == "float64"
   }
 
   getTask(): Task {
@@ -49,9 +67,6 @@ export class IO {
       return i.name === name
     }
   }
-
-
-
 }
 
 export interface IInput {
@@ -81,10 +96,20 @@ export class Input extends IO implements IInput, Model {
     }
   }
 
+  private addDefaultRecipe() {
+    if (this.isBool()) {
+      this.recipe.push(new Ingredient(false))
+    } else if (this.isString()) {
+      this.recipe.push(new Ingredient(""))
+    } else {
+      this.recipe.push(new Ingredient(null))
+    }
+  }
+
   bootstrap(unit?: Unit) {
     unit && this.bindToUnit(unit)
     if (!this.recipe || !this.recipe.length) {
-      this.recipe = [new Ingredient()]
+      this.addDefaultRecipe()
     }
     this.recipe.forEach(i => i.bootstrap(this))
   }

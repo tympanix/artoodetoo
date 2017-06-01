@@ -60,6 +60,10 @@
                         </md-input-container>
                     </template>
 
+                    <template ngSwitchCase="bool">
+                        <md-slide-toggle [(ngModel)]="model.value">{{model.value}}</md-slide-toggle>
+                    </template>
+
                     <template ngSwitchDefault>Unknown input</template>
                 </span>
     </template>
