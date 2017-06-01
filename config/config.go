@@ -58,3 +58,14 @@ func Parse() {
 	Passwords = pass
 
 }
+
+// AddUser adds a new user to the system
+func AddUser(username string, password string) error {
+	filename := "./.htpasswd"
+	// file, err := os.Create(filename)
+	// if err != nil {
+	// 	return err
+	// }
+	// file.Close()
+	return htpasswd.SetPassword(filename, username, password, htpasswd.HashBCrypt)
+}

@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/Tympanix/automato/api"
+	"github.com/Tympanix/automato/cli"
 	"github.com/Tympanix/automato/config"
 	"github.com/Tympanix/automato/storage"
 )
@@ -16,6 +17,10 @@ const (
 )
 
 func main() {
+	cli.Run(serve)
+}
+
+func serve() {
 	// Parse application configuration
 	config.Parse()
 
