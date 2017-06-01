@@ -5,19 +5,23 @@ import { TypeSelector } from './types/type-selector'
 import { IntegerTypeComponent } from './types/integer-type/integer-type.component'
 import { StringTypeComponent } from './types/string-type/string-type.component'
 import { BoolTypeComponent } from './types/bool-type/bool-type.component'
+import { CronTimeComponent} from './types/cron-time/cron-time.component'
+import { FacebookTokenComponent } from './types/facebook-token/facebook-token.component'
 
 @Injectable()
 export class TypeService {
   types: TypeSelector[] = []
 
   constructor() {
-    this.add(new TypeSelector(IntegerTypeComponent, (input: Input) => input.isInteger()))
-    this.add(new TypeSelector(StringTypeComponent, (input: Input) => input.isString()))
-    this.add(new TypeSelector(BoolTypeComponent, (input: Input) => input.isBool()))
+    this.add(IntegerTypeComponent, (input: Input) => input.isInteger())
+    this.add(StringTypeComponent, (input: Input) => input.isString())
+    this.add(BoolTypeComponent, (input: Input) => input.isBool())
+    this.add(CronTimeComponent, (input: Input) => input.type == "cron.Time")
+    this.add(FacebookTokenComponent, (input: Input) => input.type == "facebook.Token")
   }
 
-  add(selector: TypeSelector) {
-    this.types.push(selector)
+  add(type: Type<any>, selector: (Input) => boolean) {
+    this.types.push(new TypeSelector(type, selector))
   }
 
   getType(input: Input): Type<any> {

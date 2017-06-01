@@ -1,0 +1,54 @@
+<div class="row">
+  <md-radio-group [(ngModel)]="timeType" (ngModelChange)="typeToNumber()">
+    <div class="col-lg-2">
+      <md-radio-button value=0>
+        Variable
+      </md-radio-button>
+    </div>
+    <div class="col-lg-2">
+      <md-radio-button value=1>
+        Static
+      </md-radio-button>
+    </div>
+  </md-radio-group>
+
+
+  <div class="col-lg-8">
+    <!-- Type switch -->
+    <span [ngSwitch]="timeType">
+
+    <template ngSwitchCase="0">
+      <div class="select-container">
+        <md-select placeholder="Every" [(ngModel)]="selectedType" (ngModelChange)="unitToNumber()">
+          <md-option [value]="0">Minute</md-option>
+          <md-option [value]="1">Hour</md-option>
+        </md-select>
+
+        <!-- Choose time unit -->
+        <span [ngSwitch]="selectedType">
+          <template ngSwitchCase="0">
+            <md-select placeholder="min" [(ngModel)]="selectedNumber" (ngModelChange)="updateIngrValue()">
+                <md-option *ngFor="let int of minute" [value]="int">{{ int }}</md-option>
+            </md-select>
+          </template>
+
+          <template ngSwitchCase="1">
+            <md-select placeholder="hour" [(ngModel)]="selectedNumber"  (ngModelChange)="updateIngrValue()">
+                <md-option *ngFor="let int of hour" [value]="int">{{ int }}</md-option>
+            </md-select>
+          </template>
+        </span>
+
+    <span *ngIf="ingr.value">Fires {{ingr.value}}</span>
+  </div>
+  </template>
+
+  <template ngSwitchCase="1">
+      <md-input-container class="fluid">
+          <input mdInput placeholder="sec min hour day month day/week" [(ngModel)]="ingr.value">
+      </md-input-container>
+    </template>
+
+  </span>
+
+</div>

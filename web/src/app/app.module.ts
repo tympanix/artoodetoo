@@ -37,7 +37,9 @@ import { TypeDirective } from './types/type.directive';
 import { StringTypeComponent } from './types/string-type/string-type.component';
 import { TypesComponent } from './types/types.component';
 import { BoolTypeComponent } from './types/bool-type/bool-type.component'
-import { IngredientType } from './types/ingredient-type'
+import { IngredientType } from './types/ingredient-type';
+import { CronTimeComponent } from './types/cron-time/cron-time.component';
+import { FacebookTokenComponent } from './types/facebook-token/facebook-token.component'
 
 @NgModule({
   imports: [
@@ -70,7 +72,9 @@ import { IngredientType } from './types/ingredient-type'
     IntegerTypeComponent,
     TypeDirective,
     StringTypeComponent,
-    BoolTypeComponent
+    BoolTypeComponent,
+    CronTimeComponent,
+    FacebookTokenComponent
   ],
   entryComponents: [
     UnitDialog,
@@ -83,6 +87,8 @@ import { IngredientType } from './types/ingredient-type'
     IntegerTypeComponent,
     StringTypeComponent,
     BoolTypeComponent,
+    FacebookTokenComponent,
+    CronTimeComponent
   ],
   providers: [ApiService, TaskResolver, ErrorService, TypeService],
   bootstrap: [AppComponent]

@@ -1,0 +1,5 @@
+<div>
+    <p *ngIf="loginStatus == 'connected'" class="ingr-value">Facebook has been Connected</p>
+    <a *ngIf="loginStatus != 'connected'" class="btn btn-blue" (click)="loginWithFacebook()">Login</a>
+    <a *ngIf="loginStatus == 'connected'" class="btn btn-blue" (click)="logoutWithFacebook()">Logout</a>
+</div>
