@@ -13,6 +13,21 @@ export class FacebookTokenComponent extends TypesComponent {
 
   constructor(private fb: FacebookService) {
     super()
+
+    // Hardcode to static type
+    let initParams: InitParams = {
+      appId: '1890556247880818',
+      xfbml: true,
+      version: 'v2.9'
+    }
+
+    fb.init(initParams)
+
+    this.options = {
+      scope: 'public_profile,user_friends,email,pages_show_list',
+      return_scopes: true,
+      enable_profile_selector: true
+    };
   }
 
   loginWithFacebook(): void {

@@ -39,13 +39,13 @@
           </template>
         </span>
 
-    <span *ngIf="ingr.value">Fires {{ingr.value}}</span>
+    <span *ngIf="ingredient.value">Fires {{ingredient.value}}</span>
   </div>
   </template>
 
   <template ngSwitchCase="1">
       <md-input-container class="fluid">
-          <input mdInput placeholder="sec min hour day month day/week" [(ngModel)]="ingr.value">
+          <input mdInput placeholder="sec min hour day month day/week" [(ngModel)]="ingredient.value">
       </md-input-container>
     </template>
 

@@ -46,37 +46,13 @@ export class IngredientComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.loadType()
+    //this.loadType()
   }
 
   private filterUnits(units: Unit[]): Unit[] {
     return units.filter(unit =>
       unit != this.unit && unit.name && unit.name.length > 0
     )
-  }
-
-  loadType() {
-    let type: Type<any> = this.types.getType(this.input)
-    if (!type) {
-      console.error("Could not find type for input")
-      return
-    }
-    let componentFactory = this._componentFactoryResolver.resolveComponentFactory(type)
-
-    let view = this.typeHost.viewContainerRef
-    view.clear()
-
-    let typeComponent = view.createComponent(componentFactory)
-    let ingrType = typeComponent.instance as IngredientType
-
-    if (!ingrType) {
-      console.error("Can't cast type component")
-      return
-    }
-
-    console.log(ingrType)
-
-    ingrType.ingredient = this.model
   }
 
   changeSourceEvent(event) {

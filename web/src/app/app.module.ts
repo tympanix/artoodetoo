@@ -22,7 +22,6 @@ import { UnitDialog } from './dialogs/unitdialog/unitdialog.component';
 import { TaskDialog } from './dialogs/taskdialog/taskdialog.component';
 import { EventTemplateDialog } from './dialogs';
 import { EventComponent } from './event/event.component';
-import { EventIngredientComponent } from './event-ingredient/event-ingredient.component';
 
 import { FacebookModule } from 'ngx-facebook';
 import { TaskeditorComponent } from './editor/taskeditor/taskeditor.component';
@@ -39,7 +38,9 @@ import { TypesComponent } from './types/types.component';
 import { BoolTypeComponent } from './types/bool-type/bool-type.component'
 import { IngredientType } from './types/ingredient-type';
 import { CronTimeComponent } from './types/cron-time/cron-time.component';
-import { FacebookTokenComponent } from './types/facebook-token/facebook-token.component'
+import { FacebookTokenComponent } from './types/facebook-token/facebook-token.component';
+import { TypeeditorComponent } from './editor/typeeditor/typeeditor.component';
+import { FloatTypeComponent } from './types/float-type/float-type.component'
 
 @NgModule({
   imports: [
@@ -61,7 +62,6 @@ import { FacebookTokenComponent } from './types/facebook-token/facebook-token.co
     TaskDialog,
     EventTemplateDialog,
     EventComponent,
-    EventIngredientComponent,
     TaskeditorComponent,
     EventeditorComponent,
     EventDialog,
@@ -74,7 +74,9 @@ import { FacebookTokenComponent } from './types/facebook-token/facebook-token.co
     StringTypeComponent,
     BoolTypeComponent,
     CronTimeComponent,
-    FacebookTokenComponent
+    FacebookTokenComponent,
+    TypeeditorComponent,
+    FloatTypeComponent
   ],
   entryComponents: [
     UnitDialog,
@@ -88,7 +90,8 @@ import { FacebookTokenComponent } from './types/facebook-token/facebook-token.co
     StringTypeComponent,
     BoolTypeComponent,
     FacebookTokenComponent,
-    CronTimeComponent
+    CronTimeComponent,
+    FloatTypeComponent
   ],
   providers: [ApiService, TaskResolver, ErrorService, TypeService],
   bootstrap: [AppComponent]

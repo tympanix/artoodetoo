@@ -7,6 +7,7 @@ import { StringTypeComponent } from './types/string-type/string-type.component'
 import { BoolTypeComponent } from './types/bool-type/bool-type.component'
 import { CronTimeComponent} from './types/cron-time/cron-time.component'
 import { FacebookTokenComponent } from './types/facebook-token/facebook-token.component'
+import { FloatTypeComponent } from './types/float-type/float-type.component'
 
 @Injectable()
 export class TypeService {
@@ -16,6 +17,7 @@ export class TypeService {
     this.add(IntegerTypeComponent, (input: Input) => input.isInteger())
     this.add(StringTypeComponent, (input: Input) => input.isString())
     this.add(BoolTypeComponent, (input: Input) => input.isBool())
+    this.add(FloatTypeComponent, (input: Input) => input.isFloat())
     this.add(CronTimeComponent, (input: Input) => input.type == "cron.Time")
     this.add(FacebookTokenComponent, (input: Input) => input.type == "facebook.Token")
   }

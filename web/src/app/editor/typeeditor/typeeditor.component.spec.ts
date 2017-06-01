@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { EventIngredientComponent } from './event-ingredient.component';
+import { TypeeditorComponent } from './typeeditor.component';
 
-describe('EventIngredientComponent', () => {
-  let component: EventIngredientComponent;
-  let fixture: ComponentFixture<EventIngredientComponent>;
+describe('TypeeditorComponent', () => {
+  let component: TypeeditorComponent;
+  let fixture: ComponentFixture<TypeeditorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EventIngredientComponent ]
+      declarations: [ TypeeditorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EventIngredientComponent);
+    fixture = TestBed.createComponent(TypeeditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
