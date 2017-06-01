@@ -69,7 +69,11 @@ func (e *Event) Start() {
 	if e.running {
 		return
 	}
-	go e.Listen(e.stop)
+	go func() {
+		if err := e.Listen(e.stop); err != nil {
+			log.Println(err)
+		}
+	}()
 	e.running = true
 }
 
