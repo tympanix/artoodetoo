@@ -20,6 +20,16 @@ const (
 	TIME = "2006-01-02T15:04:05-0700"
 )
 
+type facebookStyle struct{}
+
+func (facebookStyle) Color() uint {
+	return 0x3b5998
+}
+
+func (facebookStyle) Icon() string {
+	return "fa-facebook"
+}
+
 // Token is a authentication token used to communicate with the facebook api
 type Token string
 

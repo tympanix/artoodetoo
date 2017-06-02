@@ -8,6 +8,7 @@ import (
 
 	"github.com/Tympanix/artoodetoo/generate"
 	"github.com/Tympanix/artoodetoo/state"
+	"github.com/Tympanix/artoodetoo/style"
 	"github.com/Tympanix/artoodetoo/subject"
 	"github.com/Tympanix/artoodetoo/types"
 )
@@ -22,6 +23,7 @@ type Core interface {
 // Event is a type which is used to trigger tasks
 type Event struct {
 	subject.Subject
+	style.Style
 	Core      `json:"-"`
 	Observers []types.Runnable `json:"-"`
 	UUID      string           `json:"uuid"`
@@ -51,6 +53,10 @@ func (e *Event) ID() string {
 func (e *Event) init() {
 	e.Bind(e)
 	e.stop = make(chan struct{})
+
+	if s, ok := e.Core.(types.Styleable); ok {
+		e.Style = style.Make(s)
+	}
 }
 
 // Trigger returns the trigger for the event

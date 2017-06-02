@@ -11,6 +11,7 @@ import (
 
 // UploadFile uploads a file to dropbox
 type UploadFile struct {
+	dropboxStyle
 	File        data.Stream `io:"input"`
 	Token       string      `io:"input"`
 	Overwrite   bool        `io:"input"`

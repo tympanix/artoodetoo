@@ -49,3 +49,9 @@ type AppArgs interface {
 	HtpasswdPath() string
 	SecretPath() string
 }
+
+// Styleable is an interface for types with a defined style
+type Styleable interface {
+	Color() uint
+	Icon() string
+}

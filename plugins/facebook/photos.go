@@ -14,6 +14,7 @@ import (
 // Photos listen for new photo uploads or tags on facebook
 type Photos struct {
 	event.Base
+	facebookStyle
 	LastSeen time.Time
 	Token    Token   `io:"input"`
 	Interval float64 `io:"input"`
