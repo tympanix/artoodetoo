@@ -7,8 +7,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/Tympanix/automato/event"
-	"github.com/Tympanix/automato/task"
+	"github.com/Tympanix/artoodetoo/event"
+	"github.com/Tympanix/artoodetoo/task"
 )
 
 const fileMode = 0666

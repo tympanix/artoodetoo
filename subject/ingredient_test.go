@@ -3,9 +3,9 @@ package subject_test
 import (
 	"testing"
 
-	"github.com/Tympanix/automato/assert"
-	"github.com/Tympanix/automato/state"
-	"github.com/Tympanix/automato/subject"
+	"github.com/Tympanix/artoodetoo/assert"
+	"github.com/Tympanix/artoodetoo/state"
+	"github.com/Tympanix/artoodetoo/subject"
 )
 
 func TestIngredientVariableNameNotString(t *testing.T) {

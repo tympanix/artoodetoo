@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/Tympanix/automato/assert"
-	"github.com/Tympanix/automato/subject"
+	"github.com/Tympanix/artoodetoo/assert"
+	"github.com/Tympanix/artoodetoo/subject"
 )
 
 type Test struct {

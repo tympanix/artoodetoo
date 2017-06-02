@@ -6,7 +6,7 @@ import (
 	"log"
 	"reflect"
 
-	"github.com/Tympanix/automato/types"
+	"github.com/Tympanix/artoodetoo/types"
 )
 
 const (

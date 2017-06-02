@@ -18,7 +18,7 @@
   <div class="col-lg-8">
     <span [ngSwitch]="model.type">
             <!-- Define your variable input -->
-            <template ngSwitchCase="0">
+            <ng-template ngSwitchCase="0">
               <div class="select-container">
                 <md-select placeholder="Source" [(ngModel)]="source" (change)="changeSourceEvent($event)">
                     <md-option *ngFor="let unit of sources" [value]="unit">{{ unit.name }}</md-option>
@@ -30,12 +30,12 @@
                         <i class="material-icons">warning</i>
                 </a>
               </div>
-            </template>
+            </ng-template>
 
             <!-- Define your static input -->
-            <template ngSwitchCase="1">
+            <ng-template ngSwitchCase="1">
                 <typeeditor [ingredient]="model"></typeeditor>
-            </template>
+            </ng-template>
     </span>
   </div>
 

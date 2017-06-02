@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Tympanix/automato/config"
+	"github.com/Tympanix/artoodetoo/config"
 	jwt "github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 )

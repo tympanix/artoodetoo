@@ -1,6 +1,6 @@
 package event
 
-import "github.com/Tympanix/automato/types"
+import "github.com/Tympanix/artoodetoo/types"
 
 // Base is a struct used for subtyping to implement different events
 // for the application

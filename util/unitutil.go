@@ -1,6 +1,6 @@
 package util
 
-import "github.com/Tympanix/automato/unit"
+import "github.com/Tympanix/artoodetoo/unit"
 
 // AllUnits returns a slice of all available units as meta objects
 func AllUnits() []*unit.Unit {

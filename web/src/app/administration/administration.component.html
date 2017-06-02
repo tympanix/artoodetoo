@@ -89,10 +89,10 @@
               </div>
               <div class="panel-body">
                 <p>{{task.event.name}}
-                  <template ngFor let-action [ngForOf]="task.actions">
+                  <ng-template ngFor let-action [ngForOf]="task.actions">
                     <i class="next material-icons">arrow_forward</i>
                     {{action.name}}
-                  </template>
+                  </ng-template>
                 </p>
               </div>
             </div>
@@ -109,9 +109,9 @@
                 <h3 class="panel-title">{{ev.name}}</h3>
               </div>
               <div class="panel-body">
-                <template ngFor let-input [ngForOf]="ev.input">
+                <ng-template ngFor let-input [ngForOf]="ev.input">
                   <p><b>{{input.name}}</b> <span *ngFor="let ingr of input.recipe">{{ingr.value}}</span></p>
-                </template>
+                </ng-template>
               </div>
             </div>
           </div>

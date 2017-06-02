@@ -1,8 +1,8 @@
 package util
 
 import (
-	"github.com/Tympanix/automato/storage"
-	"github.com/Tympanix/automato/task"
+	"github.com/Tympanix/artoodetoo/storage"
+	"github.com/Tympanix/artoodetoo/task"
 )
 
 // AddTask adds a new tasks to application and saves it to storage

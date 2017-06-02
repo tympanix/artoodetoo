@@ -3,7 +3,7 @@ package meta
 import (
 	"log"
 
-	"github.com/Tympanix/automato/unit"
+	"github.com/Tympanix/artoodetoo/unit"
 )
 
 // Debug is used to debug program code

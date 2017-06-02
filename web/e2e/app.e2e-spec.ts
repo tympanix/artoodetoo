@@ -1,6 +1,6 @@
 import { AutomatoPage } from './app.po';
 
-describe('automato App', function() {
+describe('ArtooDetoo App', function() {
   let page: AutomatoPage;
 
   beforeEach(() => {

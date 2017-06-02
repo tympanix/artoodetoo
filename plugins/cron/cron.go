@@ -3,7 +3,7 @@ package cron
 import (
 	"errors"
 
-	"github.com/Tympanix/automato/event"
+	"github.com/Tympanix/artoodetoo/event"
 	"github.com/robfig/cron"
 )
 

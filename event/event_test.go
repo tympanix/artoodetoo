@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/Tympanix/automato/assert"
-	"github.com/Tympanix/automato/event"
-	"github.com/Tympanix/automato/service/cron"
-	"github.com/Tympanix/automato/task"
+	"github.com/Tympanix/artoodetoo/assert"
+	"github.com/Tympanix/artoodetoo/event"
+	"github.com/Tympanix/artoodetoo/service/cron"
+	"github.com/Tympanix/artoodetoo/task"
 )
 
 func TestEvent(t *testing.T) {

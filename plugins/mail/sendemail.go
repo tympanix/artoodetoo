@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/smtp"
 
-	"github.com/Tympanix/automato/unit"
+	"github.com/Tympanix/artoodetoo/unit"
 )
 
 // SendEmail mimcs sending an email as an action

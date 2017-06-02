@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/Tympanix/automato/assert"
-	"github.com/Tympanix/automato/example"
-	"github.com/Tympanix/automato/state"
-	"github.com/Tympanix/automato/unit"
+	"github.com/Tympanix/artoodetoo/assert"
+	"github.com/Tympanix/artoodetoo/example"
+	"github.com/Tympanix/artoodetoo/state"
+	"github.com/Tympanix/artoodetoo/unit"
 )
 
 func TestUnitConstructor(t *testing.T) {

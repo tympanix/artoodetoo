@@ -27,7 +27,7 @@ export class CycleDialog implements OnInit {
     this.dialogRef.close(false)
   }
 
-  static check(dialog: MdDialog, snack: MdSnackBar, task: Task): Promise<void> {
+  static check(dialog: MdDialog, snack: MdSnackBar, task: Task): Promise<Unit[]> {
     var self = this
     if (!task) return
     return task.checkCycles().catch((cycle) => {

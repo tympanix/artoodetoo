@@ -3,7 +3,7 @@ package task
 import (
 	"errors"
 
-	"github.com/Tympanix/automato/unit"
+	"github.com/Tympanix/artoodetoo/unit"
 )
 
 type dag struct {

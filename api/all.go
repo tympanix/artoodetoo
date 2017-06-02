@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/Tympanix/automato/event"
-	"github.com/Tympanix/automato/task"
-	"github.com/Tympanix/automato/unit"
-	"github.com/Tympanix/automato/util"
+	"github.com/Tympanix/artoodetoo/event"
+	"github.com/Tympanix/artoodetoo/task"
+	"github.com/Tympanix/artoodetoo/unit"
+	"github.com/Tympanix/artoodetoo/util"
 )
 
 func init() {

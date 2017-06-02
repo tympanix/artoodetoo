@@ -1,8 +1,8 @@
 package util
 
 import (
-	"github.com/Tympanix/automato/event"
-	"github.com/Tympanix/automato/storage"
+	"github.com/Tympanix/artoodetoo/event"
+	"github.com/Tympanix/artoodetoo/storage"
 )
 
 // AddEvent adds a new event to application and saves it to storage

@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Tympanix/automato/state"
-	"github.com/Tympanix/automato/task"
-	"github.com/Tympanix/automato/util"
+	"github.com/Tympanix/artoodetoo/state"
+	"github.com/Tympanix/artoodetoo/task"
+	"github.com/Tympanix/artoodetoo/util"
 	"github.com/gorilla/mux"
 )
 

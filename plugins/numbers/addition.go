@@ -1,6 +1,6 @@
 package numbers
 
-import "github.com/Tympanix/automato/unit"
+import "github.com/Tympanix/artoodetoo/unit"
 
 // Addition event to test the application
 type Addition struct {

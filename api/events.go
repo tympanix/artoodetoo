@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Tympanix/automato/event"
-	"github.com/Tympanix/automato/util"
+	"github.com/Tympanix/artoodetoo/event"
+	"github.com/Tympanix/artoodetoo/util"
 )
 
 func init() {

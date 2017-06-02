@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Tympanix/automato/types"
+	"github.com/Tympanix/artoodetoo/types"
 	"github.com/mkideal/cli"
 )
 

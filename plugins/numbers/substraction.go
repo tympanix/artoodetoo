@@ -1,6 +1,6 @@
 package numbers
 
-import "github.com/Tympanix/automato/unit"
+import "github.com/Tympanix/artoodetoo/unit"
 
 // Substraction event to test the application
 type Substraction struct {

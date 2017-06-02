@@ -6,10 +6,10 @@ import (
 	"log"
 	"sync"
 
-	"github.com/Tympanix/automato/event"
-	"github.com/Tympanix/automato/generate"
-	"github.com/Tympanix/automato/types"
-	"github.com/Tympanix/automato/unit"
+	"github.com/Tympanix/artoodetoo/event"
+	"github.com/Tympanix/artoodetoo/generate"
+	"github.com/Tympanix/artoodetoo/types"
+	"github.com/Tympanix/artoodetoo/unit"
 )
 
 // Task is an object that processes data based on events, converters and actions

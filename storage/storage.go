@@ -4,8 +4,8 @@ import (
 	"errors"
 	"log"
 
-	"github.com/Tympanix/automato/event"
-	"github.com/Tympanix/automato/task"
+	"github.com/Tympanix/artoodetoo/event"
+	"github.com/Tympanix/artoodetoo/task"
 )
 
 // Driver holds the active storage manager for the application

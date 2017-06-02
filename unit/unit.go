@@ -7,9 +7,9 @@ import (
 	"log"
 	"sync"
 
-	"github.com/Tympanix/automato/state"
-	"github.com/Tympanix/automato/subject"
-	"github.com/Tympanix/automato/types"
+	"github.com/Tympanix/artoodetoo/state"
+	"github.com/Tympanix/artoodetoo/subject"
+	"github.com/Tympanix/artoodetoo/types"
 )
 
 const (

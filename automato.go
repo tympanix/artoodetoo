@@ -5,11 +5,11 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Tympanix/automato/api"
-	"github.com/Tympanix/automato/cli"
-	"github.com/Tympanix/automato/config"
-	"github.com/Tympanix/automato/storage"
-	"github.com/Tympanix/automato/types"
+	"github.com/Tympanix/artoodetoo/api"
+	"github.com/Tympanix/artoodetoo/cli"
+	"github.com/Tympanix/artoodetoo/config"
+	"github.com/Tympanix/artoodetoo/storage"
+	"github.com/Tympanix/artoodetoo/types"
 )
 
 const (

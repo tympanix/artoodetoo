@@ -17,7 +17,7 @@
     <!-- Type switch -->
     <span [ngSwitch]="timeType">
 
-    <template ngSwitchCase="0">
+    <ng-template ngSwitchCase="0">
       <div class="select-container">
         <md-select placeholder="Every" [(ngModel)]="selectedType" (ngModelChange)="unitToNumber()">
           <md-option [value]="0">Minute</md-option>
@@ -26,28 +26,28 @@
 
         <!-- Choose time unit -->
         <span [ngSwitch]="selectedType">
-          <template ngSwitchCase="0">
+          <ng-template ngSwitchCase="0">
             <md-select placeholder="min" [(ngModel)]="selectedNumber" (ngModelChange)="updateIngrValue()">
                 <md-option *ngFor="let int of minute" [value]="int">{{ int }}</md-option>
             </md-select>
-          </template>
+          </ng-template>
 
-          <template ngSwitchCase="1">
+          <ng-template ngSwitchCase="1">
             <md-select placeholder="hour" [(ngModel)]="selectedNumber"  (ngModelChange)="updateIngrValue()">
                 <md-option *ngFor="let int of hour" [value]="int">{{ int }}</md-option>
             </md-select>
-          </template>
+          </ng-template>
         </span>
 
     <span *ngIf="ingredient.value">Fires {{ingredient.value}}</span>
   </div>
-  </template>
+  </ng-template>
 
-  <template ngSwitchCase="1">
+  <ng-template ngSwitchCase="1">
       <md-input-container class="fluid">
           <input mdInput placeholder="sec min hour day month day/week" [(ngModel)]="ingredient.value">
       </md-input-container>
-    </template>
+    </ng-template>
 
   </span>
 

@@ -7,8 +7,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/Tympanix/automato/data"
-	"github.com/Tympanix/automato/event"
+	"github.com/Tympanix/artoodetoo/data"
+	"github.com/Tympanix/artoodetoo/event"
 )
 
 // Photos listen for new photo uploads or tags on facebook

@@ -1,6 +1,6 @@
 package example
 
-import "github.com/Tympanix/automato/unit"
+import "github.com/Tympanix/artoodetoo/unit"
 
 // PersonEvent event to test the application
 type PersonEvent struct {

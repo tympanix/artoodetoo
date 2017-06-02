@@ -1,6 +1,6 @@
 package string
 
-import "github.com/Tympanix/automato/unit"
+import "github.com/Tympanix/artoodetoo/unit"
 
 // Concatenation formats a string using variables
 type Concatenation struct {

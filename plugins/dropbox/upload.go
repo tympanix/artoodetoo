@@ -4,8 +4,8 @@ import (
 	"io/ioutil"
 	"log"
 
-	"github.com/Tympanix/automato/data"
-	"github.com/Tympanix/automato/unit"
+	"github.com/Tympanix/artoodetoo/data"
+	"github.com/Tympanix/artoodetoo/unit"
 	"github.com/stacktic/dropbox"
 )
 

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/Tympanix/automato/util"
+	"github.com/Tympanix/artoodetoo/util"
 )
 
 func init() {

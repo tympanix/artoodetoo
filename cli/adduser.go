@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/Tympanix/automato/config"
+	"github.com/Tympanix/artoodetoo/config"
 	"github.com/mkideal/cli"
 )
 

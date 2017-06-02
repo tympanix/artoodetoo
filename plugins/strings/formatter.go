@@ -3,7 +3,7 @@ package string
 import (
 	"fmt"
 
-	"github.com/Tympanix/automato/unit"
+	"github.com/Tympanix/artoodetoo/unit"
 )
 
 // Formatter formats a string using variables

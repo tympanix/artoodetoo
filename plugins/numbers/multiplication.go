@@ -1,6 +1,6 @@
 package numbers
 
-import "github.com/Tympanix/automato/unit"
+import "github.com/Tympanix/artoodetoo/unit"
 
 // Multiplication event to test the application
 type Multiplication struct {

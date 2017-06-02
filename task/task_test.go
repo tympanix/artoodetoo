@@ -7,11 +7,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Tympanix/automato/assert"
-	"github.com/Tympanix/automato/event"
-	"github.com/Tympanix/automato/example"
-	"github.com/Tympanix/automato/task"
-	"github.com/Tympanix/automato/unit"
+	"github.com/Tympanix/artoodetoo/assert"
+	"github.com/Tympanix/artoodetoo/event"
+	"github.com/Tympanix/artoodetoo/example"
+	"github.com/Tympanix/artoodetoo/task"
+	"github.com/Tympanix/artoodetoo/unit"
 )
 
 var buf bytes.Buffer
