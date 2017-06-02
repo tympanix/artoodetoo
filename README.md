@@ -21,19 +21,30 @@ npm install -g @angular/cli@latests
 ```
 
 ### Running
-Start the server with
-
-(Windows)
+Build the server application using:
 ```shell
-go build && artoodetoo
+go build
 ```
 
-(Unix/Linux)
-```shell
-go build && ./artoodetoo
-```
+Follow the instruction in [Quick Installation](Quick Installation) to deploy the server
 
 Now start the web application development server
 ```shell
 cd web && npm start
+```
+
+## Quick Installation
+First, create an application secret. Type the following command:
+```shell
+artoodetoo gensecret
+```
+
+Now, create a user for the application. Execute and follow the prompt instructions:
+```shell
+artoodetoo adduser
+```
+
+Now start the application itself by executing:
+```
+artoodetoo
 ```
