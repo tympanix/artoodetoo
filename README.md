@@ -36,12 +36,12 @@ cd web && npm start
 ## Quick Installation
 First, create an application secret. Type the following command:
 ```shell
-artoodetoo gensecret
+artoodetoo secret -g
 ```
 
 Now, create a user for the application. Execute and follow the prompt instructions:
 ```shell
-artoodetoo adduser
+artoodetoo user add
 ```
 
 Now start the application itself by executing:
