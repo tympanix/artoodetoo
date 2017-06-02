@@ -1,122 +1,39 @@
-# Automato
+# Artoodetoo
+Awesome self-programmable task runner for automating every day tasks
 
-## API
-### `/api/units`, `GET`
-Returns a list of available units
+## Development
+### Prerequisites
+Development requires that you have set up golang, npm and nodejs on your machine
 
-### `/api/tasks/{taskname}`, `POST`
-Executes the task with the given `taskname`
+First, get the source code with the go get utility
+```shell
+go get github.com/Tympanix/artoodetoo
+```
 
-### `/api/tasks/{taskname}`, `DELETE`
-Deletes the task with `taskname` and removes it from the application
+Then install the development dependencies
+```shell
+cd web && npm install
+```
 
-### `/api/tasks`, `PUT`
-Updates task. The html body should contain the complete task in json format, the name of the task can't be changed as it is used to identify the task. 
+Now install the `@angular/cli` utility
+```
+npm install -g @angular/cli@latests
+```
 
-### `/api/tasks`, `GET`
-Returns an array of the tasks registered in the application
+### Running
+Start the server with
 
-### `/api/tasks`, `POST`
-Adds a new task to the application.
+(Windows)
+```shell
+go build && artoodetoo
+```
 
-Example post body:
-```json
-{
-  "name": "MyFirstTask",
-  "event": {
-    "id": "example.PersonEvent",
-    "name": "Person",
-    "input": [],
-    "output": [
-      {
-        "name": "Name",
-        "type": "string"
-      },
-      {
-        "name": "Age",
-        "type": "int"
-      },
-      {
-        "name": "Height",
-        "type": "float32"
-      },
-      {
-        "name": "Married",
-        "type": "bool"
-      }
-    ]
-  },
-  "actions": [
-    {
-      "id": "example.StringConverter",
-      "name": "String",
-      "input": [
-        {
-          "name": "Format",
-          "type": "string",
-          "recipe": [
-            {
-              "type": 1,
-              "value": "Hello my name is %s"
-            }
-          ]
-        },
-        {
-          "name": "Placeholder",
-          "type": "interface {}",
-          "recipe": [
-            {
-              "type": 0,
-              "source": "Person",
-              "value": "Name"
-            }
-          ]
-        }
-      ],
-      "output": [
-        {
-          "name": "Formatted",
-          "type": "string"
-        }
-      ]
-    },
-    {
-      "id": "example.EmailAction",
-      "name": "Email",
-      "input": [
-        {
-          "name": "Message",
-          "type": "string",
-          "recipe": [
-            {
-              "type": 0,
-              "source": "String",
-              "value": "Formatted"
-            }
-          ]
-        },
-        {
-          "name": "Subject",
-          "type": "string",
-          "recipe": [
-            {
-              "type": 1,
-              "value": "A new friend"
-            }
-          ]
-        },
-        {
-          "name": "Receiver",
-          "type": "string",
-          "recipe": [
-            {
-              "type": 1,
-              "value": "johndoe@email.com"
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
+(Unix/Linux)
+```shell
+go build && ./artoodetoo
+```
+
+Now start the web application development server
+```shell
+cd web && npm start
 ```
