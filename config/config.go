@@ -1,11 +1,14 @@
 package config
 
 import (
-	"encoding/json"
-	"flag"
+	"bytes"
+	"crypto/rand"
+	"encoding/binary"
+	"fmt"
 	"log"
 	"os"
 
+	"github.com/Tympanix/automato/types"
 	"github.com/foomo/htpasswd"
 )
 
@@ -13,7 +16,7 @@ import (
 var Port int
 
 // Secret is the crypto secret for the application
-var Secret string
+var Secret []byte
 
 // Passwords is used to log into the application
 var Passwords htpasswd.HashedPasswords
@@ -25,32 +28,22 @@ type Config struct {
 }
 
 // Parse parses the application configuration file
-func Parse() {
-	var path = flag.String("config", "config.json", "the config file for the application")
-	var port = flag.Int("port", 2800, "the port for the server to listen on")
-	var htpass = flag.String("htpass", ".htpasswd", "set the htpassword file")
+func Parse(args types.AppArgs) {
+	Port = args.Port()
 
-	file, err := os.Open(*path)
+	file, err := os.Open(args.SecretPath())
 
 	if err != nil {
-		log.Println("Could not read configuration file")
 		log.Fatal(err)
 	}
 
-	conf := new(Config)
-	dec := json.NewDecoder(file)
-	if err = dec.Decode(conf); err != nil {
+	buf := new(bytes.Buffer)
+	if _, err = buf.ReadFrom(file); err != nil {
 		log.Fatal(err)
 	}
+	Secret = buf.Bytes()
 
-	if *port != 2800 {
-		conf.Port = *port
-	}
-
-	Port = conf.Port
-	Secret = conf.Secret
-
-	pass, err := htpasswd.ParseHtpasswdFile(*htpass)
+	pass, err := htpasswd.ParseHtpasswdFile(args.HtpasswdPath())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -60,12 +53,37 @@ func Parse() {
 }
 
 // AddUser adds a new user to the system
-func AddUser(username string, password string) error {
-	filename := "./.htpasswd"
-	// file, err := os.Create(filename)
-	// if err != nil {
-	// 	return err
-	// }
-	// file.Close()
-	return htpasswd.SetPassword(filename, username, password, htpasswd.HashBCrypt)
+func AddUser(path string, username string, password string) error {
+	return htpasswd.SetPassword(path, username, password, htpasswd.HashBCrypt)
+}
+
+// GenerateSecret generates a new application secret
+func GenerateSecret(path string, length int) (err error) {
+
+	min := 64
+	max := 1 << 14
+
+	if length < min || length > max {
+		return fmt.Errorf("Length must be between %v and %v bytes", min, max)
+	}
+
+	file, err := os.Create(path)
+
+	if err != nil {
+		return
+	}
+
+	defer file.Close()
+	b := make([]byte, length)
+	_, err = rand.Read(b)
+
+	if err != nil {
+		return
+	}
+
+	if err = binary.Write(file, binary.LittleEndian, b); err != nil {
+		return
+	}
+
+	return nil
 }

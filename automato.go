@@ -9,6 +9,7 @@ import (
 	"github.com/Tympanix/automato/cli"
 	"github.com/Tympanix/automato/config"
 	"github.com/Tympanix/automato/storage"
+	"github.com/Tympanix/automato/types"
 )
 
 const (
@@ -20,9 +21,9 @@ func main() {
 	cli.Run(serve)
 }
 
-func serve() {
+func serve(args types.AppArgs) {
 	// Parse application configuration
-	config.Parse()
+	config.Parse(args)
 
 	// Set up storage driver
 	initStorage()

@@ -42,3 +42,10 @@ type TupleSpace interface {
 	Put(interface{}, ...interface{}) error
 	Query(interface{}, ...interface{}) error
 }
+
+// AppArgs in an arguments type for the application
+type AppArgs interface {
+	Port() int
+	HtpasswdPath() string
+	SecretPath() string
+}

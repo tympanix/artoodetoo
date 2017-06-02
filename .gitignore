@@ -88,6 +88,7 @@ dist/
 
 # Development files
 .htpasswd
+.appsecret
 store.json
 config.json
 automato
