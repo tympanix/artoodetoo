@@ -17,7 +17,7 @@ cd web && npm install
 
 Now install the `@angular/cli` utility
 ```
-npm install -g @angular/cli@latests
+npm install -g @angular/cli@latest
 ```
 
 ### Running
