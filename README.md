@@ -26,7 +26,7 @@ Build the server application using:
 go build
 ```
 
-Follow the instruction in [Quick Installation](Quick Installation) to deploy the server
+Follow the instruction in [Quick Installation](#quick-installation) to deploy the server
 
 Now start the web application development server
 ```shell
