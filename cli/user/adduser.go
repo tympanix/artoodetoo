@@ -1,4 +1,4 @@
-package cli
+package user
 
 import (
 	"fmt"
@@ -18,7 +18,7 @@ type addUserArgs struct {
 
 var addUserCmd = &cli.Command{
 	Desc: "register a new user for the system",
-	Name: "adduser",
+	Name: "add",
 	Argv: func() interface{} { return new(addUserArgs) },
 	Fn:   doAddUser,
 }

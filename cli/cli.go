@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Tympanix/artoodetoo/cli/user"
 	"github.com/Tympanix/artoodetoo/types"
 	"github.com/mkideal/cli"
 )
@@ -14,7 +15,9 @@ var main func(types.AppArgs)
 func Run(fn func(types.AppArgs)) {
 	main = fn
 
-	prog := cli.Root(appCmd, cli.Tree(helpCmd), cli.Tree(addUserCmd), cli.Tree(genSecretCmd))
+	prog := cli.Root(appCmd, cli.Tree(helpCmd),
+		user.UserCmd,
+		cli.Tree(genSecretCmd))
 
 	if err := prog.Run(os.Args[1:]); err != nil {
 		fmt.Fprintln(os.Stderr, err)
