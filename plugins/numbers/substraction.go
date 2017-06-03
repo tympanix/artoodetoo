@@ -20,6 +20,7 @@ func (e *Substraction) Describe() string {
 }
 
 // Execute performs Substraction
-func (e *Substraction) Execute() {
+func (e *Substraction) Execute() error {
 	e.Result = e.NumberA - e.NumberB
+	return nil
 }

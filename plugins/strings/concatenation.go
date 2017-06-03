@@ -20,6 +20,7 @@ func (s *Concatenation) Describe() string {
 }
 
 // Execute function concatenates strings
-func (s *Concatenation) Execute() {
+func (s *Concatenation) Execute() error {
 	s.Result = s.StringA + s.StringB
+	return nil
 }

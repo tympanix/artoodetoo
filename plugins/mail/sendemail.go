@@ -24,7 +24,7 @@ func (a *SendEmail) Describe() string {
 }
 
 // Execute sends the email
-func (a *SendEmail) Execute() {
+func (a *SendEmail) Execute() error {
 	auth := smtp.PlainAuth(
 		"iAutomaton",
 		"iautomaton1@gmail.com",
@@ -41,6 +41,9 @@ func (a *SendEmail) Execute() {
 
 	if err := smtp.SendMail("smtp.gmail.com:25", auth, "hmm", to, msg); err != nil {
 		log.Fatal(err)
+		return err
 	}
+
+	return nil
 
 }

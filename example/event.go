@@ -20,9 +20,10 @@ func (e *PersonEvent) Describe() string {
 }
 
 // Execute creates a dummy event which output is a data collection of a person
-func (e *PersonEvent) Execute() {
+func (e *PersonEvent) Execute() error {
 	e.Name = "John Doe"
 	e.Age = 42
 	e.Height = 182
 	e.Married = true
+	return nil
 }

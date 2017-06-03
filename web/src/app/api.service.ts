@@ -165,7 +165,6 @@ export class ApiService {
       .map(json => json.map(data => Unit.fromJson(data)))
       .catch(this.handleError(this))
       .subscribe(events => this.events.next(events));
-      console.log("event")
     return this.events
   }
 

@@ -21,6 +21,7 @@ func (d *Debug) Describe() string {
 }
 
 // Execute debugging
-func (d *Debug) Execute() {
+func (d *Debug) Execute() error {
 	log.Println(d.Log)
+	return nil
 }

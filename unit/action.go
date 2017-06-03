@@ -2,6 +2,6 @@ package unit
 
 // Action interface
 type Action interface {
-	Execute()
+	Execute() error
 	Describe() string
 }

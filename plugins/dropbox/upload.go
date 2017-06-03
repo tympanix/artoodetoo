@@ -28,7 +28,7 @@ func (UploadFile) Describe() string {
 }
 
 // Execute uploads the file
-func (u *UploadFile) Execute() {
+func (u *UploadFile) Execute() error {
 	db := dropbox.NewDropbox()
 
 	db.SetAppInfo("rr6d38abezy4l6u", "u99czi59xv4tjwb")
@@ -39,5 +39,8 @@ func (u *UploadFile) Execute() {
 
 	if err != nil {
 		log.Println(err)
+		return err
 	}
+
+	return nil
 }

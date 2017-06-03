@@ -15,7 +15,7 @@ type Formatter struct {
 }
 
 func init() {
-	unit.Register(&Formatter{})
+	unit.Register(new(Formatter))
 }
 
 // Describe describes what a Formatter does
@@ -24,6 +24,7 @@ func (s *Formatter) Describe() string {
 }
 
 // Execute function converts the string using the input and parameters
-func (s *Formatter) Execute() {
+func (s *Formatter) Execute() error {
 	s.Formatted = fmt.Sprintf(s.Format, s.Placeholder)
+	return nil
 }

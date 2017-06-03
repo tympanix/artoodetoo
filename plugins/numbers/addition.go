@@ -20,6 +20,7 @@ func (e *Addition) Describe() string {
 }
 
 // Execute performs addition
-func (e *Addition) Execute() {
+func (e *Addition) Execute() error {
 	e.Result = e.NumberA + e.NumberB
+	return nil
 }

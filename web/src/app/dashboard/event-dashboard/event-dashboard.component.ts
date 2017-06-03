@@ -26,7 +26,6 @@ export class EventDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.route.data.subscribe((data: {event: Event}) => {
-      console.log("EVENT!", data)
       if(data.event){
         this.event = data.event
         this.subscribe()

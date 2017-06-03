@@ -20,6 +20,7 @@ func (e *Multiplication) Describe() string {
 }
 
 // Execute performs Multiplication
-func (e *Multiplication) Execute() {
+func (e *Multiplication) Execute() error {
 	e.Result = e.NumberA * e.NumberB
+	return nil
 }
