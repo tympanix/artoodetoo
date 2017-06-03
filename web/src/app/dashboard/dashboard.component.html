@@ -1,124 +1,19 @@
 <main class="container dashboard">
 
-<!-- Tasks -->
-<div class="well">
   <div class="row">
-    <div class="col-sm-12">
-      <h1>Tasks</h1>
-    </div>
-  </div>
-
-  <!-- If no tasks -->
-  <div *ngIf="tasks == ''" class="row">
-    <div class="col-sm-12">
-      <p>You do not have any tasks yet, head to the administration panel to create tasks</p>
-    </div>
-  </div>
-
-  <!-- All panels -->
-  <div *ngFor="let task of tasks" class="panel panel-primary">
-    <div class="panel-heading">
-      <h3 class="panel-title">{{task.name}}</h3>
-      <div class="panel-actions">
-
-          <a routerLink="/administration/task/{{task.uuid}}" mdTooltip="Edit {{task.name}}" mdTooltipPosition="above"><i class="material-icons">settings</i></a>
-          <a (click)="deleteTask(task)" mdTooltip="Delete {{task.name}}" mdTooltipPosition="above"><i class="material-icons">delete</i></a>
-
+    <div *ngFor="let event of events" class="col-md-4 col-sm-6 col-xs-12">
+      <div class="event" [style.background]="event.color">
+        <i class="fa fa-5x" [ngClass]="event.icon"></i>
+        <header class="event-title">
+          <p>{{event.package()}}</p>
+          <h3>{{event.lastname()}}</h3>
+        </header>
+        <footer>
+          <span class="tag"><span>Name</span>{{event.name}}</span>
+          <span class="tag"><span>Tasks</span>{{event.subscribers.length}}</span>
+        </footer>
       </div>
     </div>
-    <div class="panel-body">
-      <a class="btn btn-default btn-icon"><i class="type material-icons">notifications</i>{{task.event.name}}</a>
-
-      <ng-template ngFor let-action [ngForOf]="task.actions">
-        <i class="next material-icons">arrow_forward</i>
-        <a class="btn btn-default btn-icon"><i class="type material-icons">computer</i>{{action.name}}</a>
-      </ng-template>
-
-    </div>
   </div>
-</div>
-
-<!-- Events -->
-
-<div class="well">
-  <div class="row">
-    <div class="col-sm-12">
-      <h1>Events</h1>
-    </div>
-  </div>
-
-  <!-- If no events -->
-  <div class="row">
-    <div *ngIf="events == ''" class="col-sm-12">
-      <p>You do not have any events yet, head to the administration panel to create events</p>
-    </div>
-  </div>
-
-  <!-- If events -->
-  <div *ngFor="let event of events" class="panel panel-primary">
-    <div class="panel-heading">
-      <div class="row">
-        <div class="col-sm-12">
-          <h3 class="panel-title">{{event.name}}</h3>
-        </div>
-      </div>
-    </div>
-
-    <div class="panel-body">
-
-      <div class="row">
-        <div class="col-sm-12">
-          <h4 class="bold">Input</h4>
-        </div>
-        <div class="col-sm-12">
-          <!-- Event doesn't take input -->
-          <div *ngIf="!event.input.length">
-            <a class="btn btn-default btn-xs">No Input</a>
-          </div>
-
-          <!-- Event takes input  -->
-          <div *ngFor="let input of event.input">
-            <div class="row">
-
-              <div class="col-lg-2">
-                <a class="btn btn-xs btn-blue">{{input.name}}</a>
-              </div>
-
-              <!-- For each input field  -->
-              <div class="col-lg-10" *ngFor="let ingr of input.recipe">
-                <p *ngIf="input.type != 'facebook.Token'" class="ingr-value">{{ingr.value}}</p>
-                <p *ngIf="input.type == 'facebook.Token'" class="ingr-value">Valid</p>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <hr>
-
-      <div class="row">
-        <div class="col-sm-12">
-          <h4 class="bold">Output</h4>
-        </div>
-
-        <div class="col-sm-12">
-          <span *ngIf="!event.output.length">
-            <a class="btn btn-default btn-xs">No Output</a>
-          </span>
-
-          <span *ngFor="let output of event.output">
-            <a class="btn btn-xs btn-red">{{output.name}}</a>
-          </span>
-        </div>
-      </div>
-
-
-    </div>
-    <!-- panel body -->
-  </div>
-
-
-</div>
 
 </main>

@@ -14,12 +14,13 @@ export class TypeService {
   types: TypeSelector[] = []
 
   constructor() {
-    this.add(IntegerTypeComponent, (input: Input) => input.isInteger())
-    this.add(StringTypeComponent, (input: Input) => input.isString())
-    this.add(BoolTypeComponent, (input: Input) => input.isBool())
-    this.add(FloatTypeComponent, (input: Input) => input.isFloat())
-    this.add(CronTimeComponent, (input: Input) => input.type == "cron.Time")
-    this.add(FacebookTokenComponent, (input: Input) => input.type == "facebook.Token")
+    this.add(IntegerTypeComponent, (i: Input) => i.isInteger())
+    this.add(StringTypeComponent, (i: Input) => i.isString())
+    this.add(StringTypeComponent, (i: Input) => i.isInterface())
+    this.add(BoolTypeComponent, (i: Input) => i.isBool())
+    this.add(FloatTypeComponent, (i: Input) => i.isFloat())
+    this.add(CronTimeComponent, (i: Input) => i.type == "cron.Time")
+    this.add(FacebookTokenComponent, (i: Input) => i.type == "facebook.Token")
   }
 
   add(type: Type<any>, selector: (Input) => boolean) {

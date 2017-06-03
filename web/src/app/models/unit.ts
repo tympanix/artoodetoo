@@ -20,6 +20,8 @@ export class Unit implements IUnit, Model {
   description: string
   input: Input[]
   output: Output[]
+  color: string
+  icon: string
 
   // State properties
   parent: Unit = null
@@ -34,6 +36,36 @@ export class Unit implements IUnit, Model {
     unit.output.forEach(o => o.bindToUnit(unit))
 
     return unit
+  }
+
+  package(): string {
+    return this.id.split(".")[0]
+  }
+
+  lastname(): string {
+    return this.id.split(".")[1]
+  }
+
+  isDark(): boolean {
+    if (!this.color) {
+      return false
+    }
+    
+    var c = this.color.substring(1);      // strip #
+    var rgb = parseInt(c, 16);   // convert rrggbb to decimal
+    var r = (rgb >> 16) & 0xff;  // extract red
+    var g = (rgb >> 8) & 0xff;  // extract green
+    var b = (rgb >> 0) & 0xff;  // extract blue
+
+    var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+
+    return  luma < 40
+  }
+
+  getStyle(): Object {
+    return {
+      "dark": this.isDark()
+    }
   }
 
   bindToTask(task: Task) {

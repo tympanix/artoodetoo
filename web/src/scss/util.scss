@@ -3,9 +3,35 @@
 }
 
 .hint {
-  background-color: rgba(255,255,255,0.2);
   border-radius: 200px;
+  background-color: rgba(255,255,255,0.2);
   padding: 0 1rem;
+}
+
+
+.dark {
+  .tag {
+    border: 1px solid rgba(0,0,0,0.2);
+
+    & span {
+      background-color: rgba(0,0,0,0.2);
+    }
+  }
+
+}
+
+
+.tag {
+  border-radius: 200px;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding-right: 1rem;
+
+  & span {
+    background-color: rgba(255,255,255,0.2);
+    border-radius: 200px;
+    padding: 0 1rem;
+    margin-right: .5rem;
+  }
 }
 
 .description {

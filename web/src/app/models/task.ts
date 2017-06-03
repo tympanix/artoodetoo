@@ -14,7 +14,7 @@ export class Task implements ITask, Model {
   // Model properties
   name: string = ""
   uuid: string = ""
-  event: Unit = null
+  event: Event = null
   actions: Unit[] = []
 
   private eventRef: string
@@ -49,6 +49,7 @@ export class Task implements ITask, Model {
     }
 
     this.event = event
+    this.event.subscribeTask(this)
     this.updateUnitList()
     this.resolveIngredients()
   }

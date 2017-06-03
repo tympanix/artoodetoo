@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { MdSnackBar, MdDialog, MdSnackBarRef, SimpleSnackBar } from '@angular/material';
 
 import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/mergeMap'
 
 import { ErrorDialog } from './dialogs/errordialog/errordialog.component'
 import { Task, Unit, Data, Event } from './model';
@@ -124,11 +125,15 @@ export class ApiService {
   }
 
   getTasks(): Observable<Task[]> {
+    let _tasks: Task[]
     this.http.get("/api/tasks", this.options)
       .map(this.extractData<Task[]>(this))
       .map(json => json.map(data => Task.fromJson(data)))
+      .do(tasks => _tasks = tasks)
+      .mergeMap(tasks => this.events)
+      .do(e => _tasks.forEach(t => t.resolveEvent(e)))
       .catch(this.handleError(this))
-      .subscribe(tasks => this.tasks.next(tasks));
+      .subscribe(() => this.tasks.next(_tasks))
     return this.tasks
   }
 

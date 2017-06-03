@@ -10,8 +10,19 @@ import (
 // Cron is an event which triggers on specefic time intervals
 type Cron struct {
 	event.Base
+	cronStyle
 	Cron *cron.Cron `json:"-"`
 	Time Time       `io:"input"`
+}
+
+type cronStyle struct{}
+
+func (cronStyle) Color() uint {
+	return 0x282c34
+}
+
+func (cronStyle) Icon() string {
+	return "fa-clock-o"
 }
 
 // Time is a string which describes intervals using the cron spec
