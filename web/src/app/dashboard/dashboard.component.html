@@ -2,7 +2,7 @@
 
   <div class="row">
     <div *ngFor="let event of events" class="col-md-4 col-sm-6 col-xs-12">
-      <div class="event" [style.background]="event.color">
+      <div class="event link" [style.background]="event.color" routerLink="/dashboard/{{event.uuid}}">
         <i class="fa fa-5x" [ngClass]="event.icon"></i>
         <header class="event-title">
           <p>{{event.package()}}</p>

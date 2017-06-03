@@ -18,6 +18,7 @@ import { ErrorService } from './error.service'
 import { UnitComponent } from './unit/unit.component';
 
 import { TaskResolver } from './resolvers/task-resolver.service';
+import { EventResolver } from './resolvers/event-resolver.service';
 import { IngredientComponent } from './ingredient/ingredient.component';
 import { UnitDialog } from './dialogs/unitdialog/unitdialog.component';
 import { TaskDialog } from './dialogs/taskdialog/taskdialog.component';
@@ -41,7 +42,8 @@ import { IngredientType } from './types/ingredient-type';
 import { CronTimeComponent } from './types/cron-time/cron-time.component';
 import { FacebookTokenComponent } from './types/facebook-token/facebook-token.component';
 import { TypeeditorComponent } from './editor/typeeditor/typeeditor.component';
-import { FloatTypeComponent } from './types/float-type/float-type.component'
+import { FloatTypeComponent } from './types/float-type/float-type.component';
+import { EventDashboardComponent } from './dashboard/event-dashboard/event-dashboard.component'
 
 @NgModule({
   imports: [
@@ -78,7 +80,8 @@ import { FloatTypeComponent } from './types/float-type/float-type.component'
     CronTimeComponent,
     FacebookTokenComponent,
     TypeeditorComponent,
-    FloatTypeComponent
+    FloatTypeComponent,
+    EventDashboardComponent
   ],
   entryComponents: [
     UnitDialog,
@@ -95,7 +98,7 @@ import { FloatTypeComponent } from './types/float-type/float-type.component'
     CronTimeComponent,
     FloatTypeComponent
   ],
-  providers: [ApiService, TaskResolver, ErrorService, TypeService],
+  providers: [ApiService, TaskResolver, ErrorService, TypeService, EventResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

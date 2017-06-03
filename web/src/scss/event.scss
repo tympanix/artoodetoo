@@ -9,9 +9,12 @@
   overflow: hidden;
   color: rgba(255,255,255,0.75);
   transition: transform .075s ease-in-out;
+  outline: none;
 
-  &:hover {
-    transform: translateY(-3px);
+  &.link {
+    &:hover {
+      transform: translateY(-3px);
+    }
   }
 
   &.dark {

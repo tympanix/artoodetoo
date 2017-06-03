@@ -14,6 +14,7 @@ export class EventResolver implements Resolve<Event> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     let obs: ReplaySubject<Event> = new ReplaySubject<Event>(1)
     let id = route.params['event']
+    console.log("Finding event", id)
     this.api.events.subscribe((events) => {
       obs.next(this.eventById(id, events))
       obs.complete()

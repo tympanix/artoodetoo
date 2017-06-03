@@ -1,0 +1,45 @@
+<main class="container dashboard">
+  <div *ngIf="event">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="event" [style.background]="event.color">
+          <i class="fa fa-5x" [ngClass]="event.icon"></i>
+          <header class="event-title">
+            <p>{{event.package()}}</p>
+            <h3>{{event.lastname()}}</h3>
+          </header>
+          <footer>
+            <span class="tag"><span>Name</span>{{event.name}}</span>
+            <span class="tag"><span>Tasks</span>{{event.subscribers.length}}</span>
+          </footer>
+        </div>
+      </div>
+    </div>
+    <div class="well">
+      <div *ngIf="!event.subscribers.length">
+          <h3 class="centered">Oops! No tasks...</h3>
+          <p>There doesn't seem to be any tasks subscribed to this event</p>
+      </div>
+      <div *ngFor="let task of event.subscribers" class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{task.name}}</h3>
+          <div class="panel-actions">
+
+            <a routerLink="/administration/task/{{task.uuid}}" mdTooltip="Edit {{task.name}}" mdTooltipPosition="above"><i class="material-icons">settings</i></a>
+            <a (click)="deleteTask(task)" mdTooltip="Delete {{task.name}}" mdTooltipPosition="above"><i class="material-icons">delete</i></a>
+
+          </div>
+        </div>
+        <div class="panel-body">
+          <a class="btn btn-default btn-icon"><i class="type material-icons">notifications</i>{{task.event.name}}</a>
+
+          <template ngFor let-action [ngForOf]="task.actions">
+        <i class="next material-icons">arrow_forward</i>
+        <a class="btn btn-default btn-icon"><i class="type material-icons">computer</i>{{action.name}}</a>
+      </template>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
