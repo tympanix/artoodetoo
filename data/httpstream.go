@@ -2,6 +2,7 @@ package data
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"mime"
 	"net/http"
@@ -35,6 +36,10 @@ func (h *httpStream) getData() {
 	}
 	defer resp.Body.Close()
 	h.buffer.ReadFrom(resp.Body)
+}
+
+func (h *httpStream) String() string {
+	return fmt.Sprintf("HTTP data stream: %s", h.url)
 }
 
 func (h *httpStream) NextReader() io.Reader {

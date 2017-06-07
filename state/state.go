@@ -51,6 +51,9 @@ func (s *State) String() string {
 func (s *State) Close() {
 	s.cond.L.Lock()
 	defer s.cond.L.Unlock()
+	if s.closed {
+		return
+	}
 	s.closed = true
 	s.cond.Broadcast()
 }

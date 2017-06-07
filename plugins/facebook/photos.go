@@ -29,7 +29,7 @@ func init() {
 
 // Describe describes what the facebook photo event does
 func (p *Photos) Describe() string {
-	return "Triggers whenever you are tagged or uploads a photo on facebook"
+	return "Triggers whenever you are tagged in a photo on facebook"
 }
 
 // Listen starts listening for new photo uploads and tags on facebook

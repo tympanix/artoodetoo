@@ -6,7 +6,7 @@ import (
 
 	"github.com/Tympanix/artoodetoo/assert"
 	"github.com/Tympanix/artoodetoo/event"
-	"github.com/Tympanix/artoodetoo/service/cron"
+	"github.com/Tympanix/artoodetoo/plugins/cron"
 	"github.com/Tympanix/artoodetoo/task"
 )
 

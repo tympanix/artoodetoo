@@ -55,3 +55,8 @@ type Styleable interface {
 	Color() uint
 	Icon() string
 }
+
+// Identifiable is a type with identification
+type Identifiable interface {
+	ID() string
+}

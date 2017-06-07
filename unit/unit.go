@@ -55,8 +55,20 @@ func (c *Unit) Validate() error {
 }
 
 // Execute executes the unit by evaluating input and assigning output
-func (c *Unit) Execute() {
-	c.action.Execute()
+func (c *Unit) Execute() (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			switch x := r.(type) {
+			case string:
+				err = errors.New(x)
+			case error:
+				err = x
+			default:
+				err = errors.New(fmt.Sprint(x))
+			}
+		}
+	}()
+	return c.action.Execute()
 }
 
 // Action returns the underlying action represented by the unit
@@ -64,21 +76,26 @@ func (c *Unit) Action() *Action {
 	return &c.action
 }
 
-func (c *Unit) RunAsync(waitgroup *sync.WaitGroup, ts types.TupleSpace) {
+func (c *Unit) RunAsync(waitgroup *sync.WaitGroup, ts types.TupleSpace, errchan chan<- error) {
 	go func() {
 		defer waitgroup.Done()
 		if err := c.AssignInput(ts); err != nil {
 			if _, ok := err.(*state.Closed); ok {
 				log.Printf("Exiting action %s", c.Name)
 			} else {
-				log.Println(err)
-				ts.Close()
+				errchan <- err
 			}
 			return
 		}
-		c.Execute()
+		if err := c.Execute(); err != nil {
+			log.Println(err)
+			errchan <- err
+			return
+		}
 		if err := c.StoreOutput(ts); err != nil {
 			log.Println(err)
+			errchan <- err
+			return
 		}
 	}()
 }

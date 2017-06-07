@@ -8,6 +8,7 @@ import (
 
 	"github.com/Tympanix/artoodetoo/event"
 	"github.com/Tympanix/artoodetoo/generate"
+	"github.com/Tympanix/artoodetoo/logger"
 	"github.com/Tympanix/artoodetoo/types"
 	"github.com/Tympanix/artoodetoo/unit"
 )
@@ -27,6 +28,10 @@ func (t *Task) init() {
 	t.Queue = make(chan types.TupleSpace, 1<<12)
 	t.running = new(sync.Mutex)
 	t.once = new(sync.Once)
+}
+
+func (t *Task) ID() string {
+	return t.UUID
 }
 
 // Describe prints our information about the action to the console
@@ -107,6 +112,10 @@ func (t *Task) startWorker() {
 func (t *Task) run(ts types.TupleSpace) {
 	log.Printf("Running task %s\n", t.Name)
 
+	numerr := 0
+	errchan := make(chan error)
+	done := make(chan struct{})
+
 	t.running.Lock()
 	defer t.running.Unlock()
 
@@ -114,10 +123,35 @@ func (t *Task) run(ts types.TupleSpace) {
 	waitgroup.Add(len(t.Actions))
 
 	for _, action := range t.Actions {
-		action.RunAsync(waitgroup, ts)
+		action.RunAsync(waitgroup, ts, errchan)
 	}
 
-	waitgroup.Wait()
+	go func() {
+		defer close(done)
+		waitgroup.Wait()
+	}()
+
+	for {
+		stop := false
+		select {
+		case err := <-errchan:
+			ts.Close()
+			logger.Error(t, err)
+			numerr++
+		case <-done:
+			close(errchan)
+			stop = true
+		}
+
+		if stop {
+			break
+		}
+	}
+
+	if numerr == 0 {
+		logger.Success(t, "Finished task")
+	}
+
 	log.Printf("Finished %s", t.Name)
 }
 

@@ -7,6 +7,7 @@ import (
 	"log"
 
 	"github.com/Tympanix/artoodetoo/generate"
+	"github.com/Tympanix/artoodetoo/logger"
 	"github.com/Tympanix/artoodetoo/state"
 	"github.com/Tympanix/artoodetoo/style"
 	"github.com/Tympanix/artoodetoo/subject"
@@ -28,8 +29,8 @@ type Event struct {
 	Observers []types.Runnable `json:"-"`
 	UUID      string           `json:"uuid"`
 	Desc      string           `json:"description"`
-	stop      chan struct{}    `json:"-"`
-	running   bool             `json:"-"`
+	stop      chan struct{}
+	running   bool
 }
 
 // New takes an event and applies its type. The same event is returned.
@@ -71,18 +72,21 @@ func (e *Event) Trigger() {
 	}
 }
 
+// Start starts the event for asynchronous listening
 func (e *Event) Start() {
 	if e.running {
 		return
 	}
 	go func() {
 		if err := e.Listen(e.stop); err != nil {
+			logger.Error(e, err)
 			log.Println(err)
 		}
 	}()
 	e.running = true
 }
 
+// Stop stops the event for listening
 func (e *Event) Stop() {
 	if !e.running {
 		return
