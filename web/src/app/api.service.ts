@@ -30,7 +30,7 @@ export class ApiService {
     this.createHeaders()
     this.getAll()
     this.updateLogs()
-    
+
     setInterval(() => {
       this.updateLogs()
     }, 5000)
@@ -165,7 +165,7 @@ export class ApiService {
   getTemplateEvents(): Observable<Unit[]>{
     this.http.get("/api/all_events", this.options)
       .map(this.extractData<Unit[]>(this))
-      .map(json => json.map(data => Unit.fromJson(data)))
+      .map(json => json.map(data => Event.fromJson(data)))
       .catch(this.handleError(this))
       .subscribe(events => this.templateEvents.next(events));
     return this.templateEvents
@@ -187,7 +187,7 @@ export class ApiService {
   getEvents(): Observable<Unit[]>{
     this.http.get("/api/events", this.options)
       .map(this.extractData<Unit[]>(this))
-      .map(json => json.map(data => Unit.fromJson(data)))
+      .map(json => json.map(data => Event.fromJson(data)))
       .catch(this.handleError(this))
       .subscribe(events => this.events.next(events));
     return this.events
