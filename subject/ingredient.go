@@ -1,6 +1,9 @@
 package subject
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 const (
 	// IngredientVar defines an ingredient type which has a input variable
@@ -31,9 +34,9 @@ func (i *Ingredient) IsVariable() bool {
 }
 
 func (i *Ingredient) Validate() error {
-	// if i.Value == nil {
-	// 	return errors.New("Ingredient does not allow nil values")
-	// }
+	if i.Value == nil {
+		return errors.New("Ingredient does not allow nil values")
+	}
 	return nil
 }
 
