@@ -9,7 +9,7 @@
     <md-menu #menu="mdMenu">
         <button md-menu-item (click)="delete()">
             <md-icon>delete</md-icon>
-            <span>Remove Unit</span>
+            <span>Remove Action</span>
         </button>
         <button md-menu-item (click)="moveUp()">
             <md-icon>arrow_upward</md-icon>
@@ -27,7 +27,7 @@
     <div *ngIf="!unit.name">
       <form (ngSubmit)="changeUnitName(unitname)">
         <md-input-container class="full-width">
-          <input name="unitname" mdInput placeholder="Unit Name" autocomplete="off" autofocus required
+          <input name="unitname" mdInput placeholder="Action Name" autocomplete="off" autofocus required
              [(ngModel)]="unitname">
         </md-input-container>
       </form>
