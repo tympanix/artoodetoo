@@ -28,14 +28,20 @@ export class TaskeditorComponent implements OnInit {
   createTask(): void {
     this.api.createTask(this.task).subscribe(() => {
       this.snackBar.open(this.task.name + " has been created", "", {duration: 4000, extraClasses: ["snackbar-success"]})
+      this.gotoDashboard()
     })
   }
 
   updateTask() {
     this.api.updateTask(this.task).subscribe(() => {
       this.snackBar.open(this.task.name + " has been saved", "", {duration: 4000, extraClasses: ["snackbar-success"]})
+      this.gotoDashboard()
     })
 
+  }
+
+  gotoDashboard() {
+    this.router.navigateByUrl("/dashboard")
   }
 
   deleteTask(){
@@ -49,7 +55,6 @@ export class TaskeditorComponent implements OnInit {
       } else {
         this.createTask()
       }
-      this.router.navigateByUrl("/dashboard")
     })
   }
 

@@ -1,19 +1,18 @@
 <h1 md-dialog-title>Add Unit</h1>
 <div md-dialog-content>
+  <form (ngSubmit)="addUnit()">
+    <md-input-container class="full-width">
+      <input name="unitsearch" mdInput placeholder="Search" autocomplete="off" (ngModelChange)="doSearch($event)" [(ngModel)]="search">
+    </md-input-container>
+  </form>
   <ul class="unitlist">
-    <form (ngSubmit)="addUnit()">
-      <md-input-container class="full-width">
-        <input name="unitsearch" mdInput placeholder="Search" autocomplete="off"
-          (ngModelChange)="doSearch($event)" [(ngModel)]="search">
-      </md-input-container>
-      <li *ngFor="let unit of filtered; let first = first" (click)="addUnit(unit)" [ngClass]="{active: first && search}">
-        <h4 class="unititem-header">{{unit.id}}</h4>
-        <div class="unititem-desc">{{unit.description}}</div>
-      </li>
-    </form>
+    <li *ngFor="let unit of filtered; let first = first" (click)="addUnit(unit)" [ngClass]="{active: first && search}">
+      <h4 class="unititem-header">{{unit.id}}</h4>
+      <div class="unititem-desc">{{unit.description}}</div>
+    </li>
   </ul>
-</div>
-<div md-dialog-actions>
-  <button md-button (click)="addUnit()">Add Unit</button>
-  <button md-button (click)="close()">Cancel</button>
+  <div md-dialog-actions>
+    <button md-button (click)="addUnit()">Add Unit</button>
+    <button md-button (click)="close()">Cancel</button>
+  </div>
 </div>
