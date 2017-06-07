@@ -7,8 +7,12 @@ import { ApiService } from '../api.service'
   styles: []
 })
 export class SiteHeaderComponent implements OnInit {
+  errors: number = 0
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService) {
+    let self = this
+    this.api.logs.filter(l => l.type == "error").subscribe(l => self.errors++)
+  }
 
   ngOnInit() {
   }

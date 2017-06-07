@@ -15,6 +15,7 @@ import { AdministrationComponent } from './administration/administration.compone
 import { ApiService } from './api.service';
 import { TypeService } from './type.service'
 import { ErrorService } from './error.service'
+import { DebuggerService } from './debugger.service'
 import { UnitComponent } from './unit/unit.component';
 
 import { TaskResolver } from './resolvers/task-resolver.service';
@@ -44,7 +45,8 @@ import { FacebookTokenComponent } from './types/facebook-token/facebook-token.co
 import { TypeeditorComponent } from './editor/typeeditor/typeeditor.component';
 import { FloatTypeComponent } from './types/float-type/float-type.component';
 import { EventDashboardComponent } from './dashboard/event-dashboard/event-dashboard.component';
-import { GoogleTokenComponent } from './types/google-token/google-token.component'
+import { GoogleTokenComponent } from './types/google-token/google-token.component';
+import { DebuggerComponent } from './debugger/debugger.component'
 
 @NgModule({
   imports: [
@@ -83,7 +85,8 @@ import { GoogleTokenComponent } from './types/google-token/google-token.componen
     TypeeditorComponent,
     FloatTypeComponent,
     EventDashboardComponent,
-    GoogleTokenComponent
+    GoogleTokenComponent,
+    DebuggerComponent
   ],
   entryComponents: [
     UnitDialog,

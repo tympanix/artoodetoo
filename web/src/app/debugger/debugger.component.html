@@ -1,0 +1,14 @@
+<div class="container administration">
+  <div class="row">
+
+  </div>
+
+  <div *ngFor="let log of logs" class="log" [ngClass]="log.type">
+      <header>
+          {{log.type}}
+      </header>
+      <div class="log-content">
+            {{log.message}}
+      </div>
+  </div>
+</div>

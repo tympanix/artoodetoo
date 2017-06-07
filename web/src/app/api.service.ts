@@ -10,15 +10,17 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/mergeMap'
 
 import { ErrorDialog } from './dialogs/errordialog/errordialog.component'
-import { Task, Unit, Data, Event } from './model';
+import { Task, Unit, Data, Event, Log } from './model';
 
 @Injectable()
 export class ApiService {
+  private lastLog: number = 0
 
   public tasks: ReplaySubject<Task[]> = new ReplaySubject<Task[]>(1)
   public units: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)
   public templateEvents: ReplaySubject<Unit[]> = new ReplaySubject<Unit[]>(1)
   public events: ReplaySubject<Event[]> = new ReplaySubject<Event[]>(1)
+  public logs: ReplaySubject<Log> = new ReplaySubject<Log>(256)
 
   private options: RequestOptions
   private token: string
@@ -27,6 +29,11 @@ export class ApiService {
     this.token = localStorage.getItem("Token")
     this.createHeaders()
     this.getAll()
+    this.updateLogs()
+    
+    setInterval(() => {
+      this.updateLogs()
+    }, 5000)
   }
 
   private createHeaders() {
@@ -74,6 +81,10 @@ export class ApiService {
     }
   }
 
+  private updateLogs() {
+    this.getLog().subscribe(logs => logs.forEach(l => this.logs.next(l)))
+  }
+
   private success(self: this, message: string): MdSnackBarRef<SimpleSnackBar> {
     return self.snackBar.open(message, "", {duration: 4000, extraClasses: ["snackbar-success"]})
   }
@@ -97,6 +108,20 @@ export class ApiService {
       var snakcRef = self.snackBar.open(message as string, "Debug", {duration: 4000, extraClasses: ["snackbar-error"]})
       snakcRef.onAction().subscribe(self.openErrorDialog(self, error));
       return Promise.reject(error.message || error);
+    }
+  }
+
+  private getLog() {
+    let self = this
+    return this.http.get("api/logs?t="+this.lastLog, this.options)
+      .map(this.extractData<Log[]>(this))
+      .map(logs => logs.map(log => Log.fromJson(log)))
+      .do(logs => self.updateLastLog.bind(self)(logs[0]))
+  }
+
+  private updateLastLog(log: Log) {
+    if (log) {
+      this.lastLog = log.time
     }
   }
 

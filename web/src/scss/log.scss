@@ -1,0 +1,36 @@
+.log {
+  border-radius: .5em;
+  background-color: $blue-lighter;
+  overflow: hidden;
+
+  header {
+    color: white;
+    padding: 1em;
+    height: 100%;
+    float: left;
+  }
+
+  &.error {
+    header {
+      background-color: $brand-danger;
+    }
+  }
+
+  &.info {
+    header {
+      background-color: $brand-info;
+    }
+  }
+
+  &.success {
+    header {
+      background-colot: $brand-success;
+    }
+  }
+
+  .log-content {
+    float: left;
+    height: 100%;
+    padding: 1em;
+  }
+}

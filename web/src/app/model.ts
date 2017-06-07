@@ -6,5 +6,6 @@ export { Event } from './models/event';
 export { Model } from './models/model';
 export { Ingredient } from './models/ingredient';
 export { Output, Input } from './models/io';
+export { Log } from './models/log'
 
 export * from './models/notification'

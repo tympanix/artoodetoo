@@ -5,6 +5,7 @@ import { AdministrationComponent } from '../administration/administration.compon
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { EventDashboardComponent } from '../dashboard/event-dashboard/event-dashboard.component'
 import { LoginComponent } from '../login/login.component';
+import { DebuggerComponent } from '../debugger/debugger.component'
 
 import { TaskResolver } from '../resolvers/task-resolver.service';
 import { EventResolver } from '../resolvers/event-resolver.service';
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
   { path: 'dashboard', component: DashboardComponent},
   { path: 'dashboard/:event', component: EventDashboardComponent, resolve: { event: EventResolver }},
+  { path: 'debugger', component: DebuggerComponent},
   { path: 'login', component: LoginComponent},
   { path: 'administration', component: AdministrationComponent},
   { path: 'administration/task', component: AdministrationComponent},
