@@ -213,7 +213,7 @@ func (s *Subject) AssignInput(ts types.TupleSpace) error {
 // StoreOutput saves the computed output in the state
 func (s *Subject) StoreOutput(ts types.TupleSpace) error {
 	for _, output := range s.Out {
-		if err := ts.Put(output.Key(s.Name), output.Value); err != nil {
+		if err := ts.Put(output.Key(s.Name), output.Value.Interface()); err != nil {
 			return err
 		}
 	}
