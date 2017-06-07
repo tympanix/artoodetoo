@@ -18,6 +18,7 @@ export class EventDashboardComponent implements OnInit {
   notfound: boolean
 
   constructor(private api: ApiService, private route: ActivatedRoute, private errhub: ErrorService, public dialog: MdDialog) {
+    
   }
 
   subscribe() {

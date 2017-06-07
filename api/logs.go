@@ -10,6 +10,7 @@ import (
 
 func init() {
 	API.Handle("/logs", auth(getLogs)).Methods("GET")
+	API.Handle("/logs", auth(clearLogs)).Methods("DELETE")
 }
 
 func getLogs(w http.ResponseWriter, r *http.Request) {
@@ -25,4 +26,9 @@ func getLogs(w http.ResponseWriter, r *http.Request) {
 
 	encoder := json.NewEncoder(w)
 	encoder.Encode(logger.Get(unix))
+}
+
+func clearLogs(w http.ResponseWriter, r *http.Request) {
+	SetJSON(w)
+	logger.Clear()
 }

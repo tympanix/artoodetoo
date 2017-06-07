@@ -15,6 +15,7 @@ export class LogService {
   clear() {
     this.logs = []
     this.errors = 0
+    this.api.clearLog().subscribe()
   }
 
 }

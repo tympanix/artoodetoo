@@ -51,6 +51,13 @@ func Get(time int64) Log {
 	return log
 }
 
+// Clear clears the log
+func Clear() {
+	lock.Lock()
+	lock.Unlock()
+	logs = make(Log, 0)
+}
+
 // Error logs an error to the application
 func Error(task types.Identifiable, err error) {
 	lock.Lock()

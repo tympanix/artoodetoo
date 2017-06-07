@@ -125,6 +125,11 @@ export class ApiService {
     }
   }
 
+  clearLog() {
+    return this.http.delete("api/logs", this.options)
+      .map(this.checkSuccess(this))
+  }
+
   login(username: string, password: string): Observable<string> {
     return this.http.post("api/login", {"username": username, "password": password}, this.options)
       .map(this.checkSuccess(this))
