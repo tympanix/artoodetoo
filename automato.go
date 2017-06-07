@@ -35,10 +35,6 @@ func serve(args types.AppArgs) {
 	fs := http.FileServer(http.Dir("web/dist"))
 	http.Handle("/", fs)
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "web/dist/index.html")
-	})
-
 	// Serve the web server
 	log.Printf("Listening on port %d\n", config.Port)
 	log.Fatal(http.ListenAndServe(addr(), nil))
