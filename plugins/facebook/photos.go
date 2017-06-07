@@ -15,7 +15,7 @@ import (
 type Photos struct {
 	event.Base
 	facebookStyle
-	LastSeen time.Time
+	LastSeen string
 	Token    Token   `io:"input"`
 	Interval float64 `io:"input"`
 
@@ -68,7 +68,7 @@ func (p *Photos) checkNew() error {
 	log.Printf("Found %d photos", len(photos))
 
 	for _, photo := range photos {
-		if photo.Created.After(p.LastSeen) {
+		if photo.ID != p.LastSeen {
 			details, err := p.getPhotoDeails(photo.ID)
 			if err != nil {
 				return err
@@ -81,10 +81,12 @@ func (p *Photos) checkNew() error {
 			} else {
 				return errors.New("No images found")
 			}
+		} else {
+			break
 		}
 	}
 	if len(photos) > 0 {
-		p.LastSeen = photos[0].Created
+		p.LastSeen = photos[0].ID
 	}
 	return nil
 }
@@ -116,9 +118,7 @@ func (p *Photos) updateLast() error {
 		return err
 	}
 	if len(photos) > 0 {
-		p.LastSeen = photos[0].Created
-	} else {
-		p.LastSeen = time.Now()
+		p.LastSeen = photos[0].ID
 	}
 	return nil
 }

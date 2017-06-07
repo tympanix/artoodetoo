@@ -54,6 +54,11 @@ export class Task implements ITask, Model {
     this.resolveIngredients()
   }
 
+  setEvent(event: Event) {
+    this.event = event
+    this.updateUnitList()
+  }
+
   checkCycles(): Promise<Unit[]> {
     var totalExplored: Set<Unit> = new Set<Unit>()
 

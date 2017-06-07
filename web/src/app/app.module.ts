@@ -43,7 +43,8 @@ import { CronTimeComponent } from './types/cron-time/cron-time.component';
 import { FacebookTokenComponent } from './types/facebook-token/facebook-token.component';
 import { TypeeditorComponent } from './editor/typeeditor/typeeditor.component';
 import { FloatTypeComponent } from './types/float-type/float-type.component';
-import { EventDashboardComponent } from './dashboard/event-dashboard/event-dashboard.component'
+import { EventDashboardComponent } from './dashboard/event-dashboard/event-dashboard.component';
+import { GoogleTokenComponent } from './types/google-token/google-token.component'
 
 @NgModule({
   imports: [
@@ -81,7 +82,8 @@ import { EventDashboardComponent } from './dashboard/event-dashboard/event-dashb
     FacebookTokenComponent,
     TypeeditorComponent,
     FloatTypeComponent,
-    EventDashboardComponent
+    EventDashboardComponent,
+    GoogleTokenComponent
   ],
   entryComponents: [
     UnitDialog,
@@ -96,7 +98,8 @@ import { EventDashboardComponent } from './dashboard/event-dashboard/event-dashb
     BoolTypeComponent,
     FacebookTokenComponent,
     CronTimeComponent,
-    FloatTypeComponent
+    FloatTypeComponent,
+    GoogleTokenComponent
   ],
   providers: [ApiService, TaskResolver, ErrorService, TypeService, EventResolver],
   bootstrap: [AppComponent]

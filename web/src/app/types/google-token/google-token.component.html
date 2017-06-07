@@ -1,0 +1,5 @@
+<a *ngIf="!loggedIn" class="btn btn-blue" (click)="handleSignInClick()">Sign in with Google</a>
+<div *ngIf="loggedIn">
+    <a *ngIf="profile" class="btn">{{profile.getName()}}</a>
+    <a *ngIf="profile" class="btn btn-red" (click)="handleSignOutClick()">Logout</a>
+</div>

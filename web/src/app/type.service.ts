@@ -8,6 +8,7 @@ import { BoolTypeComponent } from './types/bool-type/bool-type.component'
 import { CronTimeComponent} from './types/cron-time/cron-time.component'
 import { FacebookTokenComponent } from './types/facebook-token/facebook-token.component'
 import { FloatTypeComponent } from './types/float-type/float-type.component'
+import { GoogleTokenComponent } from './types/google-token/google-token.component'
 
 @Injectable()
 export class TypeService {
@@ -21,6 +22,7 @@ export class TypeService {
     this.add(FloatTypeComponent, (i: Input) => i.isFloat())
     this.add(CronTimeComponent, (i: Input) => i.type == "cron.Time")
     this.add(FacebookTokenComponent, (i: Input) => i.type == "facebook.Token")
+    this.add(GoogleTokenComponent, (i: Input) => i.type == "google.Token")
   }
 
   add(type: Type<any>, selector: (Input) => boolean) {
