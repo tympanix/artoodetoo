@@ -40,9 +40,9 @@ func Get(time int64) Log {
 	lock.RLock()
 	defer lock.RUnlock()
 	log := make(Log, 0)
-	for _, l := range logs {
-		if l.Time > time {
-			log = append(log, l)
+	for i := len(logs) - 1; i >= 0; i-- {
+		if logs[i].Time > time {
+			log = append(log, logs[i])
 		} else {
 			break
 		}
