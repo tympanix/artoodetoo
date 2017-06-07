@@ -1,14 +1,28 @@
 <div class="container administration">
   <div class="row">
-
+    <div class="col-lg-6">
+      <h3>Logs</h3>
+    </div>
+    <div class="col-lg-6 text-right">
+      <a class="btn btn-red" (click)="log.clear()">Clear Log</a>
+    </div>
   </div>
 
-  <div *ngFor="let log of logs" class="log" [ngClass]="log.type">
+  <div class="row">
+    <div *ngFor="let log of log.logs" class="log" [ngClass]="log.type">
       <header>
-          {{log.type}}
+        {{log.type}}
       </header>
       <div class="log-content">
-            {{log.message}}
+        {{log.message}}
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="log.logs.length == 0">
+      <div class="well">
+          <h3>Yay! No logs.</h3>
+          <p>There are no logs to display at the moment</p>
       </div>
   </div>
 </div>

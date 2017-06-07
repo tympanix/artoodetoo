@@ -15,7 +15,7 @@ import { AdministrationComponent } from './administration/administration.compone
 import { ApiService } from './api.service';
 import { TypeService } from './type.service'
 import { ErrorService } from './error.service'
-import { DebuggerService } from './debugger.service'
+import { LogService } from './log.service'
 import { UnitComponent } from './unit/unit.component';
 
 import { TaskResolver } from './resolvers/task-resolver.service';
@@ -104,7 +104,7 @@ import { DebuggerComponent } from './debugger/debugger.component'
     FloatTypeComponent,
     GoogleTokenComponent
   ],
-  providers: [ApiService, TaskResolver, ErrorService, TypeService, EventResolver],
+  providers: [ApiService, LogService, TaskResolver, ErrorService, TypeService, EventResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

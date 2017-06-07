@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service'
+import { LogService } from '../log.service'
 
 @Component({
   selector: 'app-site-header',
@@ -7,11 +8,8 @@ import { ApiService } from '../api.service'
   styles: []
 })
 export class SiteHeaderComponent implements OnInit {
-  errors: number = 0
 
-  constructor(private api: ApiService) {
-    let self = this
-    this.api.logs.filter(l => l.type == "error").subscribe(l => self.errors++)
+  constructor(private api: ApiService, private log: LogService) {
   }
 
   ngOnInit() {

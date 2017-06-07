@@ -16,4 +16,11 @@
     </div>
   </div>
 
+  <div class="row" *ngIf="events.length == 0">
+    <div class="well">
+      <h3>Empty?!</h3>
+      <p>You have no events or tasks. Head to <a class="hint" routerLink="/administration">administration</a> panel to get started!</p>
+    </div>
+  </div>
+
 </main>

@@ -12,4 +12,8 @@ export class Log {
     return log
   }
 
+  isError(): boolean {
+    return this.type == "error"
+  }
+
 }

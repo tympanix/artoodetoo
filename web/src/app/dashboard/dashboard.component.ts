@@ -11,8 +11,8 @@ import { ApiService } from '../api.service';
   styles: []
 })
 export class DashboardComponent implements OnInit {
-  tasks: Task[]
-  events: Unit[]
+  tasks: Task[] = []
+  events: Unit[] = []
 
   constructor(private api: ApiService, public dialog: MdDialog) {
     api.tasks.subscribe((tasks) => this.tasks = tasks)
