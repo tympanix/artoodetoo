@@ -26,7 +26,7 @@ func (c *dag) Next() (*unit.Unit, error) {
 }
 
 func (c *dag) ReduceEdges(name string) error {
-	for key, _ := range c.edges {
+	for key := range c.edges {
 		for _, in := range key.In {
 			for _, r := range in.Recipe {
 				if r.IsVariable() {

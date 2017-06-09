@@ -62,6 +62,7 @@ func GetTaskByID(id string) (*Task, error) {
 	return nil, errors.New("Could not find task")
 }
 
+// GetTaskByName retrieves a task by its name
 func GetTaskByName(name string) (task *Task, err error) {
 	for _, task = range tasks {
 		if task.Name == name {

@@ -33,7 +33,6 @@ func newTask(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	task.Describe()
 }
 
 func listTasks(w http.ResponseWriter, r *http.Request) {

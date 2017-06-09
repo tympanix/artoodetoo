@@ -20,8 +20,17 @@ type Task struct {
 	Event   *event.Proxy          `json:"event"`
 	Actions []*unit.Unit          `json:"actions"`
 	Queue   chan types.TupleSpace `json:"-"`
-	running *sync.Mutex           `json:"-"`
-	once    *sync.Once            `json:"-"`
+	running *sync.Mutex
+	once    *sync.Once
+}
+
+// New creates a new task from actions
+func New(actions ...*unit.Unit) *Task {
+	t := &Task{
+		Actions: actions,
+	}
+	t.init()
+	return t
 }
 
 func (t *Task) init() {
@@ -30,29 +39,28 @@ func (t *Task) init() {
 	t.once = new(sync.Once)
 }
 
+// SetEvent sets a new event for the task
+func (t *Task) SetEvent(e *event.Event) {
+	t.Event = &event.Proxy{Event: e}
+}
+
+// ID returns the unique identifier to the task
 func (t *Task) ID() string {
 	return t.UUID
 }
 
-// Describe prints our information about the action to the console
-func (t *Task) Describe() {
-	log.Printf("Task: %v\n", t.Name)
-	log.Printf("Event: %v\n", t.Event)
-	log.Printf("Actions:\n")
-
-	for _, a := range t.Actions {
-		log.Printf(" %s %v\n", "-", a)
-	}
-}
-
+// Validate validates the task
 func (t *Task) Validate() error {
-	if err := t.detectCycles(); err != nil {
-		return err
-	}
 	for _, action := range t.Actions {
 		if err := action.Validate(); err != nil {
 			return err
 		}
+	}
+	if t.Event == nil {
+		return fmt.Errorf("Task is missing an event")
+	}
+	if err := t.detectCycles(); err != nil {
+		return err
 	}
 	return nil
 }
@@ -79,6 +87,7 @@ func (t *Task) Unsubscribe() error {
 	return nil
 }
 
+// GenerateUUID genereates a new id for the task
 func (t *Task) GenerateUUID() {
 	t.UUID = generate.NewUUID(12)
 }
@@ -155,6 +164,7 @@ func (t *Task) run(ts types.TupleSpace) {
 	log.Printf("Finished %s", t.Name)
 }
 
+// UnmarshalJSON for JSON serialization
 func (t *Task) UnmarshalJSON(data []byte) error {
 	type task Task
 	var _task task
