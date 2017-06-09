@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"sync"
 
 	"github.com/Tympanix/artoodetoo/state"
@@ -72,28 +71,25 @@ func (c *Unit) Execute() (err error) {
 }
 
 // Action returns the underlying action represented by the unit
-func (c *Unit) Action() *Action {
-	return &c.action
+func (c *Unit) Action() Action {
+	return c.action
 }
 
+// RunAsync runs the unit asynchronously
 func (c *Unit) RunAsync(waitgroup *sync.WaitGroup, ts types.TupleSpace, errchan chan<- error) {
 	go func() {
 		defer waitgroup.Done()
 		if err := c.AssignInput(ts); err != nil {
-			if _, ok := err.(*state.Closed); ok {
-				log.Printf("Exiting action %s", c.Name)
-			} else {
+			if _, ok := err.(*state.Closed); !ok {
 				errchan <- err
 			}
 			return
 		}
 		if err := c.Execute(); err != nil {
-			log.Println(err)
 			errchan <- err
 			return
 		}
 		if err := c.StoreOutput(ts); err != nil {
-			log.Println(err)
 			errchan <- err
 			return
 		}
