@@ -8,6 +8,10 @@ import { Unit, } from '../../model';
 export class UnitIdPipePipe implements PipeTransform {
 
   transform(units: Unit[]): Unit[] {
+    if (units == undefined) {
+      return units
+    }
+    
     return units.sort((a,b) => {
       if (a.id > b.id) {
           return 1;
