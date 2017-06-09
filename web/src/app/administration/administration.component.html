@@ -45,7 +45,7 @@
       <div class="row">
 
         <!-- Services -->
-        <aside class="col-lg-12 col-md-6">
+        <aside class="col-lg-12">
           <!-- Warnings -->
 
           <div class="well">
@@ -56,9 +56,8 @@
                 <h3 class="panel-title">Actions</h3>
               </div>
               <div class="panel-body">
-                <div *ngFor="let unit of units">
-                  <strong>{{unit.id}}</strong>
-                  <p>{{unit.description}}</p>
+                <div *ngFor="let unit of units | unitIdPipe">
+                  <strong mdTooltip="{{unit.description}}" mdTooltipPosition="above">{{unit.id}}</strong>
                 </div>
               </div>
             </div>
@@ -69,54 +68,12 @@
               </div>
               <div class="panel-body">
                 <div *ngFor="let event of templateEvents">
-                  <strong>{{event.id}}</strong>
-                  <p>{{event.description}}</p>
+                  <strong mdTooltip="{{event.description}}" mdTooltipPosition="above">{{event.id}}</strong>
                 </div>
               </div>
             </div>
           </div>
         </aside>
-
-        <!-- Tasks -->
-        <aside class="col-lg-12 col-md-6">
-          <div class="well">
-            <h2 class="heading">Existing tasks</h2>
-
-            <div *ngFor="let task of tasks" class="panel panel-primary">
-              <div class="panel-heading">
-                <h3 class="panel-title">{{task.name}}</h3>
-                <a mdTooltip="Edit {{task.name}}" mdTooltipPosition="above" routerLink="/administration/task/{{task.uuid}}"><i class="material-icons">settings</i></a>
-              </div>
-              <div class="panel-body">
-                <p>{{task.event.name}}
-                  <ng-template ngFor let-action [ngForOf]="task.actions">
-                    <i class="next material-icons">add</i>
-                    {{action.name}}
-                  </ng-template>
-                </p>
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        <!-- Events -->
-        <aside class="col-lg-12 col-md-6">
-          <div class="well">
-            <h2 class="heading">Existing events</h2>
-
-            <div *ngFor="let ev of events" class="panel panel-primary">
-              <div class="panel-heading">
-                <h3 class="panel-title">{{ev.name}}</h3>
-              </div>
-              <div class="panel-body">
-                <ng-template ngFor let-input [ngForOf]="ev.input">
-                  <p><b>{{input.name}}</b> <span *ngFor="let ingr of input.recipe">{{ingr.value}}</span></p>
-                </ng-template>
-              </div>
-            </div>
-          </div>
-        </aside>
-
 
       </div>
     </div>
