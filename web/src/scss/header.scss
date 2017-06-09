@@ -10,8 +10,9 @@
 
 
 .navbar{
-    background-image: linear-gradient(to bottom, $blue-light, $blue-dark);
-    border: none;
+    background-color: $blue-light;
+    //background-image: linear-gradient(to bottom, $blue-light, $blue-dark);
+    //border: none;
 
     li a{
       color: $blue-steel;
@@ -25,6 +26,7 @@
     .navbar-brand{
       font-family: baloo;
       font-size: 28px;
+      line-height: 20px;
     }
 
 }
