@@ -1,7 +1,6 @@
 package subject
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"reflect"
@@ -61,6 +60,7 @@ func (s *Subject) GetSubject() interface{} {
 	return s.subject
 }
 
+// NumVariables returns the number of dependencies from other actions
 func (s *Subject) NumVariables() int {
 	sum := 0
 	for _, input := range s.In {
@@ -138,24 +138,6 @@ func structName(unit interface{}) string {
 	return t.String()
 }
 
-func getIOField(name string, obj interface{}) (value reflect.Value, err error) {
-	if obj == nil {
-		err = errors.New("Resolving field form nil object")
-		return
-	}
-	t := reflect.ValueOf(obj)
-	if t.Kind() == reflect.Ptr {
-		t = t.Elem()
-	}
-	f := t.FieldByName(name)
-	if !f.IsValid() || !f.CanSet() {
-		err = errors.New("Field is not valid")
-		return
-	}
-	value = f
-	return
-}
-
 // GetOutputByName returns the output field as a reflected value
 func (s *Subject) GetOutputByName(name string) (output *Output, err error) {
 	for _, output := range s.Out {
@@ -190,12 +172,10 @@ func (s *Subject) Validate() error {
 
 // AssignInput finds all ingredients in the state given and assigns it as input
 func (s *Subject) AssignInput(ts types.TupleSpace) error {
-
 	for _, input := range s.In {
 		ingredient := input.Recipe[0]
 		if ingredient.IsStatic() {
 			if err := ts.Put(input.Key(s.Name), ingredient.Value); err != nil {
-				log.Printf("Failed on input %v for %v\n", input.Name, s.Name)
 				return err
 			}
 			if err := ts.Query(input.Key(s.Name), input.Value); err != nil {
@@ -263,7 +243,7 @@ func duplicateSubject(subject interface{}) interface{} {
 // RebuildSubject rebuilds the subject by resolving a new instance of the subject
 // using the subjec resolver. The recipe for every input is copied after the subject
 // has been analysed
-func (s *Subject) RebuildSubject(data []byte, resolver Resolver) error {
+func (s *Subject) RebuildSubject(resolver Resolver) error {
 	s.Resolver = resolver
 
 	subject, err := s.ResolveSubject(s.Identity)

@@ -117,7 +117,7 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 
 	*e = Event(newEvent)
 
-	err := e.RebuildSubject(data, new(eventResolver))
+	err := e.RebuildSubject(new(eventResolver))
 	if err != nil {
 		return err
 	}

@@ -106,7 +106,7 @@ func (c *Unit) UnmarshalJSON(data []byte) error {
 
 	*c = Unit(u)
 
-	err := c.RebuildSubject(data, new(ActionResolver))
+	err := c.RebuildSubject(new(ActionResolver))
 	if err != nil {
 		return err
 	}
