@@ -29,7 +29,7 @@ export class EventDialog implements OnInit {
     })
   }
 
-  chooseEvent(u: Event) {
+  chooseEvent(u?: Event) {
     let event = u || this.filtered.length && this.filtered[0]
     this.dialogRef.close(event)
   }

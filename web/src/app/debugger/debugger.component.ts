@@ -11,7 +11,7 @@ import { LogService } from '../log.service';
 export class DebuggerComponent implements OnInit {
 
 
-  constructor(private api: ApiService, private log: LogService) {
+  constructor(private api: ApiService, public log: LogService) {
 
   }
 

@@ -88,7 +88,8 @@ import { UnitIdPipePipe } from './pipes/unit-id-pipe/unit-id-pipe.pipe'
     EventDashboardComponent,
     GoogleTokenComponent,
     DebuggerComponent,
-    UnitIdPipePipe
+    UnitIdPipePipe,
+    TypesComponent
   ],
   entryComponents: [
     UnitDialog,

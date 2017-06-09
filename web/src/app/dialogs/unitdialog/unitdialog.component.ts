@@ -25,7 +25,7 @@ export class UnitDialog implements OnInit {
       u.id.toLowerCase().includes(event.toLowerCase()))
   }
 
-  addUnit(u: Unit) {
+  addUnit(u?: Unit) {
     let unit
     let template = u || this.filtered[0]
     if (template) {

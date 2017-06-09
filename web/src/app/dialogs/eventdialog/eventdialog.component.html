@@ -1,6 +1,6 @@
 <h1 md-dialog-title>Add Event</h1>
 <div md-dialog-content>
-  <form (ngSubmit)="addEvent()">
+  <form (ngSubmit)="chooseEvent()">
     <md-input-container class="full-width">
       <input name="unitsearch" mdInput placeholder="Search" autocomplete="off" (ngModelChange)="doSearch($event)" [(ngModel)]="search">
     </md-input-container>

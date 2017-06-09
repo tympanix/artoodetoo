@@ -9,6 +9,7 @@ import { Task } from '../../model';
   styles: []
 })
 export class TaskDialog implements OnInit {
+  taskname: string = ""
 
   constructor(private api: ApiService, public dialogRef: MdDialogRef<TaskDialog>) { }
 

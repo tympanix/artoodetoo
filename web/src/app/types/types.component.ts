@@ -3,9 +3,10 @@ import { IngredientType } from './ingredient-type'
 import { Ingredient, Task, Input as UnitInput } from '../model'
 
 @Component({
+  template: ``, 
   styles: []
 })
-export abstract class TypesComponent implements OnInit, IngredientType {
+export class TypesComponent implements OnInit, IngredientType {
   @Input() ingredient: Ingredient
 
   input: UnitInput

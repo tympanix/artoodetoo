@@ -26,7 +26,7 @@ export class EventTemplateDialog implements OnInit {
       u.id.toLowerCase().includes(event.toLowerCase()))
   }
 
-  addEvent(u: Unit) {
+  addEvent(u?: Unit) {
     let event
     let template = u || this.filtered[0]
     if (template) {

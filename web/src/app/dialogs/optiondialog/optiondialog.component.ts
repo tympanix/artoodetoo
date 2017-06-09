@@ -10,7 +10,7 @@ export class OptionDialog implements OnInit {
 
   constructor(
     public dialogRef: MdDialogRef<OptionDialog>,
-    @Inject(MD_DIALOG_DATA) public data: Object,
+    @Inject(MD_DIALOG_DATA) public data: any,
   ) { }
 
   ngOnInit() {

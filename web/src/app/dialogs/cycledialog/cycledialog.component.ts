@@ -14,7 +14,7 @@ export class CycleDialog implements OnInit {
 
   constructor(
     public dialogRef: MdDialogRef<CycleDialog>,
-    @Inject(MD_DIALOG_DATA) public data: {cycle: Unit[], task: Task}
+    @Inject(MD_DIALOG_DATA) public data: any
   ) {
     this.cycle = data.cycle,
     this.task = data.task

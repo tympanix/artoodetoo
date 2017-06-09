@@ -33,10 +33,10 @@
         <div class="panel-body">
           <a class="btn btn-default btn-icon"><i class="type material-icons">notifications</i>{{task.event.name}}</a>
 
-      <template ngFor let-action [ngForOf]="task.actions">
+      <ng-template ngFor let-action [ngForOf]="task.actions">
         <i class="next material-icons">add</i>
         <a class="btn btn-default btn-icon"><i class="type material-icons">computer</i>{{action.name}}</a>
-      </template>
+    </ng-template>
 
         </div>
       </div>
