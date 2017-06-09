@@ -15,11 +15,15 @@ func (p *Proxy) MarshalJSON() ([]byte, error) {
 	return json.Marshal(p.UUID)
 }
 
+type uuid struct {
+	UUID string `json:"uuid"`
+}
+
 // UnmarshalJSON returns the event specified by it's id
 func (p *Proxy) UnmarshalJSON(data []byte) error {
 	var id string
 	if err := json.Unmarshal(data, &id); err != nil {
-		var e Event
+		var e uuid
 		if err := json.Unmarshal(data, &e); err != nil {
 			return err
 		}
