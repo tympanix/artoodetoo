@@ -2,7 +2,6 @@ package subject_test
 
 import (
 	"encoding/json"
-	"fmt"
 	"testing"
 
 	"github.com/Tympanix/artoodetoo/assert"
@@ -26,13 +25,11 @@ func TestSubjectJSON(t *testing.T) {
 	data, err := json.Marshal(sub)
 	assert.NotError(t, err)
 
-	fmt.Println(string(data))
 	copy := new(subject.Subject)
 	copy.SetResolver(new(Test))
 
 	err = json.Unmarshal(data, copy)
 	assert.NotError(t, err)
-	fmt.Printf("%+v\n", copy)
 }
 
 //
