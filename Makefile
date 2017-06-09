@@ -1,2 +1,2 @@
 all:
-	echo "Running make file!!!"
+	echo "Running test make file!!!"
