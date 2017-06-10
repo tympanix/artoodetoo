@@ -2,6 +2,7 @@ package state_test
 
 import (
 	"strings"
+	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -155,4 +156,43 @@ func TestNilValues(t *testing.T) {
 
 	err := s.Put("nil", nil)
 	assert.Error(t, err)
+}
+
+type dummyTerm func() error
+
+func (d dummyTerm) Terminate() error {
+	return d()
+}
+
+func TestStateTerminators(t *testing.T) {
+	s := state.New()
+	wg := new(sync.WaitGroup)
+	wg.Add(3)
+
+	fn := dummyTerm(func() error {
+		wg.Done()
+		return nil
+	})
+
+	s.Put("One", fn, fn, fn)
+	s.Close()
+	wg.Wait()
+}
+
+func TestStateMultiTerminators(t *testing.T) {
+	s := state.New()
+	wg := new(sync.WaitGroup)
+	wg.Add(3)
+
+	fn := dummyTerm(func() error {
+		wg.Done()
+		return nil
+	})
+
+	s.Put("One", fn)
+	s.Put("Two", fn)
+	s.Put("Three", fn)
+
+	s.Close()
+	wg.Wait()
 }

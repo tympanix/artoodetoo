@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"reflect"
 	"sync"
+
+	"github.com/Tympanix/artoodetoo/types"
 )
 
 // Tuple is a slice of reflection values
@@ -15,9 +17,10 @@ type Tuple []reflect.Value
 // by adding new variables to the structure when computed and retrieving variables
 // when they are needed for computing a new unit
 type State struct {
-	Tuples map[interface{}][]Tuple
-	cond   *sync.Cond
-	closed bool
+	Tuples      map[interface{}][]Tuple
+	cond        *sync.Cond
+	closed      bool
+	terminators []types.Terminator
 }
 
 // Closed is an error which is thrown upon closing the tuple space
@@ -55,6 +58,9 @@ func (s *State) Close() {
 		return
 	}
 	s.closed = true
+	for _, t := range s.terminators {
+		t.Terminate()
+	}
 	s.cond.Broadcast()
 }
 
@@ -64,7 +70,7 @@ func (s *State) Get(key interface{}, values ...interface{}) error {
 	s.cond.L.Lock()
 	defer s.cond.L.Unlock()
 
-	template := createTuple(values)
+	template := s.createTuple(values)
 
 	for {
 		if s.closed {
@@ -177,13 +183,16 @@ func tryConvert(v reflect.Value, t reflect.Type) (c reflect.Value, err error) {
 	return
 }
 
-func createTuple(values []interface{}) Tuple {
+func (s *State) createTuple(values []interface{}) Tuple {
 	var tuple Tuple
 	for _, value := range values {
 		if refVal, ok := value.(reflect.Value); ok {
 			tuple = append(tuple, refVal)
 		} else {
 			tuple = append(tuple, reflect.ValueOf(value))
+		}
+		if t, ok := value.(types.Terminator); ok {
+			s.terminators = append(s.terminators, t)
 		}
 	}
 	return tuple
@@ -208,7 +217,7 @@ func (s *State) Put(key interface{}, values ...interface{}) error {
 		return errors.New("No nil values allowed")
 	}
 
-	tuple := createTuple(values)
+	tuple := s.createTuple(values)
 
 	s.Tuples[key] = append(s.Tuples[key], tuple)
 
@@ -223,7 +232,7 @@ func (s *State) Query(key interface{}, values ...interface{}) error {
 	s.cond.L.Lock()
 	defer s.cond.L.Unlock()
 
-	template := createTuple(values)
+	template := s.createTuple(values)
 
 	for {
 		if s.closed {
