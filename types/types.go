@@ -60,3 +60,8 @@ type Styleable interface {
 type Identifiable interface {
 	ID() string
 }
+
+// Terminator is an abject which can be terminated
+type Terminator interface {
+	Terminate() error
+}

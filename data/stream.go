@@ -1,6 +1,7 @@
 package data
 
 import (
+	"errors"
 	"io"
 	"io/ioutil"
 	"log"
@@ -130,10 +131,13 @@ func (mb *StreamBuffer) Close() (err error) {
 	return
 }
 
-// End ends the stream and allows no more readers
-func (mb *StreamBuffer) End() (err error) {
+// Terminate ends the stream and allows no more readers
+func (mb *StreamBuffer) Terminate() (err error) {
 	mb.Lock()
 	defer mb.Unlock()
+	if !mb.closed {
+		return errors.New("Cannot end ongoing stream")
+	}
 	mb.ended = true
 	if mb.readers == 0 {
 		return mb.Cleanup()

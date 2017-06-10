@@ -50,7 +50,7 @@ func TestStreamBuffer(t *testing.T) {
 	assert.Nil(t, err)
 	wg.Wait()
 
-	sb.End()
+	sb.Terminate()
 	_, err = os.Stat(sb.File().Name())
 	assert.True(t, os.IsNotExist(err))
 

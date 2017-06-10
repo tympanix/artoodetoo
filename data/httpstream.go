@@ -35,6 +35,7 @@ func (h *httpStream) getData() {
 	if err != nil {
 		return
 	}
+	defer h.Close()
 	defer resp.Body.Close()
 	io.Copy(h, resp.Body)
 }
