@@ -34,6 +34,7 @@ func AddEvent(event *Event) error {
 	return nil
 }
 
+// GetEventByID returns the event given by the id
 func GetEventByID(id string) (*Event, error) {
 	e, ok := Events[id]
 	if !ok {

@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/Tympanix/artoodetoo/assert"
 	"github.com/Tympanix/artoodetoo/event"
 	"github.com/Tympanix/artoodetoo/plugins/cron"
 	"github.com/Tympanix/artoodetoo/task"
 	"github.com/Tympanix/artoodetoo/types"
+	"github.com/stretchr/testify/assert"
 )
 
 type TestEvent struct {
@@ -54,11 +54,11 @@ func TestEventMarshal(t *testing.T) {
 	e.AddStatic("Time", "@every 1s")
 
 	data, err := json.Marshal(e)
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 
 	var out event.Event
 	err = json.Unmarshal(data, &out)
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 
 	assert.NotEqual(t, event.Templates[e.Type()], e)
 
@@ -112,7 +112,7 @@ func TestEventProxyUnmarshal(t *testing.T) {
 	data, _ := json.Marshal(s)
 	err := proxy.UnmarshalJSON(data)
 
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 	assert.Equal(t, proxy.Event, e)
 
 	event.RemoveEvent(e)
@@ -139,7 +139,7 @@ func TestEventProxyUnmarshalEvent(t *testing.T) {
 	data, _ := json.Marshal(e)
 	err := proxy.UnmarshalJSON(data)
 
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 	assert.Equal(t, proxy.Event, e)
 
 	event.RemoveEvent(e)
