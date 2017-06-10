@@ -148,6 +148,7 @@ func (t *Task) run(ts types.TupleSpace) {
 			logger.Error(t, err)
 			numerr++
 		case <-done:
+			ts.Close()
 			close(errchan)
 			stop = true
 		}
