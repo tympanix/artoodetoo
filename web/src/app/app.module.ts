@@ -47,7 +47,8 @@ import { FloatTypeComponent } from './types/float-type/float-type.component';
 import { EventDashboardComponent } from './dashboard/event-dashboard/event-dashboard.component';
 import { GoogleTokenComponent } from './types/google-token/google-token.component';
 import { DebuggerComponent } from './debugger/debugger.component';
-import { UnitIdPipePipe } from './pipes/unit-id-pipe/unit-id-pipe.pipe'
+import { UnitIdPipePipe } from './pipes/unit-id-pipe/unit-id-pipe.pipe';
+import { EventCardComponent } from './dashboard/event-card/event-card.component'
 
 @NgModule({
   imports: [
@@ -89,7 +90,8 @@ import { UnitIdPipePipe } from './pipes/unit-id-pipe/unit-id-pipe.pipe'
     GoogleTokenComponent,
     DebuggerComponent,
     UnitIdPipePipe,
-    TypesComponent
+    TypesComponent,
+    EventCardComponent
   ],
   entryComponents: [
     UnitDialog,

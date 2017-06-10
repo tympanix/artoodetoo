@@ -2,17 +2,7 @@
   <div *ngIf="event">
     <div class="row">
       <div class="col-xs-12">
-        <div class="event" [style.background]="event.color">
-          <i class="fa fa-5x" [ngClass]="event.icon"></i>
-          <header class="event-title">
-            <p>{{event.package()}}</p>
-            <h3>{{event.lastname()}}</h3>
-          </header>
-          <footer>
-            <span class="tag"><span>Name</span>{{event.name}}</span>
-            <span class="tag"><span>Tasks</span>{{event.subscribers.length}}</span>
-          </footer>
-        </div>
+        <app-event-card [event]="event"></app-event-card>
       </div>
     </div>
     <div class="well">

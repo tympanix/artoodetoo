@@ -2,6 +2,14 @@ input {
     box-shadow: none !important;
 }
 
+.mat-slide-toggle.mat-primary.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: rgba(28, 199, 57, 0.84);
+}
+
+.mat-slide-toggle.mat-primary.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: #ffffff;
+}
+
 md-input-container {
   font-size: 1.25em;
 }
