@@ -1,7 +1,6 @@
 package dropbox
 
 import (
-	"io/ioutil"
 	"log"
 
 	"github.com/Tympanix/artoodetoo/data"
@@ -34,8 +33,11 @@ func (u *UploadFile) Execute() error {
 	db.SetAppInfo("rr6d38abezy4l6u", "u99czi59xv4tjwb")
 	db.SetAccessToken(string(u.Token))
 
-	reader := ioutil.NopCloser(u.File.NextReader())
-	_, err := db.UploadByChunk(reader, 1<<14, u.Destination, u.Overwrite, "")
+	reader, err := u.File.NewReader()
+	if err != nil {
+		return err
+	}
+	_, err = db.UploadByChunk(reader, 1<<14, u.Destination, u.Overwrite, "")
 
 	if err != nil {
 		log.Println(err)

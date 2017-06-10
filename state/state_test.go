@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Tympanix/artoodetoo/assert"
 	"github.com/Tympanix/artoodetoo/state"
+	"github.com/stretchr/testify/assert"
 )
 
 func timeTest(t *testing.T, fn func(), mili int) {

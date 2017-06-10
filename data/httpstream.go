@@ -1,7 +1,6 @@
 package data
 
 import (
-	"bytes"
 	"fmt"
 	"io"
 	"mime"
@@ -11,22 +10,24 @@ import (
 )
 
 // FromURL return a new stream from a http resource
-func FromURL(url string) Stream {
-	return &httpStream{
-		url:      url,
-		mimetype: mime.TypeByExtension(filepath.Ext(url)),
-		buffer:   new(bytes.Buffer),
-		once:     new(sync.Once),
-		lock:     new(sync.Mutex),
+func FromURL(url string) (s Stream, err error) {
+	stream, err := NewStreamBuffer("http")
+	if err != nil {
+		return
 	}
+	return &httpStream{
+		StreamBuffer: stream,
+		url:          url,
+		mimetype:     mime.TypeByExtension(filepath.Ext(url)),
+		once:         new(sync.Once),
+	}, nil
 }
 
 type httpStream struct {
+	*StreamBuffer
 	url      string
 	mimetype string
-	buffer   *bytes.Buffer
 	once     *sync.Once
-	lock     *sync.Mutex
 }
 
 func (h *httpStream) getData() {
@@ -35,20 +36,16 @@ func (h *httpStream) getData() {
 		return
 	}
 	defer resp.Body.Close()
-	h.buffer.ReadFrom(resp.Body)
+	io.Copy(h, resp.Body)
 }
 
 func (h *httpStream) String() string {
 	return fmt.Sprintf("HTTP data stream: %s", h.url)
 }
 
-func (h *httpStream) NextReader() io.Reader {
-	h.lock.Lock()
-	defer h.lock.Unlock()
-
-	h.once.Do(h.getData)
-
-	return bytes.NewReader(h.buffer.Bytes())
+func (h *httpStream) NewReader() (io.ReadCloser, error) {
+	go h.once.Do(h.getData)
+	return h.StreamBuffer.NewReader()
 }
 
 func (h *httpStream) Mimetype() string {

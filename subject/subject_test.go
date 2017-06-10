@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/Tympanix/artoodetoo/assert"
 	"github.com/Tympanix/artoodetoo/state"
 	"github.com/Tympanix/artoodetoo/subject"
+	"github.com/stretchr/testify/assert"
 )
 
 type TestSubject struct {
@@ -24,13 +24,13 @@ func TestSubjectJSON(t *testing.T) {
 	sub := subject.New(test, nil)
 
 	data, err := json.Marshal(sub)
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 
 	copy := new(subject.Subject)
 	copy.SetResolver(new(TestSubject))
 
 	err = json.Unmarshal(data, copy)
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 }
 
 func TestNumVariables(t *testing.T) {
@@ -49,7 +49,7 @@ func TestSubjectOutput(t *testing.T) {
 	test.Allowed = true
 
 	out, err := sub.GetOutputByName("Allowed")
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 	assert.Equal(t, out.Bool(), true)
 
 	_, err = sub.GetOutputByName("Does not exist")
@@ -77,7 +77,7 @@ func TestSubjectStaticInput(t *testing.T) {
 	sub.AddStatic("Name", "John Doe")
 	s := state.New()
 	err := sub.AssignInput(s)
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 }
 
 func TestSubjectNilInput(t *testing.T) {
@@ -98,7 +98,7 @@ func TestSubjectVarInput(t *testing.T) {
 
 	sub.AddVar("Name", "source", "var")
 	err := sub.AssignInput(ts)
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 	assert.Equal(t, test.Name, "John Doe")
 }
 
@@ -154,7 +154,7 @@ func TestSubjectRebuild(t *testing.T) {
 	sub.AddStatic("Name", "John Doe")
 
 	err := sub.RebuildSubject(&fakeResolver{test})
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 	assert.NotEqual(t, sub.GetSubject(), test)
 }
 

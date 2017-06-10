@@ -3,8 +3,8 @@ package subject_test
 import (
 	"testing"
 
-	"github.com/Tympanix/artoodetoo/assert"
 	"github.com/Tympanix/artoodetoo/subject"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestIngredientStatic(t *testing.T) {

@@ -3,6 +3,7 @@ package data
 import (
 	"bytes"
 	"io"
+	"io/ioutil"
 )
 
 // FromByteArray return a new stream from a byte object
@@ -18,8 +19,9 @@ type byteStream struct {
 	data     []byte
 }
 
-func (b *byteStream) NextReader() io.Reader {
-	return bytes.NewReader(b.data)
+func (b *byteStream) NewReader() (io.ReadCloser, error) {
+	r := bytes.NewReader(b.data)
+	return ioutil.NopCloser(r), nil
 }
 
 func (b *byteStream) Mimetype() string {

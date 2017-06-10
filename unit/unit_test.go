@@ -5,9 +5,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/Tympanix/artoodetoo/assert"
 	"github.com/Tympanix/artoodetoo/state"
 	"github.com/Tympanix/artoodetoo/unit"
+	"github.com/stretchr/testify/assert"
 )
 
 // SendEmail mimcs sending an email as an action
@@ -108,7 +108,7 @@ func TestUnitValidated(t *testing.T) {
 	u.AddStatic("A", 10)
 	u.AddStatic("B", 2)
 	err := u.Validate()
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 }
 
 func TestActionResolver(t *testing.T) {
@@ -123,10 +123,10 @@ func TestUnitJSON(t *testing.T) {
 	unit.Register(d)
 
 	data, err := json.Marshal(u)
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 
 	_u := new(unit.Unit)
 	err = json.Unmarshal(data, _u)
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 	unit.Unregister(d)
 }

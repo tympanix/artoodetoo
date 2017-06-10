@@ -48,7 +48,12 @@ func (u *UploadFile) Execute() error {
 		Name: u.Filename,
 	}
 
-	_, err = driveService.Files.Create(file).Media(u.File.NextReader()).Do()
+	reader, err := u.File.NewReader()
+	if err != nil {
+		return err
+	}
+	defer reader.Close()
+	_, err = driveService.Files.Create(file).Media(reader).Do()
 
 	if err != nil {
 		log.Println(err)

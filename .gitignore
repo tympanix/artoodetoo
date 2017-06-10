@@ -87,6 +87,7 @@ typings/
 dist/
 
 # Development files
+tmp
 client_secret.json
 .htpasswd
 .appsecret

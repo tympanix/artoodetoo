@@ -75,7 +75,11 @@ func (p *Photos) checkNew() error {
 			}
 			if len(details.Images) > 0 {
 				p.URL = details.Images[0].Source
-				p.Image = data.FromURL(p.URL)
+				stream, err := data.FromURL(p.URL)
+				if err != nil {
+					return err
+				}
+				p.Image = stream
 				fmt.Println(details.Images[0].Source)
 				p.Trigger()
 			} else {

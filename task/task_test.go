@@ -7,11 +7,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Tympanix/artoodetoo/assert"
 	"github.com/Tympanix/artoodetoo/event"
 	"github.com/Tympanix/artoodetoo/state"
 	"github.com/Tympanix/artoodetoo/task"
 	"github.com/Tympanix/artoodetoo/unit"
+	"github.com/stretchr/testify/assert"
 )
 
 type DummyUnit struct {
@@ -185,7 +185,7 @@ func TestTaskRun(t *testing.T) {
 	ac2.AddVar("Input", "Action1", "Output")
 
 	err := ta.Run(state.New())
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 
 	var s string
 	s = <-out
@@ -207,10 +207,10 @@ func TestTaskRegister(t *testing.T) {
 
 	// Add task and get by name and ID
 	_ta, err := task.GetTaskByID(ta.ID())
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 	assert.Equal(t, _ta, ta)
 	_ta, err = task.GetTaskByName(ta.Name)
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 	assert.Equal(t, _ta, ta)
 	tasks := task.All()
 	assert.Equal(t, len(tasks), 1)
@@ -220,14 +220,14 @@ func TestTaskRegister(t *testing.T) {
 	*copy = *ta
 	copy.Name = "MyTask2"
 	err = task.Update(copy)
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 	_ta, err = task.GetTaskByName("MyTask2")
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 	assert.Equal(t, _ta, copy)
 
 	// Remove task
 	err = task.RemoveTask(ta)
-	assert.NotError(t, err)
+	assert.Nil(t, err)
 	tasks = task.All()
 	assert.Equal(t, len(tasks), 0)
 	err = task.RemoveTask(ta)
