@@ -4,7 +4,6 @@ import (
 	"errors"
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
 	"sync"
 )
@@ -101,7 +100,6 @@ func (mb *StreamBuffer) Cleanup() error {
 	_, err := os.Stat(mb.file.Name())
 	if err == nil {
 		err := os.Remove(mb.file.Name())
-		log.Println(err)
 		return err
 	}
 	return nil
@@ -146,9 +144,11 @@ func (mb *StreamBuffer) Terminate() (err error) {
 }
 
 // NewStreamBuffer returns a new stream buffer
-func NewStreamBuffer(prefix string) (*StreamBuffer, error) {
-	if _, err := os.Stat(tmpDir); os.IsNotExist(err) {
-		os.Mkdir(tmpDir, os.ModeDir)
+func NewStreamBuffer(prefix string) (s *StreamBuffer, err error) {
+	if _, err = os.Stat(tmpDir); os.IsNotExist(err) {
+		if err = os.Mkdir(tmpDir, os.ModeDir); err != nil {
+			return
+		}
 	}
 	f, err := ioutil.TempFile(tmpDir, prefix)
 	if err != nil {
