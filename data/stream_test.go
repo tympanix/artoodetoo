@@ -10,6 +10,7 @@ import (
 
 	"github.com/Tympanix/artoodetoo/data"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 const stream = `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
@@ -23,7 +24,7 @@ const stream = `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
 func TestStreamBuffer(t *testing.T) {
 	const READERS = 3
 	sb, err := data.NewStreamBuffer("test001")
-	assert.Nil(t, err)
+	require.Nil(t, err)
 
 	begin := new(sync.WaitGroup)
 	begin.Add(READERS)
@@ -36,9 +37,9 @@ func TestStreamBuffer(t *testing.T) {
 			begin.Done()
 			defer wg.Done()
 			defer r.Close()
-			assert.Nil(t, err)
+			require.Nil(t, err)
 			data, err := ioutil.ReadAll(r)
-			assert.Nil(t, err)
+			require.Nil(t, err)
 			assert.Equal(t, string(data), stream)
 		}()
 	}
