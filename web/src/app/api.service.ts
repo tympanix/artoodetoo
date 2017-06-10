@@ -230,4 +230,20 @@ export class ApiService {
       .catch(this.handleError(this))
   }
 
+  startEvent(event: Event): Observable<boolean>{
+    return this.http.post("api/events/" + event.uuid + "/start", null, this.options)
+      .map(res => res.ok)
+      .do(() => this.getEvents())
+      .do(bool => this.success(this, event.name + " has been enabled!"))
+      .catch(this.handleError(this))
+  }
+
+  stopEvent(event: Event): Observable<boolean>{
+    return this.http.post("api/events/" + event.uuid + "/stop", null, this.options)
+      .map(res => res.ok)
+      .do(() => this.getEvents())
+      .do(bool => this.success(this, event.name + " has been disabled!"))
+      .catch(this.handleError(this))
+  }
+
 }

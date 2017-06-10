@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+import { ApiService } from '../../api.service'
 import { Event} from '../../model'
 
 @Component({
@@ -11,7 +12,7 @@ export class EventCardComponent implements OnInit {
   @Input() event: Event
   slideDisabled: boolean = false;
 
-  constructor() { }
+  constructor(private api: ApiService) { }
 
   ngOnInit() {
   }
@@ -19,15 +20,11 @@ export class EventCardComponent implements OnInit {
   changeStatus(event){
     this.slideDisabled = true;
     if(event.checked == true){
-      console.log("enable")
+      this.api.startEvent(this.event).subscribe(() => this.slideDisabled = false)
 
-      // put this in callback
-      this.slideDisabled = false;
     } else{
-      console.log("disable")
+      this.api.stopEvent(this.event).subscribe(() => this.slideDisabled = false)
 
-      //put this in callback
-      this.slideDisabled = false;
     }
   }
 
