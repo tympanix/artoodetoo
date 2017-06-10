@@ -155,7 +155,8 @@ func TestSubjectRebuild(t *testing.T) {
 
 	err := sub.RebuildSubject(&fakeResolver{test})
 	assert.Nil(t, err)
-	assert.NotEqual(t, sub.GetSubject(), test)
+	assert.Equal(t, sub.GetSubject(), test)  // Deep equals test
+	assert.True(t, sub.GetSubject() != test) // Pointer equals test
 }
 
 func TestSubjectWrongRebuild(t *testing.T) {
