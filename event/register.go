@@ -34,6 +34,14 @@ func AddEvent(event *Event) error {
 	return nil
 }
 
+func GetEventByID(id string) (*Event, error) {
+	e, ok := Events[id]
+	if !ok {
+		return nil, errors.New("Could not find event")
+	}
+	return e, nil
+}
+
 // RemoveEvent removes an evenet from the application
 func RemoveEvent(event *Event) {
 	delete(Events, event.ID())

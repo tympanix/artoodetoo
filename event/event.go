@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"sync"
 
 	"github.com/Tympanix/artoodetoo/generate"
 	"github.com/Tympanix/artoodetoo/logger"
@@ -25,6 +26,7 @@ type Core interface {
 type Event struct {
 	subject.Subject
 	style.Style
+	*sync.Mutex
 	Core      `json:"-"`
 	Observers []types.Runnable `json:"-"`
 	UUID      string           `json:"uuid"`
@@ -54,6 +56,7 @@ func (e *Event) ID() string {
 func (e *Event) init() {
 	e.Bind(e)
 	e.stop = make(chan struct{})
+	e.Mutex = new(sync.Mutex)
 
 	if s, ok := e.Core.(types.Styleable); ok {
 		e.Style = style.Make(s)
@@ -73,26 +76,39 @@ func (e *Event) Trigger() {
 }
 
 // Start starts the event for asynchronous listening
-func (e *Event) Start() {
+func (e *Event) Start() error {
+	e.Lock()
+	defer e.Unlock()
 	if e.running {
-		return
+		return errors.New("Event already running")
 	}
-	go func() {
-		if err := e.Listen(e.stop); err != nil {
-			logger.Error(e, err)
-			log.Println(err)
-		}
-	}()
 	e.running = true
+	go e.run()
+	return nil
+}
+
+func (e *Event) run() {
+	defer func() {
+		e.Lock()
+		defer e.Unlock()
+		e.running = false
+	}()
+	if err := e.Listen(e.stop); err != nil {
+		logger.Error(e, err)
+		log.Println(err)
+	}
 }
 
 // Stop stops the event for listening
-func (e *Event) Stop() {
+func (e *Event) Stop() error {
+	e.Lock()
+	defer e.Unlock()
 	if !e.running {
-		return
+		return errors.New("Event already stopped")
 	}
 	e.stop <- struct{}{}
 	e.running = false
+	return nil
 }
 
 // Validate checks certain safety proper

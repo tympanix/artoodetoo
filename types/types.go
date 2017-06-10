@@ -8,8 +8,8 @@ type Triggerable interface {
 
 // Startable is a type which can be started and stopped
 type Startable interface {
-	Start()
-	Stop()
+	Start() error
+	Stop() error
 }
 
 // Observable is a type which you can subscribe and unsunscibe to
