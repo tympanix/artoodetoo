@@ -37,7 +37,7 @@
             </div>
 
             <div class="col-sm-12">
-              <span *ngIf="!task.event.output">
+              <span *ngIf="task.event.output.length == 0">
                 <a class="btn btn-default btn-xs">No Output</a>
               </span>
 
