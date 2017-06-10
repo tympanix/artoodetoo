@@ -9,4 +9,4 @@ build:
   archive:
     format: tar.gz
   files:
-    - web/dist
+    - web/dist/*
