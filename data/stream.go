@@ -22,12 +22,20 @@ type StreamBuffer struct {
 	file    *os.File
 	readers int
 	closed  bool
+	ended   bool
 }
 
 // StreamReader is a thread safe reader which reads from a stream buffer
 type StreamReader struct {
 	file *os.File
 	buf  *StreamBuffer
+}
+
+// StreamEndError is returned when the stream has ended
+type StreamEndError struct{}
+
+func (*StreamEndError) Error() string {
+	return "The data stream has ended"
 }
 
 // Close closes the underlying file
@@ -38,7 +46,7 @@ func (sr *StreamReader) Close() error {
 	sr.buf.Lock()
 	defer sr.buf.Unlock()
 	sr.buf.readers--
-	if sr.buf.readers == 0 {
+	if sr.buf.readers == 0 && sr.buf.ended {
 		return sr.buf.Cleanup()
 	}
 	return nil
@@ -64,12 +72,15 @@ func (sr *StreamReader) Read(p []byte) (n int, err error) {
 
 // NewReader returns a new reader to the buffer
 func (mb *StreamBuffer) NewReader() (io.ReadCloser, error) {
+	mb.Lock()
+	defer mb.Unlock()
+	if mb.ended {
+		return nil, new(StreamEndError)
+	}
 	f, err := os.Open(mb.file.Name())
 	if err != nil {
 		return nil, err
 	}
-	mb.Lock()
-	defer mb.Unlock()
 	mb.readers++
 	return &StreamReader{f, mb}, nil
 }
@@ -116,10 +127,18 @@ func (mb *StreamBuffer) Close() (err error) {
 	}
 	mb.closed = true
 	mb.Broadcast()
+	return
+}
+
+// End ends the stream and allows no more readers
+func (mb *StreamBuffer) End() (err error) {
+	mb.Lock()
+	defer mb.Unlock()
+	mb.ended = true
 	if mb.readers == 0 {
 		return mb.Cleanup()
 	}
-	return
+	return nil
 }
 
 // NewStreamBuffer returns a new stream buffer
