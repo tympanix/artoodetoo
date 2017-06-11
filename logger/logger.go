@@ -16,7 +16,7 @@ func (l History) Len() int {
 }
 
 func (l History) Less(i, j int) bool {
-	return l[i].Time > l[j].Time
+	return l[i].Time < l[j].Time
 }
 
 func (l History) Swap(i, j int) {
@@ -105,7 +105,7 @@ func Get(time int64) History {
 			break
 		}
 	}
-	_ = sort.Reverse(log)
+	sort.Sort(log)
 	return log
 }
 

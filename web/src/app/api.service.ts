@@ -116,7 +116,7 @@ export class ApiService {
     return this.http.get("api/logs?t="+this.lastLog, this.options)
       .map(this.extractData<Log[]>(this))
       .map(logs => logs.map(log => Log.fromJson(log)))
-      .do(logs => self.updateLastLog.bind(self)(logs[0]))
+      .do(logs => self.updateLastLog.bind(self)(logs[logs.length - 1]))
   }
 
   private updateLastLog(log: Log) {
