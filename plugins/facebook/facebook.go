@@ -4,10 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 )
 
@@ -88,8 +86,6 @@ func callAPI(path string, token Token, options Options) (resp *http.Response, er
 	}
 
 	if resp.StatusCode != 200 {
-		io.Copy(os.Stdout, resp.Body)
-		fmt.Println()
 		err = errors.New("Could not call facebook API")
 		return
 	}

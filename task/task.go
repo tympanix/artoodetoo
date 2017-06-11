@@ -3,7 +3,6 @@ package task
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"sync"
 
 	"github.com/Tympanix/artoodetoo/event"
@@ -119,8 +118,6 @@ func (t *Task) startWorker() {
 }
 
 func (t *Task) run(ts types.TupleSpace) {
-	log.Printf("Running task %s\n", t.Name)
-
 	numerr := 0
 	errchan := make(chan error)
 	done := make(chan struct{})
@@ -161,8 +158,6 @@ func (t *Task) run(ts types.TupleSpace) {
 	if numerr == 0 {
 		logger.NewSuccess("Finished task").SetTask(t).Log()
 	}
-
-	log.Printf("Finished %s", t.Name)
 }
 
 // UnmarshalJSON for JSON serialization

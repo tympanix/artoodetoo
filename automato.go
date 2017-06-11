@@ -59,11 +59,9 @@ func newFileServer(path string) *fileServer {
 
 func (f *fileServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	file := path.Clean(r.URL.Path)
-	log.Println(file)
 	if fi, err := os.Stat(path.Join(static, file)); err == nil && !fi.IsDir() {
 		f.Handler.ServeHTTP(w, r)
 	} else {
-		log.Println("Serve index")
 		http.ServeFile(w, r, path.Join(static, "index.html"))
 	}
 }

@@ -66,7 +66,6 @@ func (e *Event) init() {
 
 // Trigger returns the trigger for the event
 func (e *Event) Trigger() {
-	log.Printf("Triggered event %s\n", e.Type())
 	for _, task := range e.Observers {
 		state := state.New()
 		e.StoreOutput(state)

@@ -3,8 +3,6 @@ package facebook
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
-	"log"
 	"time"
 
 	"github.com/Tympanix/artoodetoo/data"
@@ -65,8 +63,6 @@ func (p *Photos) checkNew() error {
 		return err
 	}
 
-	log.Printf("Found %d photos", len(photos))
-
 	for _, photo := range photos {
 		if photo.ID != p.LastSeen {
 			details, err := p.getPhotoDeails(photo.ID)
@@ -80,7 +76,6 @@ func (p *Photos) checkNew() error {
 					return err
 				}
 				p.Image = stream
-				fmt.Println(details.Images[0].Source)
 				p.Trigger()
 			} else {
 				return errors.New("No images found")

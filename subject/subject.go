@@ -197,7 +197,6 @@ func (s *Subject) StoreOutput(ts types.TupleSpace) error {
 			return err
 		}
 	}
-	//fmt.Println(ts)
 	return nil
 }
 
