@@ -31,8 +31,8 @@ type Event struct {
 	Observers []types.Runnable `json:"-"`
 	UUID      string           `json:"uuid"`
 	Desc      string           `json:"description"`
+	Running   bool             `json:"running"`
 	stop      chan struct{}
-	running   bool
 }
 
 // New takes an event and applies its type. The same event is returned.
@@ -79,10 +79,10 @@ func (e *Event) Trigger() {
 func (e *Event) Start() error {
 	e.Lock()
 	defer e.Unlock()
-	if e.running {
+	if e.Running {
 		return errors.New("Event already running")
 	}
-	e.running = true
+	e.Running = true
 	go e.run()
 	return nil
 }
@@ -91,7 +91,7 @@ func (e *Event) run() {
 	defer func() {
 		e.Lock()
 		defer e.Unlock()
-		e.running = false
+		e.Running = false
 	}()
 	if err := e.Listen(e.stop); err != nil {
 		logger.Error(e, err)
@@ -103,11 +103,11 @@ func (e *Event) run() {
 func (e *Event) Stop() error {
 	e.Lock()
 	defer e.Unlock()
-	if !e.running {
+	if !e.Running {
 		return errors.New("Event already stopped")
 	}
 	e.stop <- struct{}{}
-	e.running = false
+	e.Running = false
 	return nil
 }
 
