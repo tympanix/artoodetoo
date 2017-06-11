@@ -57,6 +57,7 @@ func (e *Event) init() {
 	e.Bind(e)
 	e.stop = make(chan struct{})
 	e.Mutex = new(sync.Mutex)
+	e.Running = false
 
 	if s, ok := e.Core.(types.Styleable); ok {
 		e.Style = style.Make(s)
