@@ -48,6 +48,7 @@ type AppArgs interface {
 	Port() int
 	HtpasswdPath() string
 	SecretPath() string
+	TmpDirPath() string
 }
 
 // Styleable is an interface for types with a defined style

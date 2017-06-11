@@ -8,6 +8,7 @@ type AppArgs struct {
 	PortNumber int    `cli:"p,port" usage:"the port the application will listen on" dft:"2800"`
 	Htpasswd   string `cli:"w,password" usage:"the htpasswd file to use for authentication" dft:".htpasswd"`
 	Secret     string `cli:"s,secret" usage:"the secret to use for the application" dft:".appsecret"`
+	TmpDir     string `cli:"t,tmpdir" usage:"the temporary location for cached files" dft:"tmp"`
 }
 
 // Port is the port number for the application
@@ -23,6 +24,11 @@ func (a *AppArgs) HtpasswdPath() string {
 // SecretPath is the path for the application secret
 func (a *AppArgs) SecretPath() string {
 	return a.Secret
+}
+
+// TmpDirPath return the path to the temporary files directory
+func (a *AppArgs) TmpDirPath() string {
+	return a.TmpDir
 }
 
 var helpCmd = cli.HelpCommand("display help information")

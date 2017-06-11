@@ -8,7 +8,8 @@ import (
 	"sync"
 )
 
-const tmpDir = "tmp"
+// TmpDir is the location for temporary files
+var TmpDir = ""
 
 // Stream is an object which produces readers from which to obtain data
 type Stream interface {
@@ -143,14 +144,23 @@ func (mb *StreamBuffer) Terminate() (err error) {
 	return nil
 }
 
-// NewStreamBuffer returns a new stream buffer
-func NewStreamBuffer(prefix string) (s *StreamBuffer, err error) {
-	if _, err = os.Stat(tmpDir); os.IsNotExist(err) {
-		if err = os.Mkdir(tmpDir, os.ModeDir); err != nil {
+func createTempDir(path string) (err error) {
+	if _, err = os.Stat(path); os.IsNotExist(err) {
+		if err = os.Mkdir(path, os.ModeDir); err != nil {
 			return
 		}
 	}
-	f, err := ioutil.TempFile(tmpDir, prefix)
+	return nil
+}
+
+// NewStreamBuffer returns a new stream buffer
+func NewStreamBuffer(prefix string) (s *StreamBuffer, err error) {
+	if len(TmpDir) > 0 {
+		if err = createTempDir(TmpDir); err != nil {
+			return
+		}
+	}
+	f, err := ioutil.TempFile(TmpDir, prefix)
 	if err != nil {
 		return nil, err
 	}

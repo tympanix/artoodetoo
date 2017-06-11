@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/Tympanix/artoodetoo/data"
 	"github.com/Tympanix/artoodetoo/types"
 	"github.com/foomo/htpasswd"
 )
@@ -31,6 +32,8 @@ type Config struct {
 // Parse parses the application configuration file
 func Parse(args types.AppArgs) {
 	Port = args.Port()
+
+	data.TmpDir = args.TmpDirPath()
 
 	file, err := os.Open(args.SecretPath())
 
