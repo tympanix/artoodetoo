@@ -14,7 +14,9 @@ export class FloatTypeComponent extends TypesComponent {
 
   ngOnInit() {
     super.ngOnInit()
-    this.stringFloat = this.ingredient.value.toString()
+    if (this.ingredient.value) {
+      this.stringFloat = this.ingredient.value.toString()
+    }
   }
 
   stringToFloat(){
