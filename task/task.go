@@ -145,7 +145,7 @@ func (t *Task) run(ts types.TupleSpace) {
 		select {
 		case err := <-errchan:
 			ts.Close()
-			logger.Error(t, err)
+			logger.Convert(err).SetTask(t).Log()
 			numerr++
 		case <-done:
 			ts.Close()
@@ -159,7 +159,7 @@ func (t *Task) run(ts types.TupleSpace) {
 	}
 
 	if numerr == 0 {
-		logger.Success(t, "Finished task")
+		logger.NewSuccess("Finished task").SetTask(t).Log()
 	}
 
 	log.Printf("Finished %s", t.Name)

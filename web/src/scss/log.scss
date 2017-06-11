@@ -3,12 +3,14 @@
   background-color: $blue-lighter;
   overflow: hidden;
   margin: .5em 0;
+  position: relative;
 
   header {
     color: white;
     padding: 1em;
     height: 100%;
     float: left;
+    max-width: 5em;
   }
 
   &.error {
@@ -30,8 +32,20 @@
   }
 
   .log-content {
+    position: absolute;
+    left: 5em;
+    right: 0;
     float: left;
     height: 100%;
     padding: 1em;
+    line-height: 26px;
+
+    .btn {
+      margin: 0;
+    }
+
+    .log-actions {
+      float: right;
+    }
   }
 }

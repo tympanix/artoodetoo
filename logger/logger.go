@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"fmt"
 	"sort"
 	"sync"
 	"time"
@@ -9,37 +8,96 @@ import (
 	"github.com/Tympanix/artoodetoo/types"
 )
 
-// Log is a slice of entries
-type Log []*Entry
+// History is a slice of entries
+type History []*Entry
 
-func (l Log) Len() int {
+func (l History) Len() int {
 	return len(l)
 }
 
-func (l Log) Less(i, j int) bool {
+func (l History) Less(i, j int) bool {
 	return l[i].Time > l[j].Time
 }
 
-func (l Log) Swap(i, j int) {
+func (l History) Swap(i, j int) {
 	l[i], l[j] = l[j], l[i]
 }
 
-var logs Log
+var logs History
 var lock = new(sync.RWMutex)
 
 // Entry is a log entry in the log
 type Entry struct {
 	Type    string `json:"type"`
 	Task    string `json:"task"`
+	Event   string `json:"event"`
 	Message string `json:"message"`
 	Time    int64  `json:"time"`
 }
 
-// Get retrieved log newer than a specified time
-func Get(time int64) Log {
+func (e *Entry) Error() string {
+	return e.Message
+}
+
+// SetTask binds a task to the given error
+func (e *Entry) SetTask(t types.Identifiable) *Entry {
+	e.Task = t.ID()
+	return e
+}
+
+// SetEvent bind an event to the given error
+func (e *Entry) SetEvent(t types.Identifiable) *Entry {
+	e.Event = t.ID()
+	return e
+}
+
+// Log appends the entry to the log history
+func (e *Entry) Log() {
+	Log(e)
+}
+
+// Convert converts an error intro a log entry
+func Convert(err error) *Entry {
+	return getOrCreate(err)
+}
+
+// NewError returns a new entry for logging
+func NewError(err string) *Entry {
+	return &Entry{
+		Type:    "error",
+		Message: err,
+		Time:    time.Now().Unix(),
+	}
+}
+
+// NewSuccess returns a new successful log entry
+func NewSuccess(err string) *Entry {
+	return &Entry{
+		Type:    "success",
+		Message: err,
+		Time:    time.Now().Unix(),
+	}
+}
+
+func getOrCreate(err error) *Entry {
+	if e, ok := err.(*Entry); ok {
+		return e
+	}
+	return NewError(err.Error())
+}
+
+// Log logs a new error to the history
+func Log(err error) {
 	lock.RLock()
 	defer lock.RUnlock()
-	log := make(Log, 0)
+	logs = append(logs, getOrCreate(err))
+}
+
+// Get retrieved log newer than a specified time
+func Get(time int64) History {
+	lock.RLock()
+	defer lock.RUnlock()
+	log := make(History, 0)
 	for i := len(logs) - 1; i >= 0; i-- {
 		if logs[i].Time > time {
 			log = append(log, logs[i])
@@ -55,29 +113,5 @@ func Get(time int64) Log {
 func Clear() {
 	lock.Lock()
 	lock.Unlock()
-	logs = make(Log, 0)
-}
-
-// Error logs an error to the application
-func Error(task types.Identifiable, err error) {
-	lock.Lock()
-	defer lock.Unlock()
-	logs = append(logs, &Entry{
-		Type:    "error",
-		Task:    task.ID(),
-		Message: fmt.Sprint(err),
-		Time:    time.Now().Unix(),
-	})
-}
-
-// Success appends a success message to the log
-func Success(task types.Identifiable, message string) {
-	lock.Lock()
-	defer lock.Unlock()
-	logs = append(logs, &Entry{
-		Type:    "success",
-		Task:    task.ID(),
-		Message: message,
-		Time:    time.Now().Unix(),
-	})
+	logs = make(History, 0)
 }

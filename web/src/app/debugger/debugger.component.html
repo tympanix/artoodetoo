@@ -15,6 +15,10 @@
       </header>
       <div class="log-content">
         {{log.message}}
+        <div class="log-actions">
+            <div *ngIf="log.task" routerLink="/administration/task/{{log.task}}" class="btn btn-xs btn-default">Task</div>
+            <div *ngIf="log.event" routerLink="/administration/event/{{log.task}}" class="btn btn-xs btn-default">Event</div>
+        </div>
       </div>
     </div>
   </div>

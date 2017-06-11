@@ -95,7 +95,7 @@ func (e *Event) run() {
 		e.Running = false
 	}()
 	if err := e.Listen(e.stop); err != nil {
-		logger.Error(e, err)
+		logger.Convert(err).SetEvent(e).Log()
 		log.Println(err)
 	}
 }
