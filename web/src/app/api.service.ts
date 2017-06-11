@@ -170,7 +170,7 @@ export class ApiService {
   getTemplateEvents(): Observable<Unit[]>{
     this.http.get("/api/all_events", this.options)
       .map(this.extractData<Unit[]>(this))
-      .map(json => json.map(data => Event.fromJson(data)))
+      .map(json => json.map(data => Unit.fromJson(data)))
       .catch(this.handleError(this))
       .subscribe(events => this.templateEvents.next(events));
     return this.templateEvents
@@ -189,9 +189,9 @@ export class ApiService {
       })
   }
 
-  getEvents(): Observable<Unit[]>{
+  getEvents(): Observable<Event[]>{
     this.http.get("/api/events", this.options)
-      .map(this.extractData<Unit[]>(this))
+      .map(this.extractData<Event[]>(this))
       .map(json => json.map(data => Event.fromJson(data)))
       .catch(this.handleError(this))
       .subscribe(events => this.events.next(events));
