@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+import { Observable } from 'rxjs/Observable';
 import { ApiService } from '../../api.service'
-import { Event} from '../../model'
+import { Event } from '../../model'
 
 @Component({
   selector: 'app-event-card',
@@ -19,13 +20,13 @@ export class EventCardComponent implements OnInit {
 
   changeStatus(event){
     this.slideDisabled = true;
+    let toggle: Observable<boolean>
     if(event.checked == true){
-      this.api.startEvent(this.event).subscribe(() => this.slideDisabled = false)
-
+      toggle = this.api.startEvent(this.event)
     } else{
-      this.api.stopEvent(this.event).subscribe(() => this.slideDisabled = false)
-
+      toggle = this.api.stopEvent(this.event)
     }
+    toggle.finally(() => this.slideDisabled = false).subscribe()
   }
 
 }
